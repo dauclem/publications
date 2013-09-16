@@ -1,0 +1,46 @@
+.nav-tabs li:first-child a,
+.nav-tabs li:first-child a:hover {
+	background-color: #E0ADAD;
+}
+
+.table td:first-child {
+	white-space: nowrap;
+}
+
+.table tr.alert-info td:first-child {
+	font-weight: bold;
+}
+
+#add_prod_publication_link {
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	font-size: 2em;
+}
+
+#show_prod_only,
+#show_all,
+#show_all_rev {
+	float: right;
+	margin: -40px 20px 5px 0;
+}
+
+#show_all {
+	display: none;
+}
+
+#show_all_rev {
+	font-size: 0.7em;
+	margin-top: -15px;
+}
+
+.loader {
+	background: url('/static/loader.gif') no-repeat center;
+	min-height: 50px;
+	min-width: 50px;
+	display: block;
+}
+
+.pointer {
+	cursor: pointer;
+}

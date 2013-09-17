@@ -97,6 +97,15 @@ foreach ($all_rows as $k => $row) {
 		return $a->get_type() < $b->get_type() ? 1 : -1;
 	});
 	$current_type = '';
+
+	/*
+	 * TODO : use filter trackers
+	if ($row->get_publication()) {
+		$trackers_bak = $trackers;
+		$trackers     = $tracker_shared->filter_trackers($trackers);
+	}
+	*/
+
 	/** @var \Interfaces\Object\Tracker $tracker */
 	foreach ($trackers as $tracker) {
 		if ($current_type != $tracker->get_type()) {

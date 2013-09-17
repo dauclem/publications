@@ -29,4 +29,12 @@ interface Tracker extends Shared {
 	 * @return \Interfaces\Object\Tracker[]
 	 */
 	public function get_trackers_from_message($message);
+
+	/**
+	 * Filter trackers list with query set to config to filter only trackers to send by email
+	 *
+	 * @param \Interfaces\Object\Tracker[] $trackers
+	 * @return \Interfaces\Object\Tracker[]
+	 */
+	public function filter_trackers($trackers);
 }

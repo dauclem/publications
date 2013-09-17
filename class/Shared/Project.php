@@ -80,13 +80,15 @@ class Project extends Shared implements \Interfaces\Shared\Project {
 	public function get_projects() {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
-		$result   = $database->get_connection()->query('SELECT id FROM project ORDER BY name');
+		$result   = @$database->get_connection()->query('SELECT id FROM project ORDER BY name');
 		$objects  = array();
-		while (list($id) = $result->fetchArray()) {
-			/** @var \Interfaces\Object\Project $object */
-			$object = $this->dic->get_object('project_object', $id);
-			if ($object) {
-				$objects[] = $object;
+		if ($result) {
+			while (list($id) = $result->fetchArray()) {
+				/** @var \Interfaces\Object\Project $object */
+				$object = $this->dic->get_object('project_object', $id);
+				if ($object) {
+					$objects[] = $object;
+				}
 			}
 		}
 		return $objects;

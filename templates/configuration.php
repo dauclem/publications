@@ -56,7 +56,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="VCS_password" name="VCS_password"
-					   placeholder="inchangé"
+					   <?php echo $config->get_vcs_password() ? 'placeholder="inchangé"' : ''; ?>
 					   value="<?php echo isset($VCS_password) ? $VCS_password : ''; ?>">
 				<?php if (isset($errors['VCS_password'])) { ?>
 					<span class="help-block"><?php echo $errors['VCS_password']; ?></span>
@@ -137,7 +137,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="bug_tracker_password" name="bug_tracker_password"
-					   placeholder="inchangé"
+					   <?php echo $config->get_bug_tracker_password() ? 'placeholder="inchangé"' : ''; ?>
 					   value="<?php echo isset($bug_tracker_password) ? $bug_tracker_password : ''; ?>">
 				<?php if (isset($errors['bug_tracker_password'])) { ?>
 					<span class="help-block"><?php echo $errors['bug_tracker_password']; ?></span>

@@ -4,7 +4,6 @@ namespace Interfaces\Object;
 
 use Interfaces\Object;
 use Interfaces\Object\Tracker;
-use Interfaces\Object\Publication;
 
 interface Row extends Object {
 	/**
@@ -41,11 +40,11 @@ interface Row extends Object {
 	public function get_trackers();
 
 	/**
-	 * Get related publication object if this row is a publication
+	 * Get related object if this row has one
 	 *
-	 * @return Publication|null
+	 * @return Object|null
 	 */
-	public function get_publication();
+	public function get_related_object();
 
 	/**
 	 * @param int $date
@@ -74,7 +73,7 @@ interface Row extends Object {
 	public function set_comments($comments);
 
 	/**
-	 * @param Publication $publication
+	 * @param Object $related_object
 	 */
-	public function set_publication(Publication $publication);
+	public function set_related_object(Object $related_object);
 }

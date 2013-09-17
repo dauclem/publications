@@ -174,7 +174,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	public function create_row($rows) {
 		/** @var Row $row */
 		$row = $this->dic->get_object('row_object');
-		$row->set_publication($this);
+		$row->set_related_object($this);
 		$row->set_date($this->date);
 
 		$revisions = $changelog = $messages = array();

@@ -47,7 +47,9 @@ usort($all_rows, function(\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) 
 $row_count = count($all_rows);
 /** @var \Interfaces\Object\Row $row */
 foreach ($all_rows as $k => $row) {
-	$this_publication = $row->get_publication();
+	$related_object   = $row->get_related_object();
+	$this_publication = $related_object instanceof \Interfaces\Object\Publication ? $related_object : null;
+
 	echo '<tr'.($this_publication ? ' class="alert alert-info"' : '').'>';
 
 	echo '<td>'.date('d/m/Y H:i', $row->get_date()).'</td>';

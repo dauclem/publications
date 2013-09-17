@@ -152,6 +152,7 @@ class DIC {
 	 *
 	 * @param string $ident
 	 * @return \Interfaces\Shared
+	 * @throws Exception
 	 */
 	protected function get_shared_object($ident) {
 		if (isset($this->shared_instances[$ident])) {
@@ -160,7 +161,7 @@ class DIC {
 
 		$object = $this->instance_object($ident);
 		if (!$object->is_valid()) {
-			return null;
+			throw new Exception('Shared object invalid  : '.get_class($object));
 		}
 
 		$this->shared_instances[$ident] = $object;
@@ -191,7 +192,9 @@ class DIC {
 			$object = $this->instance_object($ident);
 		}
 
+		if (!$object) {
 
+		}
 		$object->set_dic($this);
 		foreach ($object->get_dependencies_list() as $dep_ident) {
 			$dep_object = $this->get_object($dep_ident);

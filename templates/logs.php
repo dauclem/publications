@@ -95,6 +95,7 @@ foreach ($all_rows as $k => $row) {
 	if ($this_publication) {
 		$trackers_bak  = $trackers;
 		$trackers      = $tracker_shared->filter_trackers($trackers, $current_project);
+		/** @var \Interfaces\Object\Tracker[] $trackers_diff */
 		$trackers_diff = array_diff($trackers_bak, $trackers);
 	}
 
@@ -126,7 +127,7 @@ foreach ($all_rows as $k => $row) {
 		$nl = urlencode("\n");
 		$body = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
 		$current_type = '';
-		foreach ($trackers as $tracker) {
+		foreach ($trackers_diff as $tracker) {
 			if ($current_type != $tracker->get_type()) {
 				if ($current_type) {
 					$body .= $nl;

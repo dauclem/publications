@@ -53,7 +53,8 @@ usort($all_rows, function(\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) 
 $row_count = count($all_rows);
 /** @var \Interfaces\Object\Row $row */
 foreach ($all_rows as $k => $row) {
-	echo '<tr'.($row->get_publication() ? ' class="alert alert-info"' : '').'>';
+	$this_publication = $row->get_publication();
+	echo '<tr'.($this_publication ? ' class="alert alert-info"' : '').'>';
 
 	echo '<td>'.date('d/m/Y H:i', $row->get_date()).'</td>';
 
@@ -96,30 +97,24 @@ foreach ($all_rows as $k => $row) {
 		}
 		return $a->get_type() < $b->get_type() ? 1 : -1;
 	});
-	$current_type = '';
 
-	/*
-	 * TODO : use filter trackers
-	if ($row->get_publication()) {
-		$trackers_bak = $trackers;
-		$trackers     = $tracker_shared->filter_trackers($trackers);
+	if ($this_publication) {
+		$trackers_bak  = $trackers;
+		$trackers      = $tracker_shared->filter_trackers($trackers);
+		$trackers_diff = array_diff($trackers_bak, $trackers);
 	}
-	*/
 
-	/** @var \Interfaces\Object\Tracker $tracker */
-	foreach ($trackers as $tracker) {
-		if ($current_type != $tracker->get_type()) {
-			if ($current_type) {
-				echo '<br />';
-			}
+	$trackers_list = $trackers;
+	require __DIR__.'/include/logs_trackers.php';
 
-			$current_type = $tracker->get_type();
-			echo '<strong>_____'.htmlentities($current_type).'_____</strong><br />';
-		}
-
-		echo '<a target="_blank" title="'.htmlentities($tracker->get_title()).'" href="'.$tracker->get_url().'">'
-			 .htmlentities($tracker->get_id()).' : '.htmlentities($tracker->get_title())
-			 .'</a><br />';
+	if ($this_publication && $trackers_diff) {
+		echo '<button type="button" class="btn" data-toggle="collapse" data-target="#trackers'.$this_publication->get_id().'">
+			Voir les autres tâches
+		</button>
+		<div id="trackers'.$this_publication->get_id().'" class="collapse">';
+			$trackers_list = $trackers_diff;
+			require __DIR__.'/include/logs_trackers.php';
+		echo '</div>';
 	}
 	echo '</td>';
 
@@ -128,7 +123,6 @@ foreach ($all_rows as $k => $row) {
 	echo '</td>';
 
 	echo '<td style="width:40%">';
-	$this_publication = $row->get_publication();
 	if ($this_publication) {
 		echo '<div class="well">';
 

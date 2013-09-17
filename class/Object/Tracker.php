@@ -39,4 +39,11 @@ abstract class Tracker extends Object implements \Interfaces\Object\Tracker {
 	public function get_type() {
 		return $this->type;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function __toString() {
+		return get_called_class().'|'.$this->get_id();
+	}
 }

@@ -10,6 +10,7 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 	 */
 	public function get_dependencies_list() {
 		return array_merge(parent::get_dependencies_list(), array(
+																 'jira',
 																 'config',
 															));
 	}
@@ -26,11 +27,9 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 		$cache_key = __CLASS__.'|'.$object_id;
 		$task_data = apc_fetch($cache_key);
 		if ($task_data === false) {
-			/** @var \Interfaces\Shared\Config $config_shared */
-			$config_shared = $this->dependence_objects['config'];
-			exec('curl -D- -u '.$config_shared->get_bug_tracker_user().':'.$config_shared->get_bug_tracker_password()
-				 .' -X GET -H "Content-Type: application/json" '
-				 .$config_shared->get_bug_tracker_url().'/rest/api/latest/issue/'.$object_id, $output);
+			/** @var \Interfaces\Shared\Tracker\Jira $tracker_shared */
+			$tracker_shared = $this->dependence_objects['jira'];
+			exec($tracker_shared->get_api_exec_begin().'issue/'.$object_id, $output);
 			$task_data = json_decode(end($output));
 			apc_store($cache_key, $task_data, 0);
 		}

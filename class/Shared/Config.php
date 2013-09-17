@@ -76,7 +76,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 			$this->site_url .= 's';
 		}
 		$this->site_url .= '://'.@$_SERVER['SERVER_NAME'];
-		if (@$_SERVER['SERVER_PORT'] != '80') {
+		if (@$_SERVER['SERVER_PORT'] && $_SERVER['SERVER_PORT'] != '80') {
 			$this->site_url .= ':'.$_SERVER['SERVER_PORT'];
 		}
 		$this->site_url .= '/';

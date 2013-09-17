@@ -2,9 +2,6 @@
 
 require __DIR__.'/../../include/setup.php';
 
-/** @var \Interfaces\Shared\Config $config */
-$config = $dic->get_object('config');
-
 if ($_POST) {
 	/** @var \Interfaces\Shared\FormUtils $form_utils */
 	$form_utils = $dic->get_object('form_utils');
@@ -12,13 +9,13 @@ if ($_POST) {
 	$VCS_type             = isset($_POST['VCS_type']) ? trim($_POST['VCS_type']) : '';
 	$VCS_url              = isset($_POST['VCS_url']) ? trim($_POST['VCS_url']) : '';
 	$VCS_user             = isset($_POST['VCS_user']) ? trim($_POST['VCS_user']) : '';
-	$VCS_password         = isset($_POST['VCS_password']) ? trim($_POST['VCS_password']) : $config->get_vcs_password();
+	$VCS_password         = isset($_POST['VCS_password']) ? trim($_POST['VCS_password']) : $config_shared->get_vcs_password();
 	$VCS_web_url          = isset($_POST['VCS_web_url']) ? trim($_POST['VCS_web_url']) : '';
 	$changelog_path       = isset($_POST['changelog_path']) ? trim($_POST['changelog_path']) : '';
 	$bug_tracker_type     = isset($_POST['bug_tracker_type']) ? trim($_POST['bug_tracker_type']) : '';
 	$bug_tracker_url      = isset($_POST['bug_tracker_url']) ? trim($_POST['bug_tracker_url']) : '';
 	$bug_tracker_user     = isset($_POST['bug_tracker_user']) ? trim($_POST['bug_tracker_user']) : '';
-	$bug_tracker_password = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config->get_bug_tracker_password();
+	$bug_tracker_password = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config_shared->get_bug_tracker_password();
 	$recipients  = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
 	$errors         = array();
@@ -34,7 +31,7 @@ if ($_POST) {
 	if (!$VCS_user) {
 		$errors['VCS_user'] = 'Vous devez indiquer un nom d\'utilisateur';
 	}
-	if (!$config->get_vcs_password() && !$VCS_password) {
+	if (!$config_shared->get_vcs_password() && !$VCS_password) {
 		$errors['VCS_password'] = 'Vous devez indiquer un mot de passe';
 	}
 	// Get only domain name and remove ended /
@@ -55,7 +52,7 @@ if ($_POST) {
 	if (!$bug_tracker_user) {
 		$errors['bug_tracker_user'] = 'Vous devez indiquer un nom d\'utilisateur';
 	}
-	if (!$config->get_bug_tracker_password() && !$bug_tracker_password) {
+	if (!$config_shared->get_bug_tracker_password() && !$bug_tracker_password) {
 		$errors['bug_tracker_password'] = 'Vous devez indiquer un mot de passe';
 	}
 
@@ -71,26 +68,26 @@ if ($_POST) {
 
 	if (!$errors) {
 		// Store config
-		$config->set_vcs_type($VCS_type);
-		$config->set_vcs_url($VCS_url);
-		$config->set_vcs_user($VCS_user);
+		$config_shared->set_vcs_type($VCS_type);
+		$config_shared->set_vcs_url($VCS_url);
+		$config_shared->set_vcs_user($VCS_user);
 		if ($VCS_password) {
-			$config->set_vcs_password($VCS_password);
+			$config_shared->set_vcs_password($VCS_password);
 		}
-		$config->set_vcs_web_url($VCS_web_url);
-		$config->set_changelog_path($changelog_path);
-		$config->set_bug_tracker_type($bug_tracker_type);
-		$config->set_bug_tracker_url($bug_tracker_url);
-		$config->set_bug_tracker_user($bug_tracker_user);
+		$config_shared->set_vcs_web_url($VCS_web_url);
+		$config_shared->set_changelog_path($changelog_path);
+		$config_shared->set_bug_tracker_type($bug_tracker_type);
+		$config_shared->set_bug_tracker_url($bug_tracker_url);
+		$config_shared->set_bug_tracker_user($bug_tracker_user);
 		if ($bug_tracker_password) {
-			$config->set_bug_tracker_password($bug_tracker_password);
+			$config_shared->set_bug_tracker_password($bug_tracker_password);
 		}
 
-		foreach ($config->get_recipients() as $recipient) {
-			$config->remove_recipient($recipient);
+		foreach ($config_shared->get_recipients() as $recipient) {
+			$config_shared->remove_recipient($recipient);
 		}
 		foreach ($recipients as $recipient) {
-			$config->add_recipient($recipient);
+			$config_shared->add_recipient($recipient);
 		}
 
 		/** @var \Interfaces\Shared\Project $project_shared */
@@ -102,14 +99,14 @@ if ($_POST) {
 		$publication_shared->install();
 	}
 } else {
-	$VCS_type         = $config->get_vcs_type();
-	$VCS_url          = $config->get_vcs_url();
-	$VCS_user         = $config->get_vcs_user();
-	$VCS_web_url      = $config->get_vcs_web_url();
-	$changelog_path   = $config->get_changelog_path();
-	$bug_tracker_type = $config->get_bug_tracker_type();
-	$bug_tracker_url  = $config->get_bug_tracker_url();
-	$bug_tracker_user = $config->get_bug_tracker_user();
+	$VCS_type         = $config_shared->get_vcs_type();
+	$VCS_url          = $config_shared->get_vcs_url();
+	$VCS_user         = $config_shared->get_vcs_user();
+	$VCS_web_url      = $config_shared->get_vcs_web_url();
+	$changelog_path   = $config_shared->get_changelog_path();
+	$bug_tracker_type = $config_shared->get_bug_tracker_type();
+	$bug_tracker_url  = $config_shared->get_bug_tracker_url();
+	$bug_tracker_user = $config_shared->get_bug_tracker_user();
 }
 
 require $dic->get_param('path_templates').'/configuration.php';

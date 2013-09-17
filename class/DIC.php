@@ -24,7 +24,7 @@ class DIC {
 			'shared'     => false,
 			'class_name' => '\\Object\\Row',
 		),
-		'jira_object'        => array(
+		'tracker_object'        => array(
 			'shared'     => false,
 			'class_name' => '\\Object\\Tracker\\Jira',
 		),
@@ -49,11 +49,11 @@ class DIC {
 			'shared'     => true,
 			'class_name' => '\\Shared\\Publication',
 		),
-		'subversion'         => array(
+		'vcs'         => array(
 			'shared'     => true,
 			'class_name' => '\\Shared\\VCS\\Subversion',
 		),
-		'jira'               => array(
+		'tracker'               => array(
 			'shared'     => true,
 			'class_name' => '\\Shared\\Tracker\\Jira',
 		),

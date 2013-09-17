@@ -202,7 +202,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		/** @var \Interfaces\Shared\VCS $vcs */
-		$vcs = $this->dic->get_object($config_shared->get_vcs_type());
+		$vcs = $this->dic->get_object('vcs');
 		array_map(array($vcs, 'optimize_revisions'), $revisions);
 
 		$row->set_revisions($revisions);

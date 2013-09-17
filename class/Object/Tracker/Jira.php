@@ -10,7 +10,7 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 	 */
 	public function get_dependencies_list() {
 		return array_merge(parent::get_dependencies_list(), array(
-																 'jira',
+																 'tracker',
 																 'config',
 															));
 	}
@@ -28,7 +28,7 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 		$task_data = apc_fetch($cache_key);
 		if ($task_data === false) {
 			/** @var \Interfaces\Shared\Tracker\Jira $tracker_shared */
-			$tracker_shared = $this->dependence_objects['jira'];
+			$tracker_shared = $this->dependence_objects['tracker'];
 			exec($tracker_shared->get_api_exec_begin().'issue/'.$object_id, $output);
 			$task_data = json_decode(end($output));
 			apc_store($cache_key, $task_data, 0);

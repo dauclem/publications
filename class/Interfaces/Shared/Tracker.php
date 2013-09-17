@@ -9,13 +9,6 @@ use Interfaces\Shared;
  */
 interface Tracker extends Shared {
 	/**
-	 * Get object definition to construct object
-	 *
-	 * @return string
-	 */
-	public function get_object_definition();
-
-	/**
 	 * Get tracker id pattern for preg to find tracker ids into a string
 	 *
 	 * @return string

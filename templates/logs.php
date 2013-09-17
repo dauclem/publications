@@ -16,16 +16,10 @@ if (!isset($current_project)) {
 $config_shared = $dic->get_object('config');
 
 /** @var \Interfaces\Shared\VCS $vcs */
-$vcs = $dic->get_object($config_shared->get_vcs_type());
-if (!($vcs instanceof \Interfaces\Shared\VCS)) {
-	exit ('VCS Type invalid : "'.$config_shared->get_vcs_type().'"');
-}
+$vcs = $dic->get_object('vcs');
 
 /** @var \Interfaces\Shared\Tracker $tracker_shared */
-$tracker_shared = $dic->get_object($config_shared->get_bug_tracker_type());
-if (!($tracker_shared instanceof \Interfaces\Shared\Tracker)) {
-	exit ('Bug tracker Type invalid : "'.$config_shared->get_bug_tracker_type().'"');
-}
+$tracker_shared = $dic->get_object('tracker');
 
 $all_rows = $vcs->get_all_rows($current_project, $revision_begins, $publication);
 
@@ -166,12 +160,8 @@ foreach ($all_rows as $k => $row) {
 		$result_comment = htmlentities(implode("\n", array_map('trim', array_unique($comments))));
 		$result_comment = preg_replace_callback($tracker_shared->get_tracker_id_pattern(), function($matches) {
 			global $dic;
-			/** @var \Interfaces\Shared\Config $config_shared */
-			$config_shared = $dic->get_object('config');
-			/** @var \Interfaces\Shared\Tracker $tracker_shared */
-			$tracker_shared = $dic->get_object($config_shared->get_bug_tracker_type());
 			/** @var \Interfaces\Object\Tracker $tracker */
-			$tracker = $dic->get_object($tracker_shared->get_object_definition(), $matches[1]);
+			$tracker = $dic->get_object('tracker_object', $matches[1]);
 			return $tracker ? '<a target="_blank" href="'.$tracker->get_url().'">'.$tracker->get_id().'</a>' : '';
 		}, $result_comment);
 		echo nl2br($result_comment);

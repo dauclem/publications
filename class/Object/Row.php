@@ -62,7 +62,19 @@ class Row extends Object implements \Interfaces\Object\Row {
 	 * {@inheritDoc}
 	 */
 	public function get_trackers() {
-		// TODO : implements
+		$trackers = array();
+		foreach ($this->comments as $project_id => $comments) {
+			foreach ($comments as $comment) {
+				$trackers = array_merge($trackers, $tracker_shared->get_trackers_from_message($comment));
+			}
+		}
+		$trackers = array_unique($trackers, SORT_REGULAR);
+		usort($trackers, function(\Interfaces\Object\Tracker $a, \Interfaces\Object\Tracker $b) {
+			if ($a->get_type() == $b->get_type()) {
+				return 0;
+			}
+			return $a->get_type() < $b->get_type() ? 1 : -1;
+		});
 	}
 
 	/**

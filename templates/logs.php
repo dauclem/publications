@@ -94,7 +94,7 @@ foreach ($all_rows as $k => $row) {
 
 	if ($this_publication) {
 		$trackers_bak  = $trackers;
-		$trackers      = $tracker_shared->filter_trackers($trackers);
+		$trackers      = $tracker_shared->filter_trackers($trackers, $current_project);
 		$trackers_diff = array_diff($trackers_bak, $trackers);
 	}
 
@@ -102,7 +102,7 @@ foreach ($all_rows as $k => $row) {
 	require __DIR__.'/include/logs_trackers.php';
 
 	if ($this_publication && $trackers_diff) {
-		echo '<button type="button" class="btn" data-toggle="collapse" data-target="#trackers'.$this_publication->get_id().'">
+		echo '<br /><button type="button" class="btn" data-toggle="collapse" data-target="#trackers'.$this_publication->get_id().'">
 			Voir les autres tâches
 		</button>
 		<div id="trackers'.$this_publication->get_id().'" class="collapse">';

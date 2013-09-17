@@ -1,5 +1,4 @@
 - bug : mailto limit for $_GET (try to find a solution to set all body)
-- feature : pouvoir indiquer l'id d'une requete JIRA à laquelle on rajoutera un "key IN ([liste des taches publiées])"
 - feature : add note to specify if prod has problem (without necessary publication, like down, daily cron, etc...)
 -- nouveau type de Row 'Notes'
 - feature : masquer la dernière colonne avec un bouton : voir les logs

@@ -51,6 +51,13 @@ interface Project extends Object {
 	public function get_vcs_repository();
 
 	/**
+	 * Get Tracker id to filter into query
+	 *
+	 * @return string
+	 */
+	public function get_tracker_id();
+
+	/**
 	 * Return true if this project is displayable as complete project
 	 *
 	 * @return bool
@@ -91,6 +98,13 @@ interface Project extends Object {
 	 * @param string $vcs_path
 	 */
 	public function set_vcs_path($vcs_path);
+
+	/**
+	 * Set Tracker id to filter into query
+	 *
+	 * @param string $tracker_id
+	 */
+	public function set_tracker_id($tracker_id);
 
 	/**
 	 * Set if project is accessible

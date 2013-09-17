@@ -13,6 +13,7 @@ if ($_POST) {
 	$has_prod    = !empty($_POST['has_prod']);
 	$vcs_base    = isset($_POST['vcs_base']) ? trim($_POST['vcs_base']) : '';
 	$vcs_path    = isset($_POST['vcs_path']) ? trim($_POST['vcs_path']) : '';
+	$tracker_id  = isset($_POST['tracker_id']) ? trim($_POST['tracker_id']) : '';
 	$externals   = isset($_POST['externals']) ? (array)$_POST['externals'] : array();
 	$recipients  = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
@@ -35,7 +36,7 @@ if ($_POST) {
 
 	/** @var \Interfaces\Shared\FormUtils $form_utils */
 	$form_utils = $dic->get_object('form_utils');
-	foreach ($recipients as $recipient) {
+	foreach ($recipients as $k => $recipient) {
 		if (!$recipient) {
 			unset($recipients[$k]);
 		} elseif (!$form_utils->check_email($recipient)) {
@@ -55,6 +56,7 @@ if ($_POST) {
 		}
 
 		if ($current_project) {
+			$current_project->set_tracker_id($tracker_id);
 			$current_project->set_description($description);
 
 			foreach ($current_project->get_externals() as $external_project) {
@@ -83,6 +85,7 @@ if ($_POST) {
 	$has_prod    = $current_project->has_prod();
 	$vcs_base    = $current_project->get_vcs_base();
 	$vcs_path    = $current_project->get_vcs_path();
+	$tracker_id  = $current_project->get_tracker_id();
 }
 
 require $dic->get_param('path_templates').'/project_config.php';

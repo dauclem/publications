@@ -6,7 +6,10 @@ require __DIR__.'/setup.php';
 $database = $dic->get_object('database');
 $connection = $database->get_connection();
 
+@$connection->exec('ALTER TABLE config ADD bug_tracker_query TEXT');
+
 @$connection->exec('ALTER TABLE project ADD description TEXT');
+@$connection->exec('ALTER TABLE project ADD tracker_id TEXT');
 
 $connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
 							email TEXT)');

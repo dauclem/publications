@@ -56,7 +56,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="VCS_password" name="VCS_password"
-					   <?php echo $config->get_vcs_password() ? 'placeholder="inchangé"' : ''; ?>
+					   <?php echo $config_shared->get_vcs_password() ? 'placeholder="inchangé"' : ''; ?>
 					   value="<?php echo isset($VCS_password) ? $VCS_password : ''; ?>">
 				<?php if (isset($errors['VCS_password'])) { ?>
 					<span class="help-block"><?php echo $errors['VCS_password']; ?></span>
@@ -113,7 +113,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="url" class="form-control"
 					   id="bug_tracker_url" name="bug_tracker_url" placeholder="http://"
-					   value="<?php echo isset($bug_tracker_url) ? $bug_tracker_url : ''; ?>">
+					   value="<?php echo isset($bug_tracker_url) ? htmlentities($bug_tracker_url) : ''; ?>">
 				<?php if (isset($errors['bug_tracker_url'])) { ?>
 					<span class="help-block"><?php echo $errors['bug_tracker_url']; ?></span>
 				<?php } ?>
@@ -125,7 +125,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="text" class="form-control"
 					   id="bug_tracker_user" name="bug_tracker_user"
-					   value="<?php echo isset($bug_tracker_user) ? $bug_tracker_user : ''; ?>">
+					   value="<?php echo isset($bug_tracker_user) ? htmlentities($bug_tracker_user) : ''; ?>">
 				<?php if (isset($errors['bug_tracker_user'])) { ?>
 					<span class="help-block"><?php echo $errors['bug_tracker_user']; ?></span>
 				<?php } ?>
@@ -137,11 +137,27 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="bug_tracker_password" name="bug_tracker_password"
-					   <?php echo $config->get_bug_tracker_password() ? 'placeholder="inchangé"' : ''; ?>
-					   value="<?php echo isset($bug_tracker_password) ? $bug_tracker_password : ''; ?>">
+					   <?php echo $config_shared->get_bug_tracker_password() ? 'placeholder="inchangé"' : ''; ?>
+					   value="<?php echo isset($bug_tracker_password) ? htmlentities($bug_tracker_password) : ''; ?>">
 				<?php if (isset($errors['bug_tracker_password'])) { ?>
 					<span class="help-block"><?php echo $errors['bug_tracker_password']; ?></span>
 				<?php } ?>
+			</div>
+		</div>
+		<div class="form-group<?php echo isset($errors['bug_tracker_query']) ? ' has-error' : ''; ?>">
+			<label for="bug_tracker_query" class="col-lg-2 control-label">Début de la requête <?php echo $config_shared->get_bug_tracker_type(); ?></label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control"
+					   id="bug_tracker_query" name="bug_tracker_query"
+					   value="<?php echo isset($bug_tracker_query) ? htmlentities($bug_tracker_query) : ''; ?>">
+				<span class="help-block">
+					Utilisée pour filter les tâches à envoyer par mail pour publication.<br />
+					{PROJECT_ID} sera remplacé par l'identifiant <?php echo $config_shared->get_bug_tracker_type(); ?> spécifié dans la configuration du projet.
+					<?php if (isset($errors['bug_tracker_query'])) { ?>
+						<?php echo '<br />'.$errors['bug_tracker_query']; ?>
+					<?php } ?>
+				</span>
 			</div>
 		</div>
 	</fieldset>
@@ -152,7 +168,7 @@ require __DIR__.'/common/top_nav.php';
 		<div class="form-group<?php echo isset($errors['recipients']) ? ' has-error' : ''; ?>">
 			<div class="col-lg-10 col-lg-offset-2">
 				<?php
-					$this_recipients = !empty($recipients) ? $recipients : $config->get_recipients();
+					$this_recipients = !empty($recipients) ? $recipients : $config_shared->get_recipients();
 					foreach ($this_recipients as $recipient) {
 						echo '<input type="email" class="form-control" name="recipients[]" value="'.htmlentities($recipient).'" /><br />';
 					}
@@ -160,12 +176,12 @@ require __DIR__.'/common/top_nav.php';
 				<input type="email" class="form-control" name="recipients[]" id="new_recipient" value="" /><br />
 
 				<a href="#" id="add_recipient">Ajouter</a><br />
-				<?php if (isset($errors['recipients'])) { ?>
-					<span class="help-block">
-						Liste des personnes en copie de tous les mails de publication.
+				<span class="help-block">
+					Liste des personnes en copie de tous les mails de publication.
+					<?php if (isset($errors['recipients'])) { ?>
 						<?php echo '<br />'.$errors['recipients']; ?>
-					</span>
-				<?php } ?>
+					<?php } ?>
+				</span>
 			</div>
 		</div>
 	</fieldset>

@@ -192,9 +192,6 @@ class DIC {
 			$object = $this->instance_object($ident);
 		}
 
-		if (!$object) {
-
-		}
 		$object->set_dic($this);
 		foreach ($object->get_dependencies_list() as $dep_ident) {
 			$dep_object = $this->get_object($dep_ident);

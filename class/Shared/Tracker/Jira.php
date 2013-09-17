@@ -2,6 +2,7 @@
 
 namespace Shared\Tracker;
 
+use Interfaces\Object\Project;
 use Shared\Tracker;
 
 class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
@@ -36,7 +37,7 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function filter_trackers($trackers) {
+	public function filter_trackers($trackers, Project $project = null) {
 		$ids = array();
 		foreach ($trackers as $tracker) {
 			if ($tracker instanceof \Interfaces\Object\Tracker) {
@@ -48,8 +49,10 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 		$cache_key = __CLASS__.'|'.__FUNCTION__.'|'.implode('|', $ids);
 		$task_data = apc_fetch($cache_key);
 		if ($task_data === false) {
-			// TODO : get jql from config
-			$jql = 'key IN ('.implode(',', $ids).')';
+			/** @var \Interfaces\Shared\Config $config_shared */
+			$config_shared = $this->dependence_objects['config'];
+			$jql = str_replace('{PROJECT_ID}', $project->get_tracker_id(), $config_shared->get_bug_tracker_query());
+			$jql = ($jql ? '('.$jql.') AND ' : '').'key IN ('.implode(',', $ids).')';
 			exec($this->get_api_exec_begin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
 			$task_data = json_decode(end($output));
 			apc_store($cache_key, $task_data, 3600);
@@ -59,7 +62,7 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 		if (isset($task_data, $task_data->issues)) {
 			foreach ($task_data->issues as $this_issue) {
 				if (isset($this_issue->key)) {
-					$tracker = $this->dic->get_object('jira_object', $this_issue->key);
+					$tracker = $this->dic->get_object('tracker_object', $this_issue->key);
 					if ($tracker) {
 						$list[] = $tracker;
 					}

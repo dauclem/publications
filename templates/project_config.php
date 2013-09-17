@@ -37,6 +37,19 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 
+		<div class="form-group<?php echo isset($errors['tracker_id']) ? ' has-error' : ''; ?>">
+			<label for="tracker_id" class="col-lg-2 control-label">Identifiant du projet sur <?php echo $config_shared->get_bug_tracker_type(); ?></label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control"
+					   id="tracker_id" name="tracker_id"
+					   value="<?php echo isset($tracker_id) ? htmlentities($tracker_id) : ''; ?>">
+				<?php if (isset($errors['tracker_id'])) { ?>
+					<span class="help-block"><?php echo $errors['tracker_id']; ?></span>
+				<?php } ?>
+			</div>
+		</div>
+
 		<div class="form-group<?php echo isset($errors['visible']) ? ' has-error' : ''; ?>">
 			<label for="visible" class="col-lg-2 control-label">Afficher le projet dans les onglets</label>
 

@@ -15,6 +15,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	protected $vcs_base;
 	/** @var string */
 	protected $vcs_path;
+	/** @var string */
+	protected $tracker_id;
 	/** @var bool */
 	protected $visible;
 	/** @var bool */
@@ -38,10 +40,12 @@ class Project extends Object implements \Interfaces\Object\Project {
 	public function initialize_id($object_id) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
-		$data     = $database->get_connection()->querySingle('SELECT id, name, description, vcs_base, vcs_path, visible, has_prod
+		$data     = $database->get_connection()->querySingle('SELECT id, name, description, vcs_base, vcs_path,
+																tracker_id, visible, has_prod
 															FROM project
 															WHERE id = '.(int)$object_id, true);
-		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path, $this->visible, $this->has_prod) = array_values($data);
+		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path,
+			$this->tracker_id, $this->visible, $this->has_prod) = array_values($data);
 		$this->id       = (int)$this->id;
 		$this->visible  = (bool)$this->visible;
 		$this->has_prod = (bool)$this->has_prod;
@@ -87,6 +91,13 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function get_vcs_path() {
 		return $this->vcs_path;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function get_tracker_id() {
+		return $this->tracker_id;
 	}
 
 	/**
@@ -167,6 +178,14 @@ class Project extends Object implements \Interfaces\Object\Project {
 	public function set_vcs_path($vcs_path) {
 		$this->vcs_path = $vcs_path;
 		$this->save('vcs_path');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function set_tracker_id($tracker_id) {
+		$this->tracker_id = $tracker_id;
+		$this->save('tracker_id');
 	}
 
 	/**

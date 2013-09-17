@@ -27,6 +27,8 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	protected $bug_tracker_user;
 	/** @var string */
 	protected $bug_tracker_password;
+	/** @var string */
+	protected $bug_tracker_query;
 
 	/**
 	 * {@inheritDoc}
@@ -56,7 +58,8 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 							bug_tracker_type TEXT,
 							bug_tracker_url TEXT,
 							bug_tracker_user TEXT,
-							bug_tracker_password TEXT)');
+							bug_tracker_password TEXT,
+							bug_tracker_query TEXT)');
 		$connection->exec('INSERT INTO config(vcs_type) VALUES ("subversion")');
 
 		$connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
@@ -87,10 +90,10 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 		}
 
 		$data = $connection->querySingle('SELECT vcs_type, vcs_url, vcs_user, vcs_password, vcs_web_url, changelog_path,
-												bug_tracker_type, bug_tracker_url, bug_tracker_user, bug_tracker_password
+												bug_tracker_type, bug_tracker_url, bug_tracker_user, bug_tracker_password, bug_tracker_query
 											FROM config', true);
-		list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
-			$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user, $this->bug_tracker_password) = array_values($data);
+		@list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
+			$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user, $this->bug_tracker_password, $this->bug_tracker_query) = array_values($data);
 	}
 
 	/**
@@ -168,6 +171,13 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	 */
 	public function get_bug_tracker_password() {
 		return $this->bug_tracker_password;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function get_bug_tracker_query() {
+		return $this->bug_tracker_query;
 	}
 
 	/**
@@ -263,6 +273,14 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	public function set_bug_tracker_password($bug_tracker_password) {
 		$this->bug_tracker_password = $bug_tracker_password;
 		$this->save('bug_tracker_password');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function set_bug_tracker_query($bug_tracker_query) {
+		$this->bug_tracker_query = $bug_tracker_query;
+		$this->save('bug_tracker_query');
 	}
 
 	/**

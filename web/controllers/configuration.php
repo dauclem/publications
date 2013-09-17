@@ -16,13 +16,17 @@ if ($_POST) {
 	$bug_tracker_url      = isset($_POST['bug_tracker_url']) ? trim($_POST['bug_tracker_url']) : '';
 	$bug_tracker_user     = isset($_POST['bug_tracker_user']) ? trim($_POST['bug_tracker_user']) : '';
 	$bug_tracker_password = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config_shared->get_bug_tracker_password();
-	$recipients  = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
+	$bug_tracker_query    = isset($_POST['bug_tracker_query']) ? trim($_POST['bug_tracker_query']) : '';
+	$recipients           = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
 	$errors         = array();
-	$VCS_type_class = $dic->get_object($VCS_type);
-	if (!($VCS_type_class instanceof \Interfaces\Shared\VCS)) {
+	$dic->set_object_definition('vcs', '\\Shared\\VCS\\'.ucfirst($VCS_type), true);
+	try {
+		$VCS_type_class = $dic->get_object('vcs');
+	} catch (Exception $e) {
 		$errors['VCS_type'] = 'Le type de VCS est incorrect. Veuillez en choisir un dans la liste';
 	}
+
 	// Get only domain name and remove ended /
 	$VCS_url = preg_replace('#^(https?://[^/]+)/.*$#', '\\1', $VCS_url);
 	if (!$form_utils->check_url($VCS_url)) {
@@ -40,8 +44,10 @@ if ($_POST) {
 		$errors['VCS_web_url'] = 'L\'url est incorrecte';
 	}
 
-	$bug_tracker_class = $dic->get_object($bug_tracker_type);
-	if (!($bug_tracker_class instanceof \Interfaces\Shared\Tracker)) {
+	$dic->set_object_definition('tracker', '\\Shared\\Tracker\\'.ucfirst($bug_tracker_type), true);
+	try {
+		$VCS_type_class = $dic->get_object('vcs');
+	} catch (Exception $e) {
 		$errors['bug_tracker_type'] = 'Le type de bug tracker est incorrect. Veuillez en choisir un dans la liste';
 	}
 	// Get only domain name and remove ended /
@@ -82,6 +88,7 @@ if ($_POST) {
 		if ($bug_tracker_password) {
 			$config_shared->set_bug_tracker_password($bug_tracker_password);
 		}
+		$config_shared->set_bug_tracker_query($bug_tracker_query);
 
 		foreach ($config_shared->get_recipients() as $recipient) {
 			$config_shared->remove_recipient($recipient);
@@ -99,14 +106,15 @@ if ($_POST) {
 		$publication_shared->install();
 	}
 } else {
-	$VCS_type         = $config_shared->get_vcs_type();
-	$VCS_url          = $config_shared->get_vcs_url();
-	$VCS_user         = $config_shared->get_vcs_user();
-	$VCS_web_url      = $config_shared->get_vcs_web_url();
-	$changelog_path   = $config_shared->get_changelog_path();
-	$bug_tracker_type = $config_shared->get_bug_tracker_type();
-	$bug_tracker_url  = $config_shared->get_bug_tracker_url();
-	$bug_tracker_user = $config_shared->get_bug_tracker_user();
+	$VCS_type          = $config_shared->get_vcs_type();
+	$VCS_url           = $config_shared->get_vcs_url();
+	$VCS_user          = $config_shared->get_vcs_user();
+	$VCS_web_url       = $config_shared->get_vcs_web_url();
+	$changelog_path    = $config_shared->get_changelog_path();
+	$bug_tracker_type  = $config_shared->get_bug_tracker_type();
+	$bug_tracker_url   = $config_shared->get_bug_tracker_url();
+	$bug_tracker_user  = $config_shared->get_bug_tracker_user();
+	$bug_tracker_query = $config_shared->get_bug_tracker_query();
 }
 
 require $dic->get_param('path_templates').'/configuration.php';

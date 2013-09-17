@@ -27,7 +27,8 @@ interface Tracker extends Shared {
 	 * Filter trackers list with query set to config to filter only trackers to send by email
 	 *
 	 * @param \Interfaces\Object\Tracker[] $trackers
+	 * @param \Interfaces\Object\Project   $project
 	 * @return \Interfaces\Object\Tracker[]
 	 */
-	public function filter_trackers($trackers);
+	public function filter_trackers($trackers, \Interfaces\Object\Project $project = null);
 }

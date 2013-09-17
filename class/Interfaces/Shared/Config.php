@@ -91,6 +91,13 @@ interface Config extends Shared {
 	public function get_bug_tracker_password();
 
 	/**
+	 * Get bug tracker query begin to get valid tracker object for publications
+	 *
+	 * @return string
+	 */
+	public function get_bug_tracker_query();
+
+	/**
 	 * Set VCS ident to set correct class name
 	 *
 	 * @param string $vcs_type
@@ -159,6 +166,13 @@ interface Config extends Shared {
 	 * @param string $bug_tracker_password
 	 */
 	public function set_bug_tracker_password($bug_tracker_password);
+
+	/**
+	 * Set bug tracker query begin to get valid tracker object for publications
+	 *
+	 * @param string $bug_tracker_query
+	 */
+	public function set_bug_tracker_query($bug_tracker_query);
 
 	/**
 	 * Add a recipient for this all projects

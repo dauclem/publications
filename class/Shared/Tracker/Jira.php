@@ -54,7 +54,7 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 
 		$cache_key = __CLASS__.'|'.__FUNCTION__.'|'.implode('|', $ids);
 		$task_data = apc_fetch($cache_key);
-		if (true || $task_data === false) {
+		if ($task_data === false) {
 			// TODO : get jql from config
 			$jql = 'key IN ('.implode(',', $ids).')';
 			exec($this->get_api_exec_begin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);

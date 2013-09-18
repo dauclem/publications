@@ -123,24 +123,11 @@ foreach ($all_rows as $k => $row) {
 	if ($this_publication) {
 		echo '<div class="well">';
 
-		$recipients = implode(';', $current_project->getRecipients());
-		$cc = implode(';', $config_shared->getRecipients());
-		$subject = 'Publication de '.$current_project->getName();
-		$nl = urlencode("\n");
-		$body = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
-		$current_type = '';
-		foreach ($issues as $issue) {
-			if ($current_type != $issue->getType()) {
-				if ($current_type) {
-					$body .= $nl;
-				}
-				$current_type = $issue->getType();
-				$body .= $current_type.' :'.$nl;
-			}
-			$body .= $issue->getId().' : '.$issue->getTitle().$nl;
-		}
-		$body .= $nl.'Bonne journée';
-		echo '<a target="_blank" href="mailto:'.$recipients.'?cc='.$cc.'&subject='.htmlentities($subject).'&body='.htmlentities($body).'">
+		$email_infos = $this_publication->get_email_infos($issues);
+		echo '<a target="_blank" href="mailto:'.$email_infos['recipients']
+			 							.'?cc='.$email_infos['cc']
+			 							.'&subject='.htmlentities($email_infos['subject'])
+			 							.'&body='.htmlentities($email_infos['body']).'">
 			<i class="glyphicon glyphicon-envelope"></i>
 		</a>';
 

@@ -19,11 +19,11 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'database',
-																 'publication',
-																 'project_object',
-																 'config',
-															));
+															   'database',
+															   'publication',
+															   'project_object',
+															   'config',
+														  ));
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	 */
 	public function remove() {
 		/** @var \Interfaces\Shared\Database $database */
-		$database   = $this->dependence_objects['database'];
+		$database = $this->dependence_objects['database'];
 		$database->getConnection()->exec('DELETE FROM publication WHERE id = '.$this->id);
 	}
 
@@ -210,5 +210,40 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$row->setComments($messages);
 
 		return $row;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function get_email_infos($issues) {
+		/** @var \Interfaces\Shared\Config $config_shared */
+		$config_shared = $this->dependence_objects['config'];
+		$project       = $this->getProject();
+
+		$recipients = implode(';', $project->getRecipients());
+		$cc         = implode(';', $config_shared->getRecipients());
+		$subject    = 'Publication de '.$project->getName();
+
+		$nl           = urlencode("\n");
+		$body         = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
+		$current_type = '';
+		foreach ($issues as $issue) {
+			if ($current_type != $issue->getType()) {
+				if ($current_type) {
+					$body .= $nl;
+				}
+				$current_type = $issue->getType();
+				$body .= $current_type.' :'.$nl;
+			}
+			$body .= $issue->getId().' : '.$issue->getTitle().$nl;
+		}
+		$body .= $nl.'Bonne journée';
+
+		return array(
+			'recipients' => $recipients,
+			'cc'         => $cc,
+			'subject'    => $subject,
+			'body'       => $body,
+		);
 	}
 }

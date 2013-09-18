@@ -74,4 +74,12 @@ interface Publication extends Object {
 	 * @return Row
 	 */
 	public function createRow($rows);
+
+	/**
+	 * Get information to send email (recipients, cc, subject, body)
+	 *
+	 * @param \Interfaces\Object\Issue[] $issues
+	 * @return string[]
+	 */
+	public function get_email_infos($issues);
 }

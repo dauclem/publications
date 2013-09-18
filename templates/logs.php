@@ -129,7 +129,7 @@ foreach ($all_rows as $k => $row) {
 		$nl = urlencode("\n");
 		$body = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
 		$current_type = '';
-		foreach ($trackers_diff as $tracker) {
+		foreach ($trackers as $tracker) {
 			if ($current_type != $tracker->get_type()) {
 				if ($current_type) {
 					$body .= $nl;

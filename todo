@@ -1,6 +1,8 @@
-- bug : mailto limit for $_GET (try to find a solution to set all body)
+- switch to camelCase
 - feature : add note to specify if prod has problem (without necessary publication, like down, daily cron, etc...)
 -- nouveau type de Row 'Notes'
+-- Créer un classe abstraite \Object\RowRelated dont héritera \Object\RowRelated\Publication et \Object\RowRelated\Note puisqu'il y a beaucoup de choses communes
+- technique : move email info generation into Publication class
 - feature : masquer la dernière colonne avec un bouton : voir les logs
 - feature : set publications on prod tag instead preprod
 -- Se baser sur la date de la dernière exécution du job Jenkins

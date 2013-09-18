@@ -5,7 +5,7 @@ require __DIR__.'/common/top_nav.php';
 
 <h1 class="text-center">Configuration générale</h1>
 
-<form action="" method="post" class="form-horizontal col-lg-8 col-lg-offset-2">
+<form action="" method="post" class="form-horizontal">
 	<fieldset>
 		<legend>VCS (Version Control System)</legend>
 		<div class="form-group<?php echo isset($errors['VCS_type']) ? ' has-error' : ''; ?>">
@@ -175,7 +175,7 @@ require __DIR__.'/common/top_nav.php';
 				?>
 				<input type="email" class="form-control" name="recipients[]" id="new_recipient" value="" /><br />
 
-				<a href="#" id="add_recipient">Ajouter</a><br />
+				<a href="#" id="add_recipient" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<span class="help-block">
 					Liste des personnes en copie de tous les mails de publication.
 					<?php if (isset($errors['recipients'])) { ?>
@@ -186,10 +186,8 @@ require __DIR__.'/common/top_nav.php';
 		</div>
 	</fieldset>
 
-	<div class="form-group">
-		<div class="col-lg-10 col-lg-offset-2">
-			<input type="submit" value="Enregistrer"/>
-		</div>
+	<div class="text-center">
+		<input type="submit" class="btn btn-primary" value="Enregistrer"/>
 	</div>
 </form>
 

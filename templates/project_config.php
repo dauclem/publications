@@ -4,10 +4,10 @@ require __DIR__.'/common/top_nav.php';
 ?>
 
 <h1 class="text-center">
-	<?php $current_project ? 'Configuration du projet : '.htmlentities($current_project->get_name()) : 'Creation d\'un projet'; ?>
+	<?php echo $current_project ? 'Configuration du projet : '.htmlentities($current_project->get_name()) : 'Creation d\'un projet'; ?>
 </h1>
 
-<form action="" method="post" class="form-horizontal col-lg-8 col-lg-offset-2">
+<form action="" method="post" class="form-horizontal">
 	<fieldset>
 		<legend>Général</legend>
 
@@ -143,7 +143,7 @@ require __DIR__.'/common/top_nav.php';
 						}
 					echo '</select><br />';
 				?>
-				<a href="#" id="add_external">Ajouter</a><br />
+				<a href="#" id="add_external" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<?php if (isset($errors['externals'])) { ?>
 					<span class="help-block">
 						Liste des autres projets (branches) dont dépend ce projet.
@@ -167,7 +167,7 @@ require __DIR__.'/common/top_nav.php';
 				?>
 				<input type="email" class="form-control" name="recipients[]" id="new_recipient" value="" /><br />
 
-				<a href="#" id="add_recipient">Ajouter</a><br />
+				<a href="#" id="add_recipient" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<?php if (isset($errors['recipients'])) { ?>
 					<span class="help-block">
 						Liste des personnes destinées à recevoir le mail de publication.
@@ -178,10 +178,8 @@ require __DIR__.'/common/top_nav.php';
 		</div>
 	</fieldset>
 
-	<div class="form-group">
-		<div class="col-lg-10 col-lg-offset-2">
-			<input type="submit" value="Enregistrer"/>
-		</div>
+	<div class="text-center">
+		<input type="submit" class="btn btn-primary" value="Enregistrer"/>
 	</div>
 </form>
 

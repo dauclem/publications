@@ -11,4 +11,4 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" media="screen" type="text/css" href="/static/style.css"/>
 </head>
-<body>
+<body class="container">

@@ -46,17 +46,12 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 		}
 		$ids = array_unique($ids);
 
-		$cache_key = __CLASS__.'|'.__FUNCTION__.'|'.implode('|', $ids);
-		$task_data = apc_fetch($cache_key);
-		if ($task_data === false) {
-			/** @var \Interfaces\Shared\Config $config_shared */
-			$config_shared = $this->dependence_objects['config'];
-			$jql = str_replace('{PROJECT_ID}', $project->get_tracker_id(), $config_shared->get_bug_tracker_query());
-			$jql = ($jql ? '('.$jql.') AND ' : '').'key IN ('.implode(',', $ids).')';
-			exec($this->get_api_exec_begin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
-			$task_data = json_decode(end($output));
-			apc_store($cache_key, $task_data, 3600);
-		}
+		/** @var \Interfaces\Shared\Config $config_shared */
+		$config_shared = $this->dependence_objects['config'];
+		$jql = str_replace('{PROJECT_ID}', $project->get_tracker_id(), $config_shared->get_bug_tracker_query());
+		$jql = ($jql ? '('.$jql.') AND ' : '').'key IN ('.implode(',', $ids).')';
+		exec($this->get_api_exec_begin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
+		$task_data = json_decode(end($output));
 
 		$list = array();
 		if (isset($task_data, $task_data->issues)) {

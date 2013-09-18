@@ -15,12 +15,12 @@ require __DIR__.'/common/top_nav.php';
 			<select class="form-control" name="project_id" id="project_id">
 				<?php
 				/** @var \Interfaces\Shared\Project $project_shared */
-				$project_shared = $dic->get_object('project');
-				$current_project = $project_shared->get_current_project();
-				foreach ($project_shared->get_projects() as $project) {
-					if ($project->has_prod()) {
-						echo '<option value="'.$project->get_id().'"'.($current_project == $project ? ' selected="selected"' : '').'>'
-							 .htmlentities($project->get_name())
+				$project_shared = $dic->getObject('project');
+				$current_project = $project_shared->getCurrentProject();
+				foreach ($project_shared->getProjects() as $project) {
+					if ($project->hasProd()) {
+						echo '<option value="'.$project->getId().'"'.($current_project == $project ? ' selected="selected"' : '').'>'
+							 .htmlentities($project->getName())
 							 .'</option>';
 					}
 				}
@@ -34,7 +34,7 @@ require __DIR__.'/common/top_nav.php';
 
 		<div class="col-lg-6">
 			<input type="text" class="form-control" name="date" id="date"
-				   value="<?php echo date('Y-m-d H:i', $publication ? $publication->get_date() : time()); ?>"/>
+				   value="<?php echo date('Y-m-d H:i', $publication ? $publication->getDate() : time()); ?>"/>
 		</div>
 	</div>
 	<div class="form-group">
@@ -42,7 +42,7 @@ require __DIR__.'/common/top_nav.php';
 
 		<div class="col-lg-6">
 			<textarea class="form-control" name="comments"
-					  id="comments"><?php echo $publication ? htmlentities($publication->get_comments()) : ''; ?></textarea>
+					  id="comments"><?php echo $publication ? htmlentities($publication->getComments()) : ''; ?></textarea>
 		</div>
 	</div>
 

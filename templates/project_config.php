@@ -4,7 +4,7 @@ require __DIR__.'/common/top_nav.php';
 ?>
 
 <h1 class="text-center">
-	<?php echo $current_project ? 'Configuration du projet : '.htmlentities($current_project->get_name()) : 'Creation d\'un projet'; ?>
+	<?php echo $current_project ? 'Configuration du projet : '.htmlentities($current_project->getName()) : 'Creation d\'un projet'; ?>
 </h1>
 
 <form action="" method="post" class="form-horizontal">
@@ -38,7 +38,7 @@ require __DIR__.'/common/top_nav.php';
 		</div>
 
 		<div class="form-group<?php echo isset($errors['tracker_id']) ? ' has-error' : ''; ?>">
-			<label for="tracker_id" class="col-lg-2 control-label">Identifiant du projet sur <?php echo $config_shared->get_bug_tracker_type(); ?></label>
+			<label for="tracker_id" class="col-lg-2 control-label">Identifiant du projet sur <?php echo $config_shared->getBugTrackerType(); ?></label>
 
 			<div class="col-lg-10">
 				<input type="text" class="form-control"
@@ -63,15 +63,15 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 
-		<div class="form-group<?php echo isset($errors['has_prod']) ? ' has-error' : ''; ?>">
-			<label for="has_prod" class="col-lg-2 control-label">Le projet peut avoir des publications</label>
+		<div class="form-group<?php echo isset($errors['hasProd']) ? ' has-error' : ''; ?>">
+			<label for="hasProd" class="col-lg-2 control-label">Le projet peut avoir des publications</label>
 
 			<div class="col-lg-10">
 				<input type="checkbox" class="form-control"
-					   id="has_prod" name="has_prod"
+					   id="hasProd" name="hasProd"
 					   <?php echo !empty($has_prod) ? 'checked="checked"' : ''; ?>">
-				<?php if (isset($errors['has_prod'])) { ?>
-					<span class="help-block"><?php echo $errors['has_prod']; ?></span>
+				<?php if (isset($errors['hasProd'])) { ?>
+					<span class="help-block"><?php echo $errors['hasProd']; ?></span>
 				<?php } ?>
 			</div>
 		</div>
@@ -120,14 +120,14 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10 col-lg-offset-2">
 				<?php
 					if ($current_project) {
-						foreach ($current_project->get_externals() as $external) {
+						foreach ($current_project->getExternals() as $external) {
 							echo '<select name="externals[]" class="form-control">';
 								echo '<option value="0">--</option>';
-								foreach ($project_shared->get_projects() as $project) {
-									echo '<option value="'.$project->get_id().'"'.
+								foreach ($project_shared->getProjects() as $project) {
+									echo '<option value="'.$project->getId().'"'.
 										 ($project == $external ? 'selected="selected"' : '')
 										 .'>'
-										 .htmlentities($project->get_name())
+										 .htmlentities($project->getName())
 										.'</option>';
 								}
 							echo '</select><br />';
@@ -136,14 +136,14 @@ require __DIR__.'/common/top_nav.php';
 
 					echo '<select name="externals[]" id="new_external" class="form-control">';
 						echo '<option value="0">--</option>';
-						foreach ($project_shared->get_projects() as $project) {
-							echo '<option value="'.$project->get_id().'">'
-								 .htmlentities($project->get_name())
+						foreach ($project_shared->getProjects() as $project) {
+							echo '<option value="'.$project->getId().'">'
+								 .htmlentities($project->getName())
 								 .'</option>';
 						}
 					echo '</select><br />';
 				?>
-				<a href="#" id="add_external" class="btn btn-primary btn-sm">Ajouter</a><br />
+				<a href="#" id="addExternal" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<?php if (isset($errors['externals'])) { ?>
 					<span class="help-block">
 						Liste des autres projets (branches) dont dépend ce projet.
@@ -160,14 +160,14 @@ require __DIR__.'/common/top_nav.php';
 		<div class="form-group<?php echo isset($errors['recipients']) ? ' has-error' : ''; ?>">
 			<div class="col-lg-10 col-lg-offset-2">
 				<?php
-					$this_recipients = !empty($recipients) ? $recipients : ($current_project ? $current_project->get_recipients() : array());
+					$this_recipients = !empty($recipients) ? $recipients : ($current_project ? $current_project->getRecipients() : array());
 					foreach ($this_recipients as $recipient) {
 						echo '<input type="email" class="form-control" name="recipients[]" value="'.htmlentities($recipient).'" /><br />';
 					}
 				?>
 				<input type="email" class="form-control" name="recipients[]" id="new_recipient" value="" /><br />
 
-				<a href="#" id="add_recipient" class="btn btn-primary btn-sm">Ajouter</a><br />
+				<a href="#" id="addRecipient" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<?php if (isset($errors['recipients'])) { ?>
 					<span class="help-block">
 						Liste des personnes destinées à recevoir le mail de publication.
@@ -184,21 +184,21 @@ require __DIR__.'/common/top_nav.php';
 </form>
 
 <script type="text/javascript">
-	$('#add_external').click(function() {
+	$('#addExternal').click(function() {
 		$('#new_external')
 			.clone()
 				.attr('id', '')
-				.insertBefore($('#add_external'))
+				.insertBefore($('#addExternal'))
 				.after('<br />');
 		return false;
 	});
 
-	$('#add_recipient').click(function() {
+	$('#addRecipient').click(function() {
 		$('#new_recipient')
 			.clone()
 				.val('')
 				.attr('id', '')
-				.insertBefore($('#add_recipient'))
+				.insertBefore($('#addRecipient'))
 				.after('<br />');
 		return false;
 	});

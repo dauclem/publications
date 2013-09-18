@@ -3,12 +3,12 @@
 require __DIR__.'/../../include/setup.php';
 
 /** @var \Interfaces\Shared\Project $project_shared */
-$project_shared = $dic->get_object('project');
+$project_shared = $dic->getObject('project');
 
-$base_url = $config_shared->get_site_url().'all.php?project_id=';
+$base_url = $config_shared->getSiteUrl().'all.php?project_id=';
 
-foreach ($project_shared->get_projects() as $project) {
-	if ($project->is_visible()) {
-		file($project->get_url_see_all());
+foreach ($project_shared->getProjects() as $project) {
+	if ($project->isVisible()) {
+		file($project->getUrlSeeAll());
 	}
 }

@@ -2,4 +2,4 @@
 
 require __DIR__.'/../../include/setup.php';
 
-require $dic->get_param('path_templates').'/project.php';
+require $dic->getParam('path_templates').'/project.php';

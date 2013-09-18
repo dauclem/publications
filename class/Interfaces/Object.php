@@ -13,14 +13,14 @@ interface Object {
 	 *
 	 * @param DIC $dic
 	 */
-	public function set_dic(DIC $dic);
+	public function setDic(DIC $dic);
 
 	/**
 	 * Return array with list of dependencies ident (Only Shared object)
 	 *
 	 * @return string[]
 	 */
-	public function get_dependencies_list();
+	public function getDependenciesList();
 
 	/**
 	 * Add an object depended (Shared) into this object
@@ -29,7 +29,7 @@ interface Object {
 	 * @param Shared $object
 	 * @return
 	 */
-	public function add_dependence_object($ident, Shared $object);
+	public function addDependenceObject($ident, Shared $object);
 
 	/**
 	 * Call immediately after dependencies injected
@@ -41,12 +41,12 @@ interface Object {
 	 *
 	 * @param int|string $object_id
 	 */
-	public function initialize_id($object_id);
+	public function initializeId($object_id);
 
 	/**
 	 * Return true if object is correctly instanced
 	 *
 	 * @return bool
 	 */
-	public function is_valid();
+	public function isValid();
 }

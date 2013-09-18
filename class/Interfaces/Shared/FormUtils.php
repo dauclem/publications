@@ -14,7 +14,7 @@ interface FormUtils extends Shared {
 	 * @param string $url
 	 * @return bool
 	 */
-	public function check_url($url);
+	public function checkUrl($url);
 
 	/**
 	 * Check if parameter is right formated email
@@ -22,5 +22,5 @@ interface FormUtils extends Shared {
 	 * @param string $email
 	 * @return bool
 	 */
-	public function check_email($email);
+	public function checkEmail($email);
 }

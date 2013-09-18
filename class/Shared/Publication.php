@@ -8,8 +8,8 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'database',
 															));
 	}
@@ -20,7 +20,7 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 	public function install() {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 
 		$connection->exec('CREATE TABLE IF NOT EXISTS publication(
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,33 +36,33 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 	public function create(\Interfaces\Object\Project $project, $date, $comments) {
 		$date     = (int)$date;
 		$comments = trim($comments);
-		if (!$project || $date <= 0 || $this->get_publication_from_date($project, $date)) {
+		if (!$project || $date <= 0 || $this->getPublicationFromDate($project, $date)) {
 			return null;
 		}
 
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$connection->exec('INSERT INTO publication(project_id, date, comments)
-							VALUES ('.$project->get_id().', '.$date.', \''.$connection->escapeString($comments).'\')');
+							VALUES ('.$project->getId().', '.$date.', \''.$connection->escapeString($comments).'\')');
 
-		return $this->dic->get_object('publication_object', $connection->lastInsertRowid());
+		return $this->dic->getObject('publication_object', $connection->lastInsertRowid());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_publications(\Interfaces\Object\Project $project) {
+	public function getPublications(\Interfaces\Object\Project $project) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
-		$result   = $database->get_connection()->query('SELECT id
+		$result   = $database->getConnection()->query('SELECT id
 														FROM publication
-														WHERE project_id = '.$project->get_id().'
+														WHERE project_id = '.$project->getId().'
 														ORDER BY date ASC');
 		$objects  = array();
 		while (list($id) = $result->fetchArray()) {
 			/** @var \Interfaces\Object\Publication $object */
-			$object = $this->dic->get_object('publication_object', $id);
+			$object = $this->dic->getObject('publication_object', $id);
 			if ($object) {
 				$objects[] = $object;
 			}
@@ -73,53 +73,53 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_publication_from_id(\Interfaces\Object\Project $project, $id_publication) {
+	public function getPublicationFromId(\Interfaces\Object\Project $project, $id_publication) {
 		/** @var \Interfaces\Object\Publication $object */
-		$object = $this->dic->get_object('publication_object', $id_publication);
-		return $object->get_project() == $project ? $object: null;
+		$object = $this->dic->getObject('publication_object', $id_publication);
+		return $object->getProject() == $project ? $object: null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_publication_from_date(\Interfaces\Object\Project $project, $date) {
+	public function getPublicationFromDate(\Interfaces\Object\Project $project, $date) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
-												WHERE project_id = '.$project->get_id().'
+												WHERE project_id = '.$project->getId().'
 													AND date = '.(int)$date);
-		return $this->dic->get_object('publication_object', $id);
+		return $this->dic->getObject('publication_object', $id);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_first_publication(\Interfaces\Object\Project $project) {
+	public function getFirstPublication(\Interfaces\Object\Project $project) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
-												WHERE project_id = '.$project->get_id().'
+												WHERE project_id = '.$project->getId().'
 												ORDER BY date ASC
 												LIMIT 1');
-		return $this->dic->get_object('publication_object', $id);
+		return $this->dic->getObject('publication_object', $id);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_last_publication(\Interfaces\Object\Project $project) {
+	public function getLastPublication(\Interfaces\Object\Project $project) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
-												WHERE project_id = '.$project->get_id().'
+												WHERE project_id = '.$project->getId().'
 												ORDER BY date DESC
 												LIMIT 1');
-		return $this->dic->get_object('publication_object', $id);
+		return $this->dic->getObject('publication_object', $id);
 	}
 }

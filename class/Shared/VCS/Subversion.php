@@ -10,8 +10,8 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'config',
 																 'project',
 															));
@@ -21,26 +21,26 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 
-		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_USERNAME, $config_shared->get_vcs_user());
-		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_PASSWORD, $config_shared->get_vcs_password());
+		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_USERNAME, $config_shared->getVcsUser());
+		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_PASSWORD, $config_shared->getVcsPassword());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_preg_revision() {
+	public function getPregRevision() {
 		return '[0-9]+';
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function get_logs(Project $project, $revision_begin, $revision_end) {
-		$key    = md5($project->get_id().'|'.$revision_begin.'|'.$revision_end);
+	protected function getLogs(Project $project, $revision_begin, $revision_end) {
+		$key    = md5($project->getId().'|'.$revision_begin.'|'.$revision_end);
 		$result = apc_fetch($key);
 		if ($result === false) {
 			$result = array();
-			foreach (svn_log($project->get_vcs_repository(), $revision_begin, $revision_end) as $log) {
+			foreach (svn_log($project->getVcsRepository(), $revision_begin, $revision_end) as $log) {
 				$result[] = array(
 					'date' => strtotime($log['date']),
 					'rev'  => $log['rev'],
@@ -55,7 +55,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			};
 
 			$result_delta = array();
-			$logs         = svn_log($project->get_vcs_repository(), $revision_begin, $revision_end);
+			$logs         = svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
 			if ($logs) {
 				foreach ($logs as $log) {
 					$result_delta[] = array(
@@ -77,14 +77,14 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function get_diff_revisions_and_changelog($project, $revision_end, $revision_begin) {
-		$key    = md5($project->get_id().'|'.$revision_end.'|'.$revision_begin);
+	protected function getDiffRevisionsAndChangelog($project, $revision_end, $revision_begin) {
+		$key    = md5($project->getId().'|'.$revision_end.'|'.$revision_begin);
 		$result = apc_fetch($key);
 		if ($result === false) {
-			$repository = $project->get_vcs_repository();
+			$repository = $project->getVcsRepository();
 			/** @var Config $config_shared */
 			$config_shared  = $this->dependence_objects['config'];
-			$changelog_preg = preg_quote($config_shared->get_changelog_path(), '#');
+			$changelog_preg = preg_quote($config_shared->getChangelogPath(), '#');
 
 			$diff = @svn_diff($repository, $revision_end, $repository, $revision_begin);
 			$diff = stream_get_contents($diff[0]);
@@ -100,8 +100,8 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				$project_shared = $this->dependence_objects['project'];
 
 				foreach ($matches[1] as $k => $repo_path) {
-					$this_project                                 = $project_shared->get_from_vcs_path($project->get_vcs_base(), $repo_path);
-					$result['revisions'][$this_project->get_id()] = $matches[2][$k];
+					$this_project                                 = $project_shared->getFromVcsPath($project->getVcsBase(), $repo_path);
+					$result['revisions'][$this_project->getId()] = $matches[2][$k];
 				}
 			}
 
@@ -131,12 +131,12 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_revision_url(Project $project, $revision) {
+	public function getRevisionUrl(Project $project, $revision) {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
-		return $config_shared->get_vcs_url()
-			   .'/listing.php?repname='.urlencode($project->get_vcs_base())
-			   .'&path='.urlencode($project->get_vcs_path())
+		return $config_shared->getVcsUrl()
+			   .'/listing.php?repname='.urlencode($project->getVcsBase())
+			   .'&path='.urlencode($project->getVcsPath())
 			   .'&rev='.$revision;
 	}
 }

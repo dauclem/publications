@@ -28,18 +28,18 @@ require __DIR__.'/common/top_nav.php';
 	<tbody>
 		<?php
 		/** @var \Interfaces\Shared\Project $project_shared */
-		$project_shared = $dic->get_object('project');
-		foreach ($project_shared->get_projects() as $project) {
+		$project_shared = $dic->getObject('project');
+		foreach ($project_shared->getProjects() as $project) {
 			echo '<tr>
 				<td>
-					<a href="/configuration/projet/'.urlencode($project->get_name()).'/">
+					<a href="/configuration/projet/'.urlencode($project->getName()).'/">
 						<i class="glyphicon glyphicon-wrench"></i>
 					</a>
 				</td>
-				<td>'.htmlentities($project->get_name()).'</td>
-				<td>'.htmlentities($project->get_vcs_repository()).'</td>
-				<td>'.($project->is_visible() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
-				<td>'.($project->has_prod() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
+				<td>'.htmlentities($project->getName()).'</td>
+				<td>'.htmlentities($project->getVcsRepository()).'</td>
+				<td>'.($project->isVisible() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
+				<td>'.($project->hasProd() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
 			</tr>';
 		}
 		?>

@@ -14,7 +14,7 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param null|int                   $revision_end
 	 * @return array[]
 	 */
-	abstract protected function get_logs(\Interfaces\Object\Project $project, $revision_begin, $revision_end);
+	abstract protected function getLogs(\Interfaces\Object\Project $project, $revision_begin, $revision_end);
 
 	/**
 	 * Get info on diff between 2 revisions
@@ -28,7 +28,7 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param int                        $revision_begin
 	 * @return array
 	 */
-	abstract protected function get_diff_revisions_and_changelog($project, $revision_end, $revision_begin);
+	abstract protected function getDiffRevisionsAndChangelog($project, $revision_end, $revision_begin);
 
 	/**
 	 * Get list of logs from revision declaration (like merge infos)
@@ -37,16 +37,16 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param string                     $revisions
 	 * @return array[]
 	 */
-	protected function get_logs_from_revisions($project, $revisions) {
+	protected function getLogsFromRevisions($project, $revisions) {
 		$logs = array();
 
 		$revisions = explode(',', $revisions);
 		foreach ($revisions as $revision) {
 			if (strpos($revision, '-')) {
 				list($start, $end) = explode('-', $revision);
-				$logs = array_merge($logs, $this->get_logs($project, $start, $end));
+				$logs = array_merge($logs, $this->getLogs($project, $start, $end));
 			} else {
-				$logs = array_merge($logs, $this->get_logs($project, $revision, $revision));
+				$logs = array_merge($logs, $this->getLogs($project, $revision, $revision));
 			}
 		}
 
@@ -59,30 +59,30 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param \Interfaces\Object\Publication|null $publication
 	 * @return Row[]
 	 */
-	protected function get_all_rows_from_project(\Interfaces\Object\Project $project, $revision_begin, $publication) {
-		$logs   = $this->get_logs($project, $revision_begin, null);
+	protected function getAllRowsFromProject(\Interfaces\Object\Project $project, $revision_begin, $publication) {
+		$logs   = $this->getLogs($project, $revision_begin, null);
 		$logs[] = $previous_log = null;
 		$rows   = $changelog = array();
 		$i      = 0;
 		foreach ($logs as $log) {
 			$i++;
 			if ($previous_log) {
-				if ($publication && $previous_log['date'] < $publication->get_date()) {
+				if ($publication && $previous_log['date'] < $publication->getDate()) {
 					break;
 				}
 
 				// Revisions
 				$revisions_and_changelog              = $log
-					? $this->get_diff_revisions_and_changelog($project, $log['rev'], $previous_log['rev'])
+					? $this->getDiffRevisionsAndChangelog($project, $log['rev'], $previous_log['rev'])
 					: array('revisions' => array(), 'changelog' => array());
-				$result_revisions        = array($project->get_id() => $previous_log['rev']) + $revisions_and_changelog['revisions'];
+				$result_revisions        = array($project->getId() => $previous_log['rev']) + $revisions_and_changelog['revisions'];
 
 				// Message
 				$result_message = array();
 				foreach ($revisions_and_changelog['revisions'] as $project_id => $revisions) {
 					/** @var \Interfaces\Object\Project $this_project */
-					$this_project = $this->dic->get_object('project_object', $project_id);
-					$sub_logs     = $this->get_logs_from_revisions($this_project, $revisions);
+					$this_project = $this->dic->getObject('project_object', $project_id);
+					$sub_logs     = $this->getLogsFromRevisions($this_project, $revisions);
 					if (count($sub_logs)) {
 						if (!isset($result_message[$project_id])) {
 							$result_message[$project_id] = array();
@@ -93,15 +93,15 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 					}
 				}
 				if (!count($result_message)) {
-					$result_message[$project->get_id()] = array($previous_log['msg']);
+					$result_message[$project->getId()] = array($previous_log['msg']);
 				}
 
 				/** @var Row $row */
-				$row = $this->dic->get_object('row_object');
-				$row->set_date($previous_log['date']);
-				$row->set_revisions($result_revisions);
-				$row->set_changelog($revisions_and_changelog['changelog']);
-				$row->set_comments($result_message);
+				$row = $this->dic->getObject('row_object');
+				$row->setDate($previous_log['date']);
+				$row->setRevisions($result_revisions);
+				$row->setChangelog($revisions_and_changelog['changelog']);
+				$row->setComments($result_message);
 				$rows[] = $row;
 			}
 
@@ -118,18 +118,18 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param int[]                      $revision_begin
 	 * @return int
 	 */
-	protected function get_project_begin(\Interfaces\Object\Project $project, $revision_begin) {
-		return is_array($revision_begin) && isset($revision_begin[$project->get_id()]) ? $revision_begin[$project->get_id()] : -1;
+	protected function getProjectBegin(\Interfaces\Object\Project $project, $revision_begin) {
+		return is_array($revision_begin) && isset($revision_begin[$project->getId()]) ? $revision_begin[$project->getId()] : -1;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_all_rows(\Interfaces\Object\Project $project, $revision_begins, $publication_limit) {
-		$this_begin = $this->get_project_begin($project, $revision_begins);
-		$all_logs   = $this->get_all_rows_from_project($project, $this_begin, $publication_limit);
-		foreach ($project->get_externals() as $external_project) {
-			$all_logs = array_merge($all_logs, $this->get_all_rows($external_project, $revision_begins, $publication_limit));
+	public function getAllRows(\Interfaces\Object\Project $project, $revision_begins, $publication_limit) {
+		$this_begin = $this->getProjectBegin($project, $revision_begins);
+		$all_logs   = $this->getAllRowsFromProject($project, $this_begin, $publication_limit);
+		foreach ($project->getExternals() as $external_project) {
+			$all_logs = array_merge($all_logs, $this->getAllRows($external_project, $revision_begins, $publication_limit));
 		}
 		return $all_logs;
 	}
@@ -137,19 +137,19 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function optimize_revisions($revisions) {
+	public function optimizeRevisions($revisions) {
 		$revisions_array = explode(',', $revisions);
 		$revisions_final = $previous_rev = '';
 		foreach ($revisions_array as $this_rev) {
 			if ($previous_rev) {
-				$previous_rev   = preg_replace('#^.*-('.$this->get_preg_revision().')$#', '\\1', $previous_rev);
-				$this_rev_begin = preg_replace('#^('.$this->get_preg_revision().')-.*$#', '\\1', $this_rev);
+				$previous_rev   = preg_replace('#^.*-('.$this->getPregRevision().')$#', '\\1', $previous_rev);
+				$this_rev_begin = preg_replace('#^('.$this->getPregRevision().')-.*$#', '\\1', $this_rev);
 				$revisions_final .= ($previous_rev == $this_rev_begin - 1 ? '-' : ',').$this_rev;
 			} else {
 				$revisions_final = $this_rev;
 			}
 			$previous_rev = $this_rev;
 		}
-		return preg_replace('#(^|,)('.$this->get_preg_revision().')-('.$this->get_preg_revision().'|-)+-('.$this->get_preg_revision().')(,|$)#', '\\1\\2-\\3\\4', $revisions_final);
+		return preg_replace('#(^|,)('.$this->getPregRevision().')-('.$this->getPregRevision().'|-)+-('.$this->getPregRevision().')(,|$)#', '\\1\\2-\\3\\4', $revisions_final);
 	}
 }

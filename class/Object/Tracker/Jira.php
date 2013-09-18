@@ -8,8 +8,8 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'tracker',
 																 'config',
 															));
@@ -18,7 +18,7 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function initialize_id($object_id) {
+	public function initializeId($object_id) {
 		$object_id = trim($object_id);
 		if (!$object_id) {
 			return null;
@@ -29,7 +29,7 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 		if ($task_data === false) {
 			/** @var \Interfaces\Shared\Tracker\Jira $tracker_shared */
 			$tracker_shared = $this->dependence_objects['tracker'];
-			exec($tracker_shared->get_api_exec_begin().'issue/'.$object_id, $output);
+			exec($tracker_shared->getApiExecBegin().'issue/'.$object_id, $output);
 			$task_data = json_decode(end($output));
 			apc_store($cache_key, $task_data, 0);
 		}
@@ -44,9 +44,9 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_url() {
+	public function getUrl() {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
-		return $config_shared->get_bug_tracker_url().'/browse/'.$this->id;
+		return $config_shared->getBugTrackerUrl().'/browse/'.$this->id;
 	}
 }

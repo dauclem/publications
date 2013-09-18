@@ -15,28 +15,28 @@ abstract class Tracker extends Object implements \Interfaces\Object\Tracker {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function is_valid() {
+	public function isValid() {
 		return (bool)$this->id;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_id() {
+	public function getId() {
 		return $this->id;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_title() {
+	public function getTitle() {
 		return $this->title;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_type() {
+	public function getType() {
 		return $this->type;
 	}
 
@@ -44,6 +44,6 @@ abstract class Tracker extends Object implements \Interfaces\Object\Tracker {
 	 * {@inheritDoc}
 	 */
 	public function __toString() {
-		return get_called_class().'|'.$this->get_id();
+		return get_called_class().'|'.$this->getId();
 	}
 }

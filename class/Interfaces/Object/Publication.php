@@ -12,48 +12,48 @@ interface Publication extends Object {
 	/**
 	 * @return int
 	 */
-	public function get_id();
+	public function getId();
 
 	/**
 	 * @return Project
 	 */
-	public function get_project();
+	public function getProject();
 
 	/**
 	 * Return timestamp of publication date
 	 *
 	 * @return int
 	 */
-	public function get_date();
+	public function getDate();
 
 	/**
 	 * @return string
 	 */
-	public function get_comments();
+	public function getComments();
 
 	/**
 	 * @param int $date timestamp
 	 */
-	public function set_date($date);
+	public function setDate($date);
 
 	/**
 	 * @param string $comments
 	 */
-	public function set_comments($comments);
+	public function setComments($comments);
 
 	/**
 	 * Get previous publication
 	 *
 	 * @return Publication
 	 */
-	public function get_previous();
+	public function getPrevious();
 
 	/**
 	 * Get next publication (after this in date order)
 	 *
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function get_next();
+	public function getNext();
 
 	/**
 	 * Remove this publication object from database
@@ -65,7 +65,7 @@ interface Publication extends Object {
 	 *
 	 * @return string
 	 */
-	public function get_url();
+	public function getUrl();
 
 	/**
 	 * Create Row object with Publication infos
@@ -73,5 +73,5 @@ interface Publication extends Object {
 	 * @param Row[] $rows
 	 * @return Row
 	 */
-	public function create_row($rows);
+	public function createRow($rows);
 }

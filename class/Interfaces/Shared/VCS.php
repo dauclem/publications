@@ -14,7 +14,7 @@ interface VCS extends Shared {
 	 *
 	 * @return string
 	 */
-	public function get_preg_revision();
+	public function getPregRevision();
 
 	/**
 	 * Get list of logs to display for a project
@@ -25,7 +25,7 @@ interface VCS extends Shared {
 	 *
 	 * @return Row[]
 	 */
-	public function get_all_rows(\Interfaces\Object\Project $project, $revision_begins, $publication_limit);
+	public function getAllRows(\Interfaces\Object\Project $project, $revision_begins, $publication_limit);
 
 	/**
 	 * Get revisions format like merge-info bug not real good merged.
@@ -34,7 +34,7 @@ interface VCS extends Shared {
 	 * @param string $revisions
 	 * @return string
 	 */
-	public function optimize_revisions($revisions);
+	public function optimizeRevisions($revisions);
 
 	/**
 	 * Get web url to show revision and diff between previous revision
@@ -43,5 +43,5 @@ interface VCS extends Shared {
 	 * @param string|int $revision
 	 * @return string
 	 */
-	public function get_revision_url(\Interfaces\Object\Project $project, $revision);
+	public function getRevisionUrl(\Interfaces\Object\Project $project, $revision);
 }

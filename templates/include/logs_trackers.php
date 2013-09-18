@@ -7,16 +7,16 @@ if (!isset($trackers_list) || !is_array($trackers_list)) {
 
 $current_type = '';
 foreach ($trackers_list as $this_tracker) {
-	if ($current_type != $this_tracker->get_type()) {
+	if ($current_type != $this_tracker->getType()) {
 		if ($current_type) {
 			echo '<br />';
 		}
 
-		$current_type = $this_tracker->get_type();
+		$current_type = $this_tracker->getType();
 		echo '<strong>_____'.htmlentities($current_type).'_____</strong><br />';
 	}
 
-	echo '<a target="_blank" title="'.htmlentities($this_tracker->get_title()).'" href="'.$this_tracker->get_url().'">'
-		 .htmlentities($this_tracker->get_id()).' : '.htmlentities($this_tracker->get_title())
+	echo '<a target="_blank" title="'.htmlentities($this_tracker->getTitle()).'" href="'.$this_tracker->getUrl().'">'
+		 .htmlentities($this_tracker->getId()).' : '.htmlentities($this_tracker->getTitle())
 		 .'</a><br />';
 }

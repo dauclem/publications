@@ -30,7 +30,7 @@ interface Project extends Shared {
 	 *
 	 * @return \Interfaces\Object\Project[]
 	 */
-	public function get_projects();
+	public function getProjects();
 
 	/**
 	 * Get a Project object from its name
@@ -38,7 +38,7 @@ interface Project extends Shared {
 	 * @param string $name
 	 * @return \Interfaces\Object\Project
 	 */
-	public function get_from_name($name);
+	public function getFromName($name);
 
 	/**
 	 * Get a Project object from its vcs path
@@ -47,12 +47,12 @@ interface Project extends Shared {
 	 * @param string $vcs_path
 	 * @return \Interfaces\Object\Project
 	 */
-	public function get_from_vcs_path($vcs_base, $vcs_path);
+	public function getFromVcsPath($vcs_base, $vcs_path);
 
 	/**
 	 * Get current project from url
 	 *
 	 * @return \Interfaces\Object\Project
 	 */
-	public function get_current_project();
+	public function getCurrentProject();
 }

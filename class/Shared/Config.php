@@ -33,8 +33,8 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'database',
 																 'form_utils',
 															));
@@ -46,7 +46,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	public function install() {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$connection->exec('DROP TABLE IF EXISTS config');
 		$connection->exec('CREATE TABLE config(
 							vcs_type TEXT,
@@ -83,7 +83,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$result     = $connection->querySingle('SELECT name FROM sqlite_master WHERE type="table" AND name="config"');
 		if (!$result) {
 			$this->install();
@@ -99,84 +99,84 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_site_url() {
+	public function getSiteUrl() {
 		return $this->site_url;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_vcs_type() {
+	public function getVcsType() {
 		return $this->vcs_type;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_vcs_url() {
+	public function getVcsUrl() {
 		return $this->vcs_url;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_vcs_user() {
+	public function getVcsUser() {
 		return $this->vcs_user;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_vcs_password() {
+	public function getVcsPassword() {
 		return $this->vcs_password;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_vcs_web_url() {
+	public function getVcsWebUrl() {
 		return $this->vcs_web_url;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_changelog_path() {
+	public function getChangelogPath() {
 		return $this->changelog_path;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_bug_tracker_type() {
+	public function getBugTrackerType() {
 		return $this->bug_tracker_type;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_bug_tracker_url() {
+	public function getBugTrackerUrl() {
 		return $this->bug_tracker_url;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_bug_tracker_user() {
+	public function getBugTrackerUser() {
 		return $this->bug_tracker_user;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_bug_tracker_password() {
+	public function getBugTrackerPassword() {
 		return $this->bug_tracker_password;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_bug_tracker_query() {
+	public function getBugTrackerQuery() {
 		return $this->bug_tracker_query;
 	}
 
@@ -189,7 +189,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
 		if ($property) {
-			$connection = $database->get_connection();
+			$connection = $database->getConnection();
 			$connection->exec('UPDATE config SET '.$property.' = \''.$connection->escapeString($this->$property).'\'');
 			$this->initialize();
 		}
@@ -198,7 +198,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_vcs_type($vcs_type) {
+	public function setVcsType($vcs_type) {
 		$this->vcs_type = $vcs_type;
 		$this->save('vcs_type');
 	}
@@ -206,7 +206,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_vcs_url($vcs_url) {
+	public function setVcsUrl($vcs_url) {
 		$this->vcs_url = $vcs_url;
 		$this->save('vcs_url');
 	}
@@ -214,7 +214,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_vcs_user($vcs_user) {
+	public function setVcsUser($vcs_user) {
 		$this->vcs_user = $vcs_user;
 		$this->save('vcs_user');
 	}
@@ -222,7 +222,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_vcs_password($vcs_password) {
+	public function setVcsPassword($vcs_password) {
 		$this->vcs_password = $vcs_password;
 		$this->save('vcs_password');
 	}
@@ -230,7 +230,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_vcs_web_url($vcs_web_url) {
+	public function setVcsWebUrl($vcs_web_url) {
 		$this->vcs_web_url = $vcs_web_url;
 		$this->save('vcs_web_url');
 	}
@@ -238,7 +238,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_changelog_path($changelog_path) {
+	public function setChangelogPath($changelog_path) {
 		$this->changelog_path = $changelog_path;
 		$this->save('changelog_path');
 	}
@@ -246,7 +246,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_bug_tracker_type($bug_tracker_type) {
+	public function setBugTrackerType($bug_tracker_type) {
 		$this->bug_tracker_type = $bug_tracker_type;
 		$this->save('bug_tracker_type');
 	}
@@ -254,7 +254,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_bug_tracker_url($bug_tracker_url) {
+	public function setBugTrackerUrl($bug_tracker_url) {
 		$this->bug_tracker_url = $bug_tracker_url;
 		$this->save('bug_tracker_url');
 	}
@@ -262,7 +262,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_bug_tracker_user($bug_tracker_user) {
+	public function setBugTrackerUser($bug_tracker_user) {
 		$this->bug_tracker_user = $bug_tracker_user;
 		$this->save('bug_tracker_user');
 	}
@@ -270,7 +270,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_bug_tracker_password($bug_tracker_password) {
+	public function setBugTrackerPassword($bug_tracker_password) {
 		$this->bug_tracker_password = $bug_tracker_password;
 		$this->save('bug_tracker_password');
 	}
@@ -278,7 +278,7 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_bug_tracker_query($bug_tracker_query) {
+	public function setBugTrackerQuery($bug_tracker_query) {
 		$this->bug_tracker_query = $bug_tracker_query;
 		$this->save('bug_tracker_query');
 	}
@@ -286,17 +286,17 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function add_recipient($email) {
+	public function addRecipient($email) {
 		/** @var \Interfaces\Shared\FormUtils $form_utils */
 		$form_utils = $this->dependence_objects['form_utils'];
 		$email      = trim($email);
-		if (!$email || !$form_utils->check_email($email)) {
+		if (!$email || !$form_utils->checkEmail($email)) {
 			return;
 		}
 
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$connection->exec('REPLACE INTO config_recipients(email)
 							VALUES (\''.$connection->escapeString($email).'\')');
 	}
@@ -304,10 +304,10 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function remove_recipient($email) {
+	public function removeRecipient($email) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
-		$connection = $database->get_connection();
+		$connection = $database->getConnection();
 		$connection->exec('DELETE FROM config_recipients
 							WHERE email = \''.$connection->escapeString($email).'\'');
 	}
@@ -315,10 +315,10 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_recipients() {
+	public function getRecipients() {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
-		$result   = $database->get_connection()->query('SELECT email FROM config_recipients');
+		$result   = $database->getConnection()->query('SELECT email FROM config_recipients');
 		$emails   = array();
 		while (list($email) = $result->fetchArray()) {
 			$emails[] = $email;

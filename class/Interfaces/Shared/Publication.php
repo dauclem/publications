@@ -30,7 +30,7 @@ interface Publication extends Shared {
 	 * @param \Interfaces\Object\Project $project
 	 * @return \Interfaces\Object\Publication[]
 	 */
-	public function get_publications(\Interfaces\Object\Project $project);
+	public function getPublications(\Interfaces\Object\Project $project);
 
 	/**
 	 * Get a publication object instance from its id
@@ -39,7 +39,7 @@ interface Publication extends Shared {
 	 * @param int     $id_publication
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function get_publication_from_id(\Interfaces\Object\Project $project, $id_publication);
+	public function getPublicationFromId(\Interfaces\Object\Project $project, $id_publication);
 
 	/**
 	 * Get a publication object instance from its date
@@ -48,7 +48,7 @@ interface Publication extends Shared {
 	 * @param int     $date Timestamp
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function get_publication_from_date(\Interfaces\Object\Project $project, $date);
+	public function getPublicationFromDate(\Interfaces\Object\Project $project, $date);
 
 	/**
 	 * Get first publication object for this project (oldest by date)
@@ -56,7 +56,7 @@ interface Publication extends Shared {
 	 * @param \Interfaces\Object\Project $project
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function get_first_publication(\Interfaces\Object\Project $project);
+	public function getFirstPublication(\Interfaces\Object\Project $project);
 
 	/**
 	 * Get last publication object for this project (newest by date)
@@ -64,5 +64,5 @@ interface Publication extends Shared {
 	 * @param \Interfaces\Object\Project $project
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function get_last_publication(\Interfaces\Object\Project $project);
+	public function getLastPublication(\Interfaces\Object\Project $project);
 }

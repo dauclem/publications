@@ -92,7 +92,7 @@ class DIC {
 	 * @param string $param
 	 * @param mixed  $value
 	 */
-	public function set_param($param, $value) {
+	public function setParam($param, $value) {
 		$this->params[$param] = $value;
 	}
 
@@ -102,7 +102,7 @@ class DIC {
 	 * @param string $param
 	 * @return mixed
 	 */
-	public function get_param($param) {
+	public function getParam($param) {
 		return isset($this->params[$param]) ? $this->params[$param] : null;
 	}
 
@@ -113,7 +113,7 @@ class DIC {
 	 * @param    string $class_name    Class name
 	 * @param    bool   $shared
 	 */
-	public function set_object_definition($ident, $class_name, $shared = false) {
+	public function setObjectDefinition($ident, $class_name, $shared = false) {
 		if ($ident == 'dic') {
 			return;
 		}
@@ -132,7 +132,7 @@ class DIC {
 	 * @return \Interfaces\Object
 	 * @throws Exception
 	 */
-	protected function instance_object($ident) {
+	protected function instanceObject($ident) {
 		$class_name = $this->object_definitions[$ident]['class_name'];
 		if (!class_exists($class_name)) {
 			throw new Exception('Class for object does not exists : "'.$class_name.'" for ident : "'.$ident.'"');
@@ -154,13 +154,13 @@ class DIC {
 	 * @return \Interfaces\Shared
 	 * @throws Exception
 	 */
-	protected function get_shared_object($ident) {
+	protected function getSharedObject($ident) {
 		if (isset($this->shared_instances[$ident])) {
 			return $this->shared_instances[$ident];
 		}
 
-		$object = $this->instance_object($ident);
-		if (!$object->is_valid()) {
+		$object = $this->instanceObject($ident);
+		if (!$object->isValid()) {
 			throw new Exception('Shared object invalid  : '.get_class($object));
 		}
 
@@ -177,36 +177,36 @@ class DIC {
 	 * @return \Interfaces\Object
 	 * @throws Exception
 	 */
-	public function get_object($ident, $object_id = 0) {
+	public function getObject($ident, $object_id = 0) {
 		if (!isset($this->object_definitions[$ident])) {
 			throw new Exception('Invalid object ident : "'.$ident.'"');
 		}
 
 		if ($this->object_definitions[$ident]['shared']) {
-			$object = $this->get_shared_object($ident);
+			$object = $this->getSharedObject($ident);
 		} else {
 			$cache_key = $ident.'|'.$object_id;
 			if ($object_id && isset($this->objects_cache[$cache_key])) {
 				return $this->objects_cache[$cache_key];
 			}
-			$object = $this->instance_object($ident);
+			$object = $this->instanceObject($ident);
 		}
 
-		$object->set_dic($this);
-		foreach ($object->get_dependencies_list() as $dep_ident) {
-			$dep_object = $this->get_object($dep_ident);
+		$object->setDic($this);
+		foreach ($object->getDependenciesList() as $dep_ident) {
+			$dep_object = $this->getObject($dep_ident);
 			if ($dep_object instanceof \Interfaces\Shared) {
-				$object->add_dependence_object($dep_ident, $dep_object);
+				$object->addDependenceObject($dep_ident, $dep_object);
 			}
 		}
 
 		$object->initialize();
 
 		if ($object_id && !$this->object_definitions[$ident]['shared']) {
-			$object->initialize_id($object_id);
+			$object->initializeId($object_id);
 		}
 
-		if (!$object->is_valid()) {
+		if (!$object->isValid()) {
 			$object = null;
 		}
 

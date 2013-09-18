@@ -1,4 +1,3 @@
-- switch to camelCase
 - remplir les issues de github pour supprimer ce fichier todo
 - feature : add note to specify if prod has problem (without necessary publication, like down, daily cron, etc...)
 -- nouveau type de Row 'Notes'

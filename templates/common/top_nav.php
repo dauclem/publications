@@ -1,17 +1,17 @@
 <ul class="nav nav-tabs">
 	<?php
 	/** @var \Interfaces\Shared\Project $project_shared */
-	$project_shared = $dic->get_object('project');
-	$current_project = $project_shared->get_current_project();
+	$project_shared = $dic->getObject('project');
+	$current_project = $project_shared->getCurrentProject();
 
 	echo '<li'.(!$current_project ? ' class="active"' : '').'>
 		<a href="/">Admin</a>
 	</li>';
 
-	foreach ($project_shared->get_projects() as $project) {
-		if ($project->is_visible()) {
+	foreach ($project_shared->getProjects() as $project) {
+		if ($project->isVisible()) {
 			echo '<li'.($current_project == $project ? ' class="active"' : '').'>
-				<a href="'.$project->get_url().'">'.htmlentities($project->get_name()).'</a>
+				<a href="'.$project->getUrl().'">'.htmlentities($project->getName()).'</a>
 			</li>';
 		}
 	}

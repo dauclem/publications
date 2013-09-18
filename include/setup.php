@@ -14,7 +14,7 @@ $dic = new DIC(array(
 			   ));
 
 /** @var \Interfaces\Shared\Config $config_shared */
-$config_shared = $dic->get_object('config');
-$dic->set_object_definition('tracker', '\\Shared\\Tracker\\'.ucfirst($config_shared->get_bug_tracker_type()), true);
-$dic->set_object_definition('tracker_object', '\\Object\\Tracker\\'.ucfirst($config_shared->get_bug_tracker_type()), false);
-$dic->set_object_definition('vcs', '\\Shared\\VCS\\'.ucfirst($config_shared->get_vcs_type()), true);
+$config_shared = $dic->getObject('config');
+$dic->setObjectDefinition('tracker', '\\Shared\\Tracker\\'.ucfirst($config_shared->getBugTrackerType()), true);
+$dic->setObjectDefinition('tracker_object', '\\Object\\Tracker\\'.ucfirst($config_shared->getBugTrackerType()), false);
+$dic->setObjectDefinition('vcs', '\\Shared\\VCS\\'.ucfirst($config_shared->getVcsType()), true);

@@ -14,5 +14,5 @@ interface Database extends Shared {
 	 *
 	 * @return SQLite3
 	 */
-	public function get_connection();
+	public function getConnection();
 }

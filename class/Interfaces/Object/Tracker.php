@@ -13,26 +13,26 @@ interface Tracker extends Object {
 	 *
 	 * @return int|string
 	 */
-	public function get_id();
+	public function getId();
 
 	/**
 	 * Get Tracker title
 	 *
 	 * @return string
 	 */
-	public function get_title();
+	public function getTitle();
 
 	/**
 	 * Get Tracker type (Bug, technical task, feature, etc...)
 	 *
 	 * @return string
 	 */
-	public function get_type();
+	public function getType();
 
 	/**
 	 * Get tracker web url
 	 *
 	 * @return string
 	 */
-	public function get_url();
+	public function getUrl();
 }

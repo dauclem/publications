@@ -9,71 +9,71 @@ interface Row extends Object {
 	/**
 	 * @return int
 	 */
-	public function get_date();
+	public function getDate();
 
 	/**
 	 * Get array with project id as key which contains an array of revisions
 	 *
 	 * @return array
 	 */
-	public function get_revisions();
+	public function getRevisions();
 
 	/**
 	 * Get array with project id as key which contains an array of changelog text
 	 *
 	 * @return array
 	 */
-	public function get_changelog();
+	public function getChangelog();
 
 	/**
 	 * Get array with project id as key which contains an array of comments
 	 *
 	 * @return array
 	 */
-	public function get_comments();
+	public function getComments();
 
 	/**
 	 * Calculate all bug tracked into comments
 	 *
 	 * @return Tracker[]
 	 */
-	public function get_trackers();
+	public function getTrackers();
 
 	/**
 	 * Get related object if this row has one
 	 *
 	 * @return Object|null
 	 */
-	public function get_related_object();
+	public function getRelatedObject();
 
 	/**
 	 * @param int $date
 	 */
-	public function set_date($date);
+	public function setDate($date);
 
 	/**
 	 * Set array with project id as key which contains an array of revisions
 	 *
 	 * @param array $revisions
 	 */
-	public function set_revisions($revisions);
+	public function setRevisions($revisions);
 
 	/**
 	 * Set array with project id as key which contains an array of changelog text
 	 *
 	 * @param array $changelog
 	 */
-	public function set_changelog($changelog);
+	public function setChangelog($changelog);
 
 	/**
 	 * Set array with project id as key which contains an array of comments
 	 *
 	 * @param array $comments
 	 */
-	public function set_comments($comments);
+	public function setComments($comments);
 
 	/**
 	 * @param Object $related_object
 	 */
-	public function set_related_object(Object $related_object);
+	public function setRelatedObject(Object $related_object);
 }

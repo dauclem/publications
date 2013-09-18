@@ -13,7 +13,7 @@ interface Tracker extends Shared {
 	 *
 	 * @return string
 	 */
-	public function get_tracker_id_pattern();
+	public function getTrackerIdPattern();
 
 	/**
 	 * Find all trackers id into $message and return respective tracker objects
@@ -21,7 +21,7 @@ interface Tracker extends Shared {
 	 * @param string $message
 	 * @return \Interfaces\Object\Tracker[]
 	 */
-	public function get_trackers_from_message($message);
+	public function getTrackersFromMessage($message);
 
 	/**
 	 * Filter trackers list with query set to config to filter only trackers to send by email
@@ -30,5 +30,5 @@ interface Tracker extends Shared {
 	 * @param \Interfaces\Object\Project   $project
 	 * @return \Interfaces\Object\Tracker[]
 	 */
-	public function filter_trackers($trackers, \Interfaces\Object\Project $project = null);
+	public function filterTrackers($trackers, \Interfaces\Object\Project $project = null);
 }

@@ -13,5 +13,5 @@ interface Jira extends Tracker {
 	 *
 	 * @return string
 	 */
-	public function get_api_exec_begin();
+	public function getApiExecBegin();
 }

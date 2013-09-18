@@ -11,21 +11,21 @@ abstract class Object implements \Interfaces\Object {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_dic(DIC $dic) {
+	public function setDic(DIC $dic) {
 		$this->dic = $dic;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
+	public function getDependenciesList() {
 		return array();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function add_dependence_object($ident, Shared $object) {
+	public function addDependenceObject($ident, Shared $object) {
 		$this->dependence_objects[$ident] = $object;
 	}
 

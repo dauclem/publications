@@ -3,8 +3,8 @@
 require __DIR__.'/setup.php';
 
 /** @var \Interfaces\Shared\Database $database */
-$database = $dic->get_object('database');
-$connection = $database->get_connection();
+$database = $dic->getObject('database');
+$connection = $database->getConnection();
 
 @$connection->exec('ALTER TABLE config ADD bug_tracker_query TEXT');
 

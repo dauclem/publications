@@ -56,7 +56,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="VCS_password" name="VCS_password"
-					   <?php echo $config_shared->get_vcs_password() ? 'placeholder="inchangé"' : ''; ?>
+					   <?php echo $config_shared->getVcsPassword() ? 'placeholder="inchangé"' : ''; ?>
 					   value="<?php echo isset($VCS_password) ? $VCS_password : ''; ?>">
 				<?php if (isset($errors['VCS_password'])) { ?>
 					<span class="help-block"><?php echo $errors['VCS_password']; ?></span>
@@ -137,7 +137,7 @@ require __DIR__.'/common/top_nav.php';
 			<div class="col-lg-10">
 				<input type="password" class="form-control"
 					   id="bug_tracker_password" name="bug_tracker_password"
-					   <?php echo $config_shared->get_bug_tracker_password() ? 'placeholder="inchangé"' : ''; ?>
+					   <?php echo $config_shared->getBugTrackerPassword() ? 'placeholder="inchangé"' : ''; ?>
 					   value="<?php echo isset($bug_tracker_password) ? htmlentities($bug_tracker_password) : ''; ?>">
 				<?php if (isset($errors['bug_tracker_password'])) { ?>
 					<span class="help-block"><?php echo $errors['bug_tracker_password']; ?></span>
@@ -145,7 +145,7 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 		<div class="form-group<?php echo isset($errors['bug_tracker_query']) ? ' has-error' : ''; ?>">
-			<label for="bug_tracker_query" class="col-lg-2 control-label">Début de la requête <?php echo $config_shared->get_bug_tracker_type(); ?></label>
+			<label for="bug_tracker_query" class="col-lg-2 control-label">Début de la requête <?php echo $config_shared->getBugTrackerType(); ?></label>
 
 			<div class="col-lg-10">
 				<input type="text" class="form-control"
@@ -153,7 +153,7 @@ require __DIR__.'/common/top_nav.php';
 					   value="<?php echo isset($bug_tracker_query) ? htmlentities($bug_tracker_query) : ''; ?>">
 				<span class="help-block">
 					Utilisée pour filter les tâches à envoyer par mail pour publication.<br />
-					{PROJECT_ID} sera remplacé par l'identifiant <?php echo $config_shared->get_bug_tracker_type(); ?> spécifié dans la configuration du projet.
+					{PROJECT_ID} sera remplacé par l'identifiant <?php echo $config_shared->getBugTrackerType(); ?> spécifié dans la configuration du projet.
 					<?php if (isset($errors['bug_tracker_query'])) { ?>
 						<?php echo '<br />'.$errors['bug_tracker_query']; ?>
 					<?php } ?>
@@ -168,14 +168,14 @@ require __DIR__.'/common/top_nav.php';
 		<div class="form-group<?php echo isset($errors['recipients']) ? ' has-error' : ''; ?>">
 			<div class="col-lg-10 col-lg-offset-2">
 				<?php
-					$this_recipients = !empty($recipients) ? $recipients : $config_shared->get_recipients();
+					$this_recipients = !empty($recipients) ? $recipients : $config_shared->getRecipients();
 					foreach ($this_recipients as $recipient) {
 						echo '<input type="email" class="form-control" name="recipients[]" value="'.htmlentities($recipient).'" /><br />';
 					}
 				?>
 				<input type="email" class="form-control" name="recipients[]" id="new_recipient" value="" /><br />
 
-				<a href="#" id="add_recipient" class="btn btn-primary btn-sm">Ajouter</a><br />
+				<a href="#" id="addRecipient" class="btn btn-primary btn-sm">Ajouter</a><br />
 				<span class="help-block">
 					Liste des personnes en copie de tous les mails de publication.
 					<?php if (isset($errors['recipients'])) { ?>
@@ -192,12 +192,12 @@ require __DIR__.'/common/top_nav.php';
 </form>
 
 <script type="text/javascript">
-	$('#add_recipient').click(function() {
+	$('#addRecipient').click(function() {
 		$('#new_recipient')
 			.clone()
 			.val('')
 			.attr('id', '')
-			.insertBefore($('#add_recipient'))
+			.insertBefore($('#addRecipient'))
 			.after('<br />');
 		return false;
 	});

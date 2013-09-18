@@ -9,8 +9,8 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'config',
 															));
 	}
@@ -18,46 +18,46 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_api_exec_begin() {
+	public function getApiExecBegin() {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
-		return 'curl -D- -u '.$config_shared->get_bug_tracker_user().':'.$config_shared->get_bug_tracker_password()
+		return 'curl -D- -u '.$config_shared->getBugTrackerUser().':'.$config_shared->getBugTrackerPassword()
 			   .' -X GET -H "Content-Type: application/json" '
-			   .$config_shared->get_bug_tracker_url()
+			   .$config_shared->getBugTrackerUrl()
 			   .'/rest/api/latest/';
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_tracker_id_pattern() {
+	public function getTrackerIdPattern() {
 		return '#([A-Z]{2,}-[0-9]+)#';
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function filter_trackers($trackers, Project $project = null) {
+	public function filterTrackers($trackers, Project $project = null) {
 		$ids = array();
 		foreach ($trackers as $tracker) {
 			if ($tracker instanceof \Interfaces\Object\Tracker) {
-				$ids[] = $tracker->get_id();
+				$ids[] = $tracker->getId();
 			}
 		}
 		$ids = array_unique($ids);
 
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
-		$jql = str_replace('{PROJECT_ID}', $project->get_tracker_id(), $config_shared->get_bug_tracker_query());
+		$jql = str_replace('{PROJECT_ID}', $project->getTrackerId(), $config_shared->getBugTrackerQuery());
 		$jql = ($jql ? '('.$jql.') AND ' : '').'key IN ('.implode(',', $ids).')';
-		exec($this->get_api_exec_begin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
+		exec($this->getApiExecBegin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
 		$task_data = json_decode(end($output));
 
 		$list = array();
 		if (isset($task_data, $task_data->issues)) {
 			foreach ($task_data->issues as $this_issue) {
 				if (isset($this_issue->key)) {
-					$tracker = $this->dic->get_object('tracker_object', $this_issue->key);
+					$tracker = $this->dic->getObject('tracker_object', $this_issue->key);
 					if ($tracker) {
 						$list[] = $tracker;
 					}

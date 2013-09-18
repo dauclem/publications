@@ -20,8 +20,8 @@ class Row extends Object implements \Interfaces\Object\Row {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_dependencies_list() {
-		return array_merge(parent::get_dependencies_list(), array(
+	public function getDependenciesList() {
+		return array_merge(parent::getDependenciesList(), array(
 																 'tracker',
 															));
 	}
@@ -29,104 +29,104 @@ class Row extends Object implements \Interfaces\Object\Row {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function initialize_id($object_id) {
+	public function initializeId($object_id) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function is_valid() {
+	public function isValid() {
 		return true;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_date() {
+	public function getDate() {
 		return $this->date;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_revisions() {
+	public function getRevisions() {
 		return $this->revisions;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_changelog() {
+	public function getChangelog() {
 		return $this->changelog;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_comments() {
+	public function getComments() {
 		return $this->comments;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_trackers() {
+	public function getTrackers() {
 		/** @var \Interfaces\Shared\Tracker $tracker_shared */
 		$tracker_shared = $this->dependence_objects['tracker'];
 		$trackers = array();
 		foreach ($this->comments as $comments) {
 			foreach ($comments as $comment) {
-				$trackers = array_merge($trackers, $tracker_shared->get_trackers_from_message($comment));
+				$trackers = array_merge($trackers, $tracker_shared->getTrackersFromMessage($comment));
 			}
 		}
 		$trackers = array_unique($trackers, SORT_REGULAR);
 		usort($trackers, function(Tracker $a, Tracker $b) {
-			if ($a->get_type() == $b->get_type()) {
+			if ($a->getType() == $b->getType()) {
 				return 0;
 			}
-			return $a->get_type() < $b->get_type() ? 1 : -1;
+			return $a->getType() < $b->getType() ? 1 : -1;
 		});
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_related_object() {
+	public function getRelatedObject() {
 		return $this->related_object;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_date($date) {
+	public function setDate($date) {
 		$this->date = abs((int)$date);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_revisions($revisions) {
+	public function setRevisions($revisions) {
 		$this->revisions = (array)$revisions;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_changelog($changelog) {
+	public function setChangelog($changelog) {
 		$this->changelog = (array)$changelog;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_comments($comments) {
+	public function setComments($comments) {
 		$this->comments = (array)$comments;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function set_related_object(\Interfaces\Object $related_object) {
+	public function setRelatedObject(\Interfaces\Object $related_object) {
 		if (!($related_object instanceof \Interfaces\Object)) {
 			$related_object = null;
 		}

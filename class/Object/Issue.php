@@ -7,7 +7,7 @@ use Object;
 /**
  * Class represents a Bug Tracker instance
  */
-abstract class Tracker extends Object implements \Interfaces\Object\Tracker {
+abstract class Issue extends Object implements \Interfaces\Object\Issue {
 	protected $id;
 	protected $title;
 	protected $type;

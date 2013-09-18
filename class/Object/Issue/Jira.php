@@ -1,16 +1,16 @@
 <?php
 
-namespace Object\Tracker;
+namespace Object\Issue;
 
-use Object\Tracker;
+use Object\Issue;
 
-class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
+class Jira extends Issue implements \Interfaces\Object\Issue\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'tracker',
+																 'issue',
 																 'config',
 															));
 	}
@@ -27,9 +27,9 @@ class Jira extends Tracker implements \Interfaces\Object\Tracker\Jira {
 		$cache_key = __CLASS__.'|'.$object_id;
 		$task_data = apc_fetch($cache_key);
 		if ($task_data === false) {
-			/** @var \Interfaces\Shared\Tracker\Jira $tracker_shared */
-			$tracker_shared = $this->dependence_objects['tracker'];
-			exec($tracker_shared->getApiExecBegin().'issue/'.$object_id, $output);
+			/** @var \Interfaces\Shared\Issue\Jira $issue_shared */
+			$issue_shared = $this->dependence_objects['issue'];
+			exec($issue_shared->getApiExecBegin().'issue/'.$object_id, $output);
 			$task_data = json_decode(end($output));
 			apc_store($cache_key, $task_data, 0);
 		}

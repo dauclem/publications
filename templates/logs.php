@@ -18,8 +18,8 @@ $config_shared = $dic->getObject('config');
 /** @var \Interfaces\Shared\VCS $vcs */
 $vcs = $dic->getObject('vcs');
 
-/** @var \Interfaces\Shared\Tracker $tracker_shared */
-$tracker_shared = $dic->getObject('tracker');
+/** @var \Interfaces\Shared\Issue $issue_shared */
+$issue_shared = $dic->getObject('issue');
 
 $all_rows = $vcs->getAllRows($current_project, $revision_begins, $publication);
 
@@ -80,14 +80,14 @@ foreach ($all_rows as $k => $row) {
 	echo '</td>';
 
 	echo '<td style="width:25%">';
-	$trackers = array();
+	$issues = array();
 	foreach ($row->getComments() as $project_id => $comments) {
 		foreach ($comments as $comment) {
-			$trackers = array_merge($trackers, $tracker_shared->getTrackersFromMessage($comment));
+			$issues = array_merge($issues, $issue_shared->getIssuesFromMessage($comment));
 		}
 	}
-	$trackers = array_unique($trackers, SORT_REGULAR);
-	usort($trackers, function(\Interfaces\Object\Tracker $a, \Interfaces\Object\Tracker $b) {
+	$issues = array_unique($issues, SORT_REGULAR);
+	usort($issues, function(\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
 		if ($a->getType() == $b->getType()) {
 			return 0;
 		}
@@ -95,22 +95,22 @@ foreach ($all_rows as $k => $row) {
 	});
 
 	if ($this_publication) {
-		$trackers_bak  = $trackers;
-		$trackers      = $tracker_shared->filterTrackers($trackers, $current_project);
-		/** @var \Interfaces\Object\Tracker[] $trackers_diff */
-		$trackers_diff = array_diff($trackers_bak, $trackers);
+		$issues_bak  = $issues;
+		$issues      = $issue_shared->filterIssues($issues, $current_project);
+		/** @var \Interfaces\Object\Issue[] $issues_diff */
+		$issues_diff = array_diff($issues_bak, $issues);
 	}
 
-	$trackers_list = $trackers;
-	require __DIR__.'/include/logs_trackers.php';
+	$issues_list = $issues;
+	require __DIR__.'/include/logs_issues.php';
 
-	if ($this_publication && $trackers_diff) {
-		echo '<br /><button type="button" class="btn" data-toggle="collapse" data-target="#trackers'.$this_publication->getId().'">
+	if ($this_publication && $issues_diff) {
+		echo '<br /><button type="button" class="btn" data-toggle="collapse" data-target="#issues'.$this_publication->getId().'">
 			Voir les autres tâches
 		</button>
-		<div id="trackers'.$this_publication->getId().'" class="collapse">';
-			$trackers_list = $trackers_diff;
-			require __DIR__.'/include/logs_trackers.php';
+		<div id="issues'.$this_publication->getId().'" class="collapse">';
+			$issues_list = $issues_diff;
+			require __DIR__.'/include/logs_issues.php';
 		echo '</div>';
 	}
 	echo '</td>';
@@ -129,15 +129,15 @@ foreach ($all_rows as $k => $row) {
 		$nl = urlencode("\n");
 		$body = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
 		$current_type = '';
-		foreach ($trackers as $tracker) {
-			if ($current_type != $tracker->getType()) {
+		foreach ($issues as $issue) {
+			if ($current_type != $issue->getType()) {
 				if ($current_type) {
 					$body .= $nl;
 				}
-				$current_type = $tracker->getType();
+				$current_type = $issue->getType();
 				$body .= $current_type.' :'.$nl;
 			}
-			$body .= $tracker->getId().' : '.$tracker->getTitle().$nl;
+			$body .= $issue->getId().' : '.$issue->getTitle().$nl;
 		}
 		$body .= $nl.'Bonne journée';
 		echo '<a target="_blank" href="mailto:'.$recipients.'?cc='.$cc.'&subject='.htmlentities($subject).'&body='.htmlentities($body).'">
@@ -161,11 +161,11 @@ foreach ($all_rows as $k => $row) {
 		$this_project = $dic->getObject('project_object', $project_id);
 		echo '<strong>_____'.htmlentities($this_project->getName()).'_____</strong><br />';
 		$result_comment = htmlentities(implode("\n", array_map('trim', array_unique($comments))));
-		$result_comment = preg_replace_callback($tracker_shared->getTrackerIdPattern(), function($matches) {
+		$result_comment = preg_replace_callback($issue_shared->getIssueIdPattern(), function($matches) {
 			global $dic;
-			/** @var \Interfaces\Object\Tracker $tracker */
-			$tracker = $dic->getObject('tracker_object', $matches[1]);
-			return $tracker ? '<a target="_blank" href="'.$tracker->getUrl().'">'.$tracker->getId().'</a>' : '';
+			/** @var \Interfaces\Object\Issue $issue */
+			$issue = $dic->getObject('issue_object', $matches[1]);
+			return $issue ? '<a target="_blank" href="'.$issue->getUrl().'">'.$issue->getId().'</a>' : '';
 		}, $result_comment);
 		echo nl2br($result_comment);
 		if ($i < $row_comment_count) {

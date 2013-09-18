@@ -51,11 +51,11 @@ interface Project extends Object {
 	public function getVcsRepository();
 
 	/**
-	 * Get Tracker id to filter into query
+	 * Get Bug Tracker id to filter into query
 	 *
 	 * @return string
 	 */
-	public function getTrackerId();
+	public function getBugTrackerId();
 
 	/**
 	 * Return true if this project is displayable as complete project
@@ -100,11 +100,11 @@ interface Project extends Object {
 	public function setVcsPath($vcs_path);
 
 	/**
-	 * Set Tracker id to filter into query
+	 * Set Bug Tracker id to filter into query
 	 *
-	 * @param string $tracker_id
+	 * @param string $bug_tracker_id
 	 */
-	public function setTrackerId($tracker_id);
+	public function setBugTrackerId($bug_tracker_id);
 
 	/**
 	 * Set if project is accessible

@@ -5,32 +5,32 @@ namespace Interfaces\Object;
 use Interfaces\Object;
 
 /**
- * Class represents a Bug Tracker instance
+ * Class represents a Bug Issue instance
  */
-interface Tracker extends Object {
+interface Issue extends Object {
 	/**
-	 * Get Tracker object id
+	 * Get Issue object id
 	 *
 	 * @return int|string
 	 */
 	public function getId();
 
 	/**
-	 * Get Tracker title
+	 * Get Issue title
 	 *
 	 * @return string
 	 */
 	public function getTitle();
 
 	/**
-	 * Get Tracker type (Bug, technical task, feature, etc...)
+	 * Get Issue type (Bug, technical task, feature, etc...)
 	 *
 	 * @return string
 	 */
 	public function getType();
 
 	/**
-	 * Get tracker web url
+	 * Get Issue web url
 	 *
 	 * @return string
 	 */

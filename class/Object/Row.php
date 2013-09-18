@@ -3,7 +3,7 @@
 namespace Object;
 
 use Object;
-use Interfaces\Object\Tracker;
+use Interfaces\Object\Issue;
 
 class Row extends Object implements \Interfaces\Object\Row {
 	/** @var int timestamp */
@@ -22,7 +22,7 @@ class Row extends Object implements \Interfaces\Object\Row {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'tracker',
+																 'issue',
 															));
 	}
 
@@ -70,17 +70,17 @@ class Row extends Object implements \Interfaces\Object\Row {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getTrackers() {
-		/** @var \Interfaces\Shared\Tracker $tracker_shared */
-		$tracker_shared = $this->dependence_objects['tracker'];
-		$trackers = array();
+	public function getIssues() {
+		/** @var \Interfaces\Shared\Issue $issue_shared */
+		$issue_shared = $this->dependence_objects['issue'];
+		$issues = array();
 		foreach ($this->comments as $comments) {
 			foreach ($comments as $comment) {
-				$trackers = array_merge($trackers, $tracker_shared->getTrackersFromMessage($comment));
+				$issues = array_merge($issues, $issue_shared->getIssuesFromMessage($comment));
 			}
 		}
-		$trackers = array_unique($trackers, SORT_REGULAR);
-		usort($trackers, function(Tracker $a, Tracker $b) {
+		$issues = array_unique($issues, SORT_REGULAR);
+		usort($issues, function(Issue $a, Issue $b) {
 			if ($a->getType() == $b->getType()) {
 				return 0;
 			}

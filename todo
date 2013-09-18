@@ -3,7 +3,6 @@
 -- nouveau type de Row 'Notes'
 -- Créer un classe abstraite \Object\RowRelated dont héritera \Object\RowRelated\Publication et \Object\RowRelated\Note puisqu'il y a beaucoup de choses communes
 - technique : move email info generation into Publication class
-- technique : rename Tracker to Issue
 - feature : pouvoir noter une publication comme "prévue mais pas encore faite"
 -- Dans ce cas pas de date (on mettra automatiquement now() à l'affichage)
 - feature : permettre de configurer le mail dans la configuration générale + surcharger, si besoin, dans la config des projets

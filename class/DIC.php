@@ -24,9 +24,9 @@ class DIC {
 			'shared'     => false,
 			'class_name' => '\\Object\\Row',
 		),
-		'tracker_object'        => array(
+		'issue_object'        => array(
 			'shared'     => false,
-			'class_name' => '\\Object\\Tracker\\Jira',
+			'class_name' => '\\Object\\Issue\\Jira',
 		),
 
 		'database'           => array(
@@ -53,9 +53,9 @@ class DIC {
 			'shared'     => true,
 			'class_name' => '\\Shared\\VCS\\Subversion',
 		),
-		'tracker'               => array(
+		'issue'               => array(
 			'shared'     => true,
-			'class_name' => '\\Shared\\Tracker\\Jira',
+			'class_name' => '\\Shared\\Issue\\Jira',
 		),
 	);
 

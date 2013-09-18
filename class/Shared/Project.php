@@ -32,7 +32,8 @@ class Project extends Shared implements \Interfaces\Shared\Project {
 							vcs_base TEXT,
 							vcs_path TEXT,
 							visible INTEGER(1),
-							hasProd INTEGER(1))');
+							has_prod INTEGER(1),
+							tracker_id TEXT)');
 		$connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_name ON project (name)');
 		$connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_vcs_path ON project (vcs_base, vcs_path)');
 
@@ -64,7 +65,7 @@ class Project extends Shared implements \Interfaces\Shared\Project {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
 		$connection = $database->getConnection();
-		$connection->exec('INSERT INTO project(name, vcs_base, vcs_path, visible, hasProd)
+		$connection->exec('INSERT INTO project(name, vcs_base, vcs_path, visible, has_prod)
 							VALUES (\''.$connection->escapeString($name).'\',
 									\''.$connection->escapeString($vcs_base).'\',
 									\''.$connection->escapeString($vcs_path).'\',

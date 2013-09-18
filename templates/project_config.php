@@ -37,15 +37,15 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 
-		<div class="form-group<?php echo isset($errors['tracker_id']) ? ' has-error' : ''; ?>">
-			<label for="tracker_id" class="col-lg-2 control-label">Identifiant du projet sur <?php echo $config_shared->getBugTrackerType(); ?></label>
+		<div class="form-group<?php echo isset($errors['bug_tracker_id']) ? ' has-error' : ''; ?>">
+			<label for="bug_tracker_id" class="col-lg-2 control-label">Identifiant du projet sur <?php echo $config_shared->getBugTrackerType(); ?></label>
 
 			<div class="col-lg-10">
 				<input type="text" class="form-control"
-					   id="tracker_id" name="tracker_id"
-					   value="<?php echo isset($tracker_id) ? htmlentities($tracker_id) : ''; ?>">
-				<?php if (isset($errors['tracker_id'])) { ?>
-					<span class="help-block"><?php echo $errors['tracker_id']; ?></span>
+					   id="bug_tracker_id" name="bug_tracker_id"
+					   value="<?php echo isset($bug_tracker_id) ? htmlentities($bug_tracker_id) : ''; ?>">
+				<?php if (isset($errors['bug_tracker_id'])) { ?>
+					<span class="help-block"><?php echo $errors['bug_tracker_id']; ?></span>
 				<?php } ?>
 			</div>
 		</div>
@@ -63,15 +63,15 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 
-		<div class="form-group<?php echo isset($errors['hasProd']) ? ' has-error' : ''; ?>">
-			<label for="hasProd" class="col-lg-2 control-label">Le projet peut avoir des publications</label>
+		<div class="form-group<?php echo isset($errors['has_prod']) ? ' has-error' : ''; ?>">
+			<label for="has_prod" class="col-lg-2 control-label">Le projet peut avoir des publications</label>
 
 			<div class="col-lg-10">
 				<input type="checkbox" class="form-control"
-					   id="hasProd" name="hasProd"
+					   id="has_prod" name="has_prod"
 					   <?php echo !empty($has_prod) ? 'checked="checked"' : ''; ?>">
-				<?php if (isset($errors['hasProd'])) { ?>
-					<span class="help-block"><?php echo $errors['hasProd']; ?></span>
+				<?php if (isset($errors['has_prod'])) { ?>
+					<span class="help-block"><?php echo $errors['has_prod']; ?></span>
 				<?php } ?>
 			</div>
 		</div>

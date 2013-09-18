@@ -1,11 +1,11 @@
 <?php
 
-namespace Shared\Tracker;
+namespace Shared\Issue;
 
 use Interfaces\Object\Project;
-use Shared\Tracker;
+use Shared\Issue;
 
-class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
+class Jira extends Issue implements \Interfaces\Shared\Issue\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -30,25 +30,25 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getTrackerIdPattern() {
+	public function getIssueIdPattern() {
 		return '#([A-Z]{2,}-[0-9]+)#';
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function filterTrackers($trackers, Project $project = null) {
+	public function filterIssues($issues, Project $project = null) {
 		$ids = array();
-		foreach ($trackers as $tracker) {
-			if ($tracker instanceof \Interfaces\Object\Tracker) {
-				$ids[] = $tracker->getId();
+		foreach ($issues as $issue) {
+			if ($issue instanceof \Interfaces\Object\Issue) {
+				$ids[] = $issue->getId();
 			}
 		}
 		$ids = array_unique($ids);
 
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
-		$jql = str_replace('{PROJECT_ID}', $project->getTrackerId(), $config_shared->getBugTrackerQuery());
+		$jql = str_replace('{PROJECT_ID}', $project->getBugTrackerId(), $config_shared->getBugTrackerQuery());
 		$jql = ($jql ? '('.$jql.') AND ' : '').'key IN ('.implode(',', $ids).')';
 		exec($this->getApiExecBegin().'search?jql='.urlencode($jql).'&maxResults=200&fields=key', $output);
 		$task_data = json_decode(end($output));
@@ -57,9 +57,9 @@ class Jira extends Tracker implements \Interfaces\Shared\Tracker\Jira {
 		if (isset($task_data, $task_data->issues)) {
 			foreach ($task_data->issues as $this_issue) {
 				if (isset($this_issue->key)) {
-					$tracker = $this->dic->getObject('tracker_object', $this_issue->key);
-					if ($tracker) {
-						$list[] = $tracker;
+					$issue = $this->dic->getObject('issue_object', $this_issue->key);
+					if ($issue) {
+						$list[] = $issue;
 					}
 				}
 			}

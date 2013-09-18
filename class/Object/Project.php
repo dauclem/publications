@@ -16,7 +16,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	/** @var string */
 	protected $vcs_path;
 	/** @var string */
-	protected $tracker_id;
+	protected $bug_tracker_id;
 	/** @var bool */
 	protected $visible;
 	/** @var bool */
@@ -41,14 +41,14 @@ class Project extends Object implements \Interfaces\Object\Project {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
 		$data     = $database->getConnection()->querySingle('SELECT id, name, description, vcs_base, vcs_path,
-																tracker_id, visible, hasProd
+																tracker_id, visible, has_prod
 															FROM project
 															WHERE id = '.(int)$object_id, true);
 		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path,
-			$this->tracker_id, $this->visible, $this->hasProd) = array_values($data);
+			$this->bug_tracker_id, $this->visible, $this->has_prod) = array_values($data);
 		$this->id       = (int)$this->id;
 		$this->visible  = (bool)$this->visible;
-		$this->hasProd = (bool)$this->hasProd;
+		$this->has_prod = (bool)$this->has_prod;
 	}
 
 	/**
@@ -96,8 +96,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getTrackerId() {
-		return $this->tracker_id;
+	public function getBugTrackerId() {
+		return $this->bug_tracker_id;
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * {@inheritDoc}
 	 */
 	public function hasProd() {
-		return $this->hasProd;
+		return $this->has_prod;
 	}
 
 	/**
@@ -183,8 +183,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setTrackerId($tracker_id) {
-		$this->tracker_id = $tracker_id;
+	public function setBugTrackerId($bug_tracker_id) {
+		$this->bug_tracker_id = $bug_tracker_id;
 		$this->save('tracker_id');
 	}
 
@@ -200,8 +200,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * {@inheritDoc}
 	 */
 	public function setHasProd($has_prod) {
-		$this->hasProd = $has_prod;
-		$this->save('hasProd');
+		$this->has_prod = $has_prod;
+		$this->save('has_prod');
 	}
 
 	/**

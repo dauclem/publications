@@ -3,7 +3,7 @@
 namespace Interfaces\Object;
 
 use Interfaces\Object;
-use Interfaces\Object\Tracker;
+use Interfaces\Object\Issue;
 
 interface Row extends Object {
 	/**
@@ -35,9 +35,9 @@ interface Row extends Object {
 	/**
 	 * Calculate all bug tracked into comments
 	 *
-	 * @return Tracker[]
+	 * @return Issue[]
 	 */
-	public function getTrackers();
+	public function getIssues();
 
 	/**
 	 * Get related object if this row has one

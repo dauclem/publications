@@ -1,13 +1,13 @@
 <?php
 
-namespace Interfaces\Shared\Tracker;
+namespace Interfaces\Shared\Issue;
 
-use \Interfaces\Shared\Tracker;
+use \Interfaces\Shared\Issue;
 
 /**
- * Interface Jira as Bug tracker
+ * Interface Jira as Bug Issue
  */
-interface Jira extends Tracker {
+interface Jira extends Issue {
 	/**
 	 * Get begin of exec instruction for jira rest api call
 	 *

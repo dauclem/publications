@@ -35,9 +35,9 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'database',
-																 'form_utils',
-															));
+															   'database',
+															   'form_utils',
+														  ));
 	}
 
 	/**
@@ -86,14 +86,18 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 		$connection = $database->getConnection();
 		$result     = $connection->querySingle('SELECT name FROM sqlite_master WHERE type="table" AND name="config"');
 		if (!$result) {
-			$this->install();
+			if (!isset($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI'] != '/configuration/') {
+				header('Status: 302 Found', true, 302);
+				header('Location: /configuration/', true, 302);
+				exit;
+			}
+		} else {
+			$data = $connection->querySingle('SELECT vcs_type, vcs_url, vcs_user, vcs_password, vcs_web_url, changelog_path,
+													bug_tracker_type, bug_tracker_url, bug_tracker_user, bug_tracker_password, bug_tracker_query
+												FROM config', true);
+			list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
+				$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user, $this->bug_tracker_password, $this->bug_tracker_query) = array_values($data);
 		}
-
-		$data = $connection->querySingle('SELECT vcs_type, vcs_url, vcs_user, vcs_password, vcs_web_url, changelog_path,
-												bug_tracker_type, bug_tracker_url, bug_tracker_user, bug_tracker_password, bug_tracker_query
-											FROM config', true);
-		@list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
-			$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user, $this->bug_tracker_password, $this->bug_tracker_query) = array_values($data);
 	}
 
 	/**
@@ -317,11 +321,15 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	 */
 	public function getRecipients() {
 		/** @var \Interfaces\Shared\Database $database */
-		$database = $this->dependence_objects['database'];
-		$result   = $database->getConnection()->query('SELECT email FROM config_recipients');
-		$emails   = array();
-		while (list($email) = $result->fetchArray()) {
-			$emails[] = $email;
+		$database   = $this->dependence_objects['database'];
+		$connection = $database->getConnection();
+		$result     = $connection->querySingle('SELECT name FROM sqlite_master WHERE type="table" AND name="config"');
+		$emails     = array();
+		if ($result) {
+			$result = $connection->query('SELECT email FROM config_recipients');
+			while (list($email) = $result->fetchArray()) {
+				$emails[] = $email;
+			}
 		}
 		return $emails;
 	}

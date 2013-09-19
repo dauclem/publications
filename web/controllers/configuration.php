@@ -73,6 +73,8 @@ if ($_POST) {
 	}
 
 	if (!$errors) {
+		$config_shared->install();
+
 		// Store config
 		$config_shared->setVcsType($VCS_type);
 		$config_shared->setVcsUrl($VCS_url);

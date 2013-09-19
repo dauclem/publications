@@ -17,12 +17,13 @@ interface Publication extends Shared {
 	 * Create new publication object in database and return it
 	 *
 	 * @param \Interfaces\Object\Project $project
+	 * @param bool    $is_temp
 	 * @param int     $date
 	 * @param string  $comments
 	 * @param \Interfaces\Object\Project $project
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function create(\Interfaces\Object\Project $project, $date, $comments);
+	public function create(\Interfaces\Object\Project $project, $is_temp, $date, $comments);
 
 	/**
 	 * Get All publications from a specific project
@@ -31,6 +32,14 @@ interface Publication extends Shared {
 	 * @return \Interfaces\Object\Publication[]
 	 */
 	public function getPublications(\Interfaces\Object\Project $project);
+
+	/**
+	 * Get unique temporary publication for this project
+	 *
+	 * @param \Interfaces\Object\Project $project
+	 * @return \Interfaces\Object\Publication
+	 */
+	public function getPublicationTemp(\Interfaces\Object\Project $project);
 
 	/**
 	 * Get a publication object instance from its id

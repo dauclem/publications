@@ -30,6 +30,14 @@ require __DIR__.'/common/top_nav.php';
 	</div>
 
 	<div class="form-group">
+		<label class="control-label col-lg-3" for="is_temp">En préparation :</label>
+
+		<div class="col-lg-6">
+			<input type="checkbox" class="form-control" name="is_temp" id="is_temp"
+				   <?php echo $publication && $publication->isTemp() ? 'checked="checked"' : ''; ?>/>
+		</div>
+	</div>
+	<div class="form-group" id="date_group">
 		<label class="control-label col-lg-3" for="date">Date :</label>
 
 		<div class="col-lg-6">
@@ -52,6 +60,21 @@ require __DIR__.'/common/top_nav.php';
 		</div>
 	</div>
 </form>
+
+<script type="text/javascript">
+	$(function() {
+		function check_is_temp() {
+			if ($('#is_temp').attr('checked')) {
+				$('#date_group').hide();
+			} else {
+				$('#date_group').show();
+			}
+		}
+
+		check_is_temp();
+		$('#is_temp').change(check_is_temp);
+	});
+</script>
 
 <?php
 require __DIR__.'/common/footer.php';

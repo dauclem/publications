@@ -50,9 +50,10 @@ foreach ($all_rows as $k => $row) {
 	$related_object   = $row->getRelatedObject();
 	$this_publication = $related_object instanceof \Interfaces\Object\Publication ? $related_object : null;
 
-	echo '<tr'.($this_publication ? ' class="alert alert-info"' : '').'>';
+	$class_alert_type = $this_publication ? ($this_publication->isTemp() ? 'warning' : 'success') : '';
+	echo '<tr'.($class_alert_type ? ' class="alert alert-'.$class_alert_type.'"' : '').'>';
 
-	echo '<td>'.date('d/m/Y H:i', $row->getDate()).'</td>';
+	echo '<td>'.($this_publication && $this_publication->isTemp() ? 'En préparation' : date('d/m/Y H:i', $row->getDate())).'</td>';
 
 	echo '<td style="width:15%">';
 	foreach ($row->getRevisions() as $project_id => $revisions) {
@@ -133,6 +134,10 @@ foreach ($all_rows as $k => $row) {
 
 		echo ' <a href="'.$this_publication->getUrl().'?action=edit"><i class="glyphicon glyphicon-pencil"></i></a>';
 		echo ' <a href="'.$this_publication->getUrl().'?action=remove"><i class="glyphicon glyphicon-remove"></i></a>';
+
+		if ($this_publication->isTemp()) {
+			echo ' <a href="'.$this_publication->getUrl().'?action=notemp"><i class="glyphicon glyphicon-ok"></i></a>';
+		}
 
 		if ($this_publication->getComments()) {
 			echo '<p>'.nl2br(htmlspecialchars($this_publication->getComments())).'<p>';

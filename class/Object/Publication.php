@@ -9,6 +9,8 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	protected $id;
 	/** @var int */
 	protected $project_id;
+	/** @var bool */
+	protected $is_temp;
 	/** @var string */
 	protected $date;
 	/** @var string */
@@ -32,12 +34,13 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	public function initializeId($object_id) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
-		$data     = $database->getConnection()->querySingle('SELECT id, project_id, date, comments
+		$data     = $database->getConnection()->querySingle('SELECT id, project_id, is_temp, date, comments
 															FROM publication
 															WHERE id = '.(int)$object_id, true);
-		@list($this->id, $this->project_id, $this->date, $this->comments) = array_values($data);
+		@list($this->id, $this->project_id, $this->is_temp, $this->date, $this->comments) = array_values($data);
 		$this->id         = (int)$this->id;
 		$this->project_id = (int)$this->project_id;
+		$this->is_temp    = (bool)$this->is_temp;
 		$this->date       = (int)$this->date;
 	}
 
@@ -69,8 +72,15 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function isTemp() {
+		return $this->is_temp;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getDate() {
-		return $this->date;
+		return $this->is_temp ? time() : $this->date;
 	}
 
 	/**
@@ -95,6 +105,27 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 								WHERE id = '.$this->id);
 			$this->initializeId($this->id);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setTemp($is_temp) {
+		$is_temp = (bool)$is_temp;
+		/** @var \Interfaces\Shared\Publication $publication_shared */
+		$publication_shared = $this->dependence_objects['publication'];
+		if ($this->isTemp() == $is_temp
+			|| ($is_temp && $publication_shared->getPublicationTemp($this->getProject()))) {
+			return null;
+		}
+
+		if ($is_temp && !$this->date) {
+			$this->date = time();
+			$this->save('date');
+		}
+
+		$this->is_temp = $is_temp;
+		$this->save('is_temp');
 	}
 
 	/**
@@ -130,8 +161,9 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
 												WHERE project_id = '.$this->project_id.'
-													AND date < '.$this->date.'
-												ORDER BY date DESC
+													AND is_temp = 0
+													'.($this->is_temp ? '' : 'AND date < '.$this->date).'
+												ORDER BY is_temp DESC, date DESC
 												LIMIT 1');
 		return $this->dic->getObject('publication_object', $id);
 	}
@@ -146,8 +178,9 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
 												WHERE project_id = '.$this->project_id.'
-													AND date > '.$this->date.'
-												ORDER BY date ASC
+													AND (date > '.$this->date.'
+														OR is_temp = 1)
+												ORDER BY is_temp ASC, date ASC
 												LIMIT 1');
 		return $this->dic->getObject('publication_object', $id);
 	}
@@ -199,8 +232,6 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			$this->comments = 'PREMIERE PUBLICATION'."\n\n".$this->comments;
 		}
 
-		/** @var \Interfaces\Shared\Config $config_shared */
-		$config_shared = $this->dependence_objects['config'];
 		/** @var \Interfaces\Shared\VCS $vcs */
 		$vcs = $this->dic->getObject('vcs');
 		array_map(array($vcs, 'optimizeRevisions'), $revisions);

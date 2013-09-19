@@ -20,6 +20,13 @@ interface Publication extends Object {
 	public function getProject();
 
 	/**
+	 * Return true if publication is not yet really executed
+	 *
+	 * @return bool
+	 */
+	public function isTemp();
+
+	/**
 	 * Return timestamp of publication date
 	 *
 	 * @return int
@@ -30,6 +37,11 @@ interface Publication extends Object {
 	 * @return string
 	 */
 	public function getComments();
+
+	/**
+	 * @param bool $is_temp
+	 */
+	public function setTemp($is_temp);
 
 	/**
 	 * @param int $date timestamp

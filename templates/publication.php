@@ -29,14 +29,22 @@ require __DIR__.'/common/top_nav.php';
 		</div>
 	</div>
 
-	<div class="form-group">
-		<label class="control-label col-lg-3" for="is_temp">En préparation :</label>
+	<?php
+	if ((!$publication && !$publication_shared->getPublicationTemp($current_project))
+		|| ($publication && ($publication->isTemp() || !$publication->getNext())))
+	{
+		echo '<div class="form-group">
+			<label class="control-label col-lg-3" for="is_temp">En préparation :</label>
 
-		<div class="col-lg-6">
-			<input type="checkbox" class="form-control" name="is_temp" id="is_temp"
-				   <?php echo $publication && $publication->isTemp() ? 'checked="checked"' : ''; ?>/>
-		</div>
-	</div>
+			<div class="col-lg-6">
+				<input type="checkbox" class="form-control" name="is_temp" id="is_temp"';
+					echo $publication && $publication->isTemp() ? 'checked="checked"' : '';
+				echo '/>
+			</div>
+		</div>';
+	}
+	?>
+
 	<div class="form-group" id="date_group">
 		<label class="control-label col-lg-3" for="date">Date :</label>
 

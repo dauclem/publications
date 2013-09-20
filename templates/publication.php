@@ -30,6 +30,8 @@ require __DIR__.'/common/top_nav.php';
 	</div>
 
 	<?php
+	/** @var \Interfaces\Shared\Publication $publication_shared */
+	$publication_shared = $dic->getObject('publication');
 	if ((!$publication && !$publication_shared->getPublicationTemp($current_project))
 		|| ($publication && ($publication->isTemp() || !$publication->getNext())))
 	{

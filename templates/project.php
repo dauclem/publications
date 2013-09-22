@@ -9,7 +9,42 @@ $config_shared = $dic->getObject('config');
 
 $current_project = $project_shared->getCurrentProject();
 
-echo '<h2>'.$current_project->getName().'</h2>';
+echo '<div class="row" id="project_header_row"><h2>'.$current_project->getName().'</h2>';
+
+$columns_hide         = explode(',', isset($_COOKIE['column_hide']) ? $_COOKIE['column_hide'] : '');
+$columns_hide_classes = $columns_hide ? 'column_hide_'.implode(' column_hide_', $columns_hide) :'';
+?>
+
+<div id="display_columns_block">
+	<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+		Colonnes
+		<span class="caret"></span>
+	</button>
+	<ul role="menu" class="dropdown-menu <?php echo $columns_hide_classes; ?>" id="display_columns">
+		<li role="presentation" class="dropdown-header">Visibilité</li>
+		<li>
+			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Révisions</a>
+			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Révisions</a>
+		</li>
+		<li>
+			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Jira</a>
+			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Jira</a>
+		</li>
+		<li>
+			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Changelog</a>
+			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Changelog</a>
+		</li>
+		<li>
+			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Libellés</a>
+			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Libellés</a>
+		</li>
+	</ul>
+</div>
+
+</div>
+
+<?php
+
 if ($current_project->hasProd()) {
 	echo '<div id="add_prod_publication_link">';
 		echo '<a href="'.$current_project->getUrlAddPublication().'">+ Publication</a>';
@@ -37,51 +72,91 @@ if ($current_project->hasProd()) {
 
 ?>
 
-<table class="table table-bordered table-hover">
-	<thead>
-		<tr>
-			<th>Date</th>
-			<th>Révisions</th>
-			<th>Jira</th>
-			<th>Changelog</th>
-			<th>Libellés</th>
-		</tr>
-	</thead>
-	<tbody>
+<div id="rows_content" class="<?php echo $columns_hide_classes; ?>">
+	<div>
+		<div>Date</div>
+		<div>Révisions</div>
+		<div>Jira</div>
+		<div>Changelog</div>
+		<div>Libellés</div>
+	</div>
 
-<?php
+	<?php
 
-if (isset($force_publication)) {
-	$publication = $force_publication instanceof \Interfaces\Object\Publication ? $force_publication : null;
-} else {
-	/** @var \Interfaces\Shared\Publication $publication_shared */
-	$publication_shared = $dic->getObject('publication');
+	if (isset($force_publication)) {
+		$publication = $force_publication instanceof \Interfaces\Object\Publication ? $force_publication : null;
+	} else {
+		/** @var \Interfaces\Shared\Publication $publication_shared */
+		$publication_shared = $dic->getObject('publication');
 
-	$publication = $publication_shared->getLastPublication($current_project);
-	$publication = $publication ? $publication->getPrevious() : null;
-}
+		$publication = $publication_shared->getLastPublication($current_project);
+		$publication = $publication ? $publication->getPrevious() : null;
+	}
 
-require __DIR__.'/logs.php';
+	require __DIR__.'/logs.php';
 
-?>
+	?>
 
-	</tbody>
-</table>
+</div>
 
 <script type="text/javascript">
 	function see_more(params) {
-		$("#see_more strong").addClass("loader").html("");
+		$('#see_more strong').addClass('loader').html('');
 
 		params.r = Math.random();
-		$.ajax("<?php echo $current_project->getUrlSeeMore(); ?>", {
+		$.ajax('<?php echo $current_project->getUrlSeeMore(); ?>', {
 			data: params,
 			success: function(data, textStatus, jqXHR) {
-				$("#see_more").remove();
-				$(".table tbody").append(data);
+				$('#see_more').remove();
+				$('#rows_content').append(data);
+				$('#see_more').insertAfter($('#rows_content'));
 			}
 		});
 		return false;
 	}
+
+	$(function() {
+		$('#see_more').insertAfter($('#rows_content'));
+
+		$('.column_hide_action').click(function() {
+			var index = $(this).parent('li:first').index() + 1;
+			$('#rows_content, #display_columns').addClass('column_hide_'+index);
+
+			var column_hide_indexes = $.cookie('column_hide');
+			column_hide_indexes = column_hide_indexes ? column_hide_indexes.split(',') : [];
+			var column_hide_indexes_length = column_hide_indexes.length;
+			var found = false;
+			for (var i = 0; i < column_hide_indexes_length; i++) {
+				if (column_hide_indexes[i] == index) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				column_hide_indexes.push(index);
+				$.cookie('column_hide', column_hide_indexes);
+			}
+
+			return false;
+		});
+		$('.column_show_action').click(function() {
+			var index = $(this).parent('li:first').index() + 1;
+			$('#rows_content, #display_columns').removeClass('column_hide_'+index);
+
+			var column_hide_indexes = $.cookie('column_hide');
+			column_hide_indexes = column_hide_indexes ? column_hide_indexes.split(',') : [];
+			var column_hide_indexes_length = column_hide_indexes.length;
+			var column_hide_indexes_new = [];
+			for (var i = 0; i < column_hide_indexes_length; i++) {
+				if (column_hide_indexes[i] != index) {
+					column_hide_indexes_new.push(column_hide_indexes[i]);
+				}
+			}
+			$.cookie('column_hide', column_hide_indexes_new);
+
+			return false;
+		});
+	});
 </script>
 
 <?php

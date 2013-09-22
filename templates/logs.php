@@ -51,11 +51,13 @@ foreach ($all_rows as $k => $row) {
 	$this_publication = $related_object instanceof \Interfaces\Object\Publication ? $related_object : null;
 
 	$class_alert_type = $this_publication ? ($this_publication->isTemp() ? 'warning' : 'success') : '';
-	echo '<tr'.($class_alert_type ? ' class="alert alert-'.$class_alert_type.'"' : '').'>';
+	echo '<div'.($class_alert_type ? ' class="alert alert-'.$class_alert_type.'"' : '').'>';
 
-	echo '<td>'.($this_publication && $this_publication->isTemp() ? 'En préparation' : date('d/m/Y H:i', $row->getDate())).'</td>';
+	echo '<div>';
+		echo $this_publication && $this_publication->isTemp() ? 'En préparation' : date('d/m/Y H:i', $row->getDate());
+	echo '</div>';
 
-	echo '<td style="width:15%">';
+	echo '<div>';
 	foreach ($row->getRevisions() as $project_id => $revisions) {
 		/** @var \Interfaces\Object\Project $this_project */
 		$this_project = $dic->getObject('project_object', $project_id);
@@ -78,9 +80,9 @@ foreach ($all_rows as $k => $row) {
 		$this_last_revision          = (int)preg_replace('#(^.*|-|,|\\s)('.$vcs->getPregRevision().')$#U', '\\2', $revisions) - 1;
 		$revision_begins[$project_id] = isset($revision_begins[$project_id]) ? min($revision_begins[$project_id], $this_last_revision) : $this_last_revision;
 	}
-	echo '</td>';
+	echo '</div>';
 
-	echo '<td style="width:25%">';
+	echo '<div>';
 	$issues = array();
 	foreach ($row->getComments() as $project_id => $comments) {
 		foreach ($comments as $comment) {
@@ -114,13 +116,13 @@ foreach ($all_rows as $k => $row) {
 			require __DIR__.'/include/logs_issues.php';
 		echo '</div>';
 	}
-	echo '</td>';
+	echo '</div>';
 
-	echo '<td style="width:20%">';
+	echo '<div>';
 	echo implode('<br />', array_unique($row->getChangelog()));
-	echo '</td>';
+	echo '</div>';
 
-	echo '<td style="width:40%">';
+	echo '<div>';
 	if ($this_publication) {
 		echo '<div class="well">';
 
@@ -164,9 +166,9 @@ foreach ($all_rows as $k => $row) {
 			echo '<br /><br />';
 		}
 	}
-	echo '</td>';
+	echo '</div>';
 
-	echo '</tr>';
+	echo '</div>';
 }
 
 if ($publication) {
@@ -174,9 +176,9 @@ if ($publication) {
 							   'begins'              => $revision_begins,
 							   'last_publication_id' => $publication->getId(),
 						  ));
-	echo '<tr id="see_more">
-		<td colspan="5" onclick=\'return see_more('.$params.')\' class="alert alert-info text-center pointer">
+	echo '<div class="alert alert-info" id="see_more">
+		<div onclick=\'return see_more('.$params.')\' class="text-center pointer">
 			<strong>Voir la suite</strong>
-		</td>
-	</tr>';
+		</div>
+	</div>';
 }

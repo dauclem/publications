@@ -8,6 +8,7 @@
 }
 #project_header_row h2 {
 	float: left;
+	margin-left: 15px;
 }
 
 #display_columns_block {

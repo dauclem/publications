@@ -28,7 +28,7 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param int                        $revision_begin
 	 * @return array
 	 */
-	abstract protected function getDiffRevisionsAndChangelog($project, $revision_end, $revision_begin);
+	abstract protected function getDiffRevisionsAndChangelog(\Interfaces\Object\Project $project, $revision_end, $revision_begin);
 
 	/**
 	 * Get list of logs from revision declaration (like merge infos)
@@ -37,7 +37,7 @@ abstract class VCS extends Shared implements \Interfaces\Shared\VCS {
 	 * @param string                     $revisions
 	 * @return array[]
 	 */
-	protected function getLogsFromRevisions($project, $revisions) {
+	protected function getLogsFromRevisions(\Interfaces\Object\Project $project, $revisions) {
 		$logs = array();
 
 		$revisions = explode(',', $revisions);

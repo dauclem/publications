@@ -2,6 +2,7 @@
 
 namespace Shared\VCS;
 
+use Exception;
 use Shared\VCS;
 use Interfaces\Shared\Config;
 use Interfaces\Object\Project;
@@ -77,7 +78,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getDiffRevisionsAndChangelog($project, $revision_end, $revision_begin) {
+	protected function getDiffRevisionsAndChangelog(\Interfaces\Object\Project $project, $revision_end, $revision_begin) {
 		$key    = md5($project->getId().'|'.$revision_end.'|'.$revision_begin);
 		$result = apc_fetch($key);
 		if ($result === false) {
@@ -100,9 +101,11 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				$project_shared = $this->dependence_objects['project'];
 
 				foreach ($matches[1] as $k => $repo_path) {
-					$this_project                          = $project_shared->getFromVcsPath($project->getVcsBase(), $repo_path);
-					$this_project_id                       = $this_project ? $this_project->getId() : 0;
-					$result['revisions'][$this_project_id] = $matches[2][$k];
+					$this_project = $project_shared->getFromVcsPath($project->getVcsBase(), $repo_path);
+					if (!$this_project) {
+						throw new Exception('Project not registered : base = "'.$project->getVcsBase().'", path = "'.$repo_path.'"');
+					}
+					$result['revisions'][$this_project->getId()] = $matches[2][$k];
 				}
 			}
 

@@ -15,50 +15,53 @@ $columns_hide         = explode(',', isset($_COOKIE['column_hide']) ? $_COOKIE['
 $columns_hide_classes = $columns_hide ? 'column_hide_'.implode(' column_hide_', $columns_hide) :'';
 ?>
 
-<div id="display_columns_block">
-	<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-		Colonnes
-		<span class="caret"></span>
-	</button>
-	<ul role="menu" class="dropdown-menu <?php echo $columns_hide_classes; ?>" id="display_columns">
-		<li role="presentation" class="dropdown-header">Visibilité</li>
-		<li>
-			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Révisions</a>
-			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Révisions</a>
-		</li>
-		<li>
-			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Jira</a>
-			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Jira</a>
-		</li>
-		<li>
-			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Changelog</a>
-			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Changelog</a>
-		</li>
-		<li>
-			<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Libellés</a>
-			<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Libellés</a>
-		</li>
-	</ul>
-</div>
+	<div id="display_columns_block">
+		<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+			Colonnes
+			<span class="caret"></span>
+		</button>
+		<ul role="menu" class="dropdown-menu <?php echo $columns_hide_classes; ?>" id="display_columns">
+			<li role="presentation" class="dropdown-header">Visibilité</li>
+			<li>
+				<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Révisions</a>
+				<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Révisions</a>
+			</li>
+			<li>
+				<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Jira</a>
+				<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Jira</a>
+			</li>
+			<li>
+				<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Changelog</a>
+				<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Changelog</a>
+			</li>
+			<li>
+				<a href="#" class="column_hide_action"><i class="glyphicon glyphicon-eye-open"></i> Libellés</a>
+				<a href="#" class="column_show_action"><i class="glyphicon glyphicon-eye-close"></i> Libellés</a>
+			</li>
+		</ul>
+	</div>
+
+	<?php
+	if ($current_project->hasProd()) {
+		echo '<a id="show_prod_only" href="#" onclick="$(\'tr\').not(\'.alert\').hide();$(this).hide();$(\'#show_all\').show();return false;">';
+		echo '<i class="glyphicon  glyphicon-resize-small"></i> Ne voir que les publications et notes';
+		echo '</a>';
+
+		echo '<a id="show_all" href="#" onclick="$(\'tr\').not(\'.alert\').show();$(this).hide();$(\'#show_prod_only\').show();return false;">';
+		echo '<i class="glyphicon  glyphicon-resize-full"></i> Voir tout';
+		echo '</a>';
+
+		echo '<a id="show_all_rev" href="'.$current_project->getUrlSeeAll().'">Afficher toutes les révisions (très long)</a>';
+	}
+	?>
 
 </div>
 
 <?php
-
 if ($current_project->hasProd()) {
 	echo '<div id="add_prod_publication_link">';
-		echo '<a href="'.$current_project->getUrlAddPublication().'">+ Publication</a>';
+	echo '<a href="'.$current_project->getUrlAddPublication().'">+ Publication</a>';
 	echo '</div>';
-
-	echo '<a id="show_prod_only" href="#" onclick="$(\'tr\').not(\'.alert\').hide();$(this).hide();$(\'#show_all\').show();return false;">';
-		echo '<i class="glyphicon  glyphicon-resize-small"></i> Ne voir que les publications et notes';
-	echo '</a>';
-
-	echo '<a id="show_all" href="#" onclick="$(\'tr\').not(\'.alert\').show();$(this).hide();$(\'#show_prod_only\').show();return false;">';
-		echo '<i class="glyphicon  glyphicon-resize-full"></i> Voir tout';
-	echo '</a>';
-
-	echo '<a id="show_all_rev" href="'.$current_project->getUrlSeeAll().'">Afficher toutes les révisions (très long)</a>';
 
 	if ($current_project->getDescription()) {
 		echo '<pre>'.$current_project->getDescription().'</pre>';
@@ -69,7 +72,6 @@ if ($current_project->hasProd()) {
 		echo '<pre>Destinataires des mails de publication : '.implode(', ', $recipients).'</pre>';
 	}
 }
-
 ?>
 
 <div id="rows_content" class="<?php echo $columns_hide_classes; ?>">

@@ -100,8 +100,9 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				$project_shared = $this->dependence_objects['project'];
 
 				foreach ($matches[1] as $k => $repo_path) {
-					$this_project                                 = $project_shared->getFromVcsPath($project->getVcsBase(), $repo_path);
-					$result['revisions'][$this_project->getId()] = $matches[2][$k];
+					$this_project                          = $project_shared->getFromVcsPath($project->getVcsBase(), $repo_path);
+					$this_project_id                       = $this_project ? $this_project->getId() : 0;
+					$result['revisions'][$this_project_id] = $matches[2][$k];
 				}
 			}
 

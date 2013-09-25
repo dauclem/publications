@@ -119,7 +119,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			return null;
 		}
 
-		if ($is_temp && !$this->date) {
+		if (!$is_temp && !$this->date) {
 			$this->date = time();
 			$this->save('date');
 		}
@@ -163,7 +163,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 												WHERE project_id = '.$this->project_id.'
 													AND is_temp = 0
 													'.($this->is_temp ? '' : 'AND date < '.$this->date).'
-												ORDER BY is_temp DESC, date DESC
+												ORDER BY date DESC
 												LIMIT 1');
 		return $this->dic->getObject('publication_object', $id);
 	}
@@ -172,6 +172,10 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	 * {@inheritDoc}
 	 */
 	public function getNext() {
+		if ($this->is_temp) {
+			return null;
+		}
+
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
 		$connection = $database->getConnection();
@@ -208,7 +212,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		/** @var Row $row */
 		$row = $this->dic->getObject('row_object');
 		$row->setRelatedObject($this);
-		$row->setDate($this->date);
+		$row->setDate($this->getDate());
 
 		$revisions = $changelog = $messages = array();
 		/** @var Publication $previous_publication */
@@ -216,7 +220,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		if ($previous_publication) {
 			$previous_date = $previous_publication->getDate();
 			foreach ($rows as $this_row) {
-				if ($this_row->getDate() > $previous_date && $this_row->getDate() < $this->date) {
+				if ($this_row->getDate() > $previous_date && $this_row->getDate() < $this->getDate()) {
 					foreach ($this_row->getRevisions() as $project_id => $revision) {
 						$revisions[$project_id] = $revision.(isset($revisions[$project_id]) ? ','.$revisions[$project_id] : '');
 					}

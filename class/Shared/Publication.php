@@ -50,7 +50,7 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 		$database   = $this->dependence_objects['database'];
 		$connection = $database->getConnection();
 		$connection->exec('INSERT INTO publication(project_id, is_temp, date, comments)
-							VALUES ('.$project->getId().', '.$is_temp.', '.$date.', \''.$connection->escapeString($comments).'\')');
+							VALUES ('.$project->getId().', '.$is_temp.', '.($is_temp ? 0 : $date).', \''.$connection->escapeString($comments).'\')');
 
 		return $this->dic->getObject('publication_object', $connection->lastInsertRowid());
 	}

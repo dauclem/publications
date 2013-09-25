@@ -71,7 +71,8 @@ interface Publication extends Shared {
 	 * Get last publication object for this project (newest by date)
 	 *
 	 * @param \Interfaces\Object\Project $project
+	 * @param bool $no_temp if true, do not get temporary publication
 	 * @return \Interfaces\Object\Publication
 	 */
-	public function getLastPublication(\Interfaces\Object\Project $project);
+	public function getLastPublication(\Interfaces\Object\Project $project, $no_temp = false);
 }

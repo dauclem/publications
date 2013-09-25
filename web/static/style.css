@@ -2,6 +2,15 @@
 .nav-tabs li:first-child a:hover {
 	background-color: #E0ADAD;
 }
+.nav-tabs .nav_project_date {
+	position: absolute;
+	display: block;
+	width: 100%;
+	margin-top: -14px;
+	text-align: center;
+	font-size: 0.7em;
+	color: #666;
+}
 
 #project_header_row {
 	position: relative;
@@ -145,4 +154,9 @@
 
 .pointer {
 	cursor: pointer;
+}
+
+#project_list th,
+#project_list td {
+	white-space: nowrap;
 }

@@ -130,13 +130,14 @@ class Publication extends Shared implements \Interfaces\Shared\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getLastPublication(\Interfaces\Object\Project $project) {
+	public function getLastPublication(\Interfaces\Object\Project $project, $no_temp = false) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database   = $this->dependence_objects['database'];
 		$connection = $database->getConnection();
 		$id         = $connection->querySingle('SELECT id
 												FROM publication
 												WHERE project_id = '.$project->getId().'
+													'.($no_temp ? 'AND is_temp = 0' : '').'
 												ORDER BY is_temp DESC, date DESC
 												LIMIT 1');
 		return $this->dic->getObject('publication_object', $id);

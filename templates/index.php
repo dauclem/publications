@@ -15,14 +15,15 @@ require __DIR__.'/common/top_nav.php';
 	<legend>Projets</legend>
 </fieldset>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="project_list">
 	<thead>
 		<tr>
-			<td>&nbsp;</td>
-			<td>Nom</td>
-			<td>Repository</td>
-			<td>Visible</td>
-			<td>Prodable</td>
+			<th>&nbsp;</th>
+			<th>Nom</th>
+			<th>Repository</th>
+			<th>Visible</th>
+			<th>Prodable</th>
+			<th>Dernière publication</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,8 +39,16 @@ require __DIR__.'/common/top_nav.php';
 				</td>
 				<td>'.htmlentities($project->getName()).'</td>
 				<td>'.htmlentities($project->getVcsRepository()).'</td>
-				<td>'.($project->isVisible() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
-				<td>'.($project->hasProd() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
+				<td class="text-center">'.($project->isVisible() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
+				<td class="text-center">'.($project->hasProd() ? '<i class="glyphicon glyphicon-ok"></i>' : '').'</td>
+				<td class="text-center">';
+
+			$this_last_publication = $publication_shared->getLastPublication($project, true);
+			if ($this_last_publication) {
+				echo date('d/m/Y H:i', $this_last_publication->getDate());
+			}
+
+			echo '</td>
 			</tr>';
 		}
 		?>

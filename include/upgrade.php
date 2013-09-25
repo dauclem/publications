@@ -20,4 +20,4 @@ $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS config_recipient ON config_
 @$connection->exec('ALTER TABLE publication ADD is_temp INTEGER');
 $connection->exec('DROP INDEX IF EXISTS project_date');
 $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_temp_date ON publication (project_id, is_temp, date)');
-$connection->exec('UPDATE publication SET is_temp = 0 WHERE is_temp IS NULL');
+$connection->exec('UPDATE publication SET is_temp = 0 WHERE is_temp NOT IN (0, 1)');

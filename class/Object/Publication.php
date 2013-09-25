@@ -124,7 +124,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			$this->save('date');
 		}
 
-		$this->is_temp = $is_temp;
+		$this->is_temp = (int)$is_temp;
 		$this->save('is_temp');
 	}
 

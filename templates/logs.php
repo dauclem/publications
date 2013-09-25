@@ -119,7 +119,7 @@ foreach ($all_rows as $k => $row) {
 	echo '</div>';
 
 	echo '<div>';
-	echo implode('<br />', array_unique($row->getChangelog()));
+	echo implode('<br />', array_map('htmlentities', array_unique($row->getChangelog())));
 	echo '</div>';
 
 	echo '<div>';

@@ -136,7 +136,7 @@ if ($current_project->hasProd()) {
 			}
 			if (!found) {
 				column_hide_indexes.push(index);
-				$.cookie('column_hide', column_hide_indexes);
+				$.cookie('column_hide', column_hide_indexes, { expires: 365 });
 			}
 
 			return false;
@@ -154,7 +154,7 @@ if ($current_project->hasProd()) {
 					column_hide_indexes_new.push(column_hide_indexes[i]);
 				}
 			}
-			$.cookie('column_hide', column_hide_indexes_new);
+			$.cookie('column_hide', column_hide_indexes_new, { expires: 365 });
 
 			return false;
 		});

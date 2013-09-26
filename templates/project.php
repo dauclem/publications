@@ -43,11 +43,11 @@ $columns_hide_classes = $columns_hide ? 'column_hide_'.implode(' column_hide_', 
 
 	<?php
 	if ($current_project->hasProd()) {
-		echo '<a id="show_prod_only" href="#" onclick="$(\'tr\').not(\'.alert\').hide();$(this).hide();$(\'#show_all\').show();return false;">';
+		echo '<a id="show_prod_only" href="#" onclick="$(\'#rows_content > div\').not(\'.alert\').hide();$(this).hide();$(\'#show_all\').show();return false;">';
 		echo '<i class="glyphicon  glyphicon-resize-small"></i> Ne voir que les publications et notes';
 		echo '</a>';
 
-		echo '<a id="show_all" href="#" onclick="$(\'tr\').not(\'.alert\').show();$(this).hide();$(\'#show_prod_only\').show();return false;">';
+		echo '<a id="show_all" href="#" onclick="$(\'#rows_content > div\').not(\'.alert\').show();$(this).hide();$(\'#show_prod_only\').show();return false;">';
 		echo '<i class="glyphicon  glyphicon-resize-full"></i> Voir tout';
 		echo '</a>';
 

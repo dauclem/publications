@@ -83,20 +83,7 @@ foreach ($all_rows as $k => $row) {
 	echo '</div>';
 
 	echo '<div>';
-	$issues = array();
-	foreach ($row->getComments() as $project_id => $comments) {
-		foreach ($comments as $comment) {
-			$issues = array_merge($issues, $issue_shared->getIssuesFromMessage($comment));
-		}
-	}
-	$issues = array_unique($issues, SORT_REGULAR);
-	usort($issues, function(\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
-		if ($a->getType() == $b->getType()) {
-			return 0;
-		}
-		return $a->getType() < $b->getType() ? 1 : -1;
-	});
-
+	$issues = $row->getIssues();
 	if ($this_publication) {
 		$issues_bak  = $issues;
 		$issues      = $issue_shared->filterIssues($issues, $current_project);

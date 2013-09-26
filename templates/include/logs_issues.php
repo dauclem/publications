@@ -5,6 +5,13 @@ if (!isset($issues_list) || !is_array($issues_list)) {
 	$issues_list = array();
 }
 
+usort($issues_list, function(\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
+	if ($a->getType() == $b->getType()) {
+		return 0;
+	}
+	return $a->getType() < $b->getType() ? 1 : -1;
+});
+
 $current_type = '';
 foreach ($issues_list as $this_issue) {
 	if ($current_type != $this_issue->getType()) {

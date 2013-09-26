@@ -86,6 +86,8 @@ class Row extends Object implements \Interfaces\Object\Row {
 			}
 			return $a->getType() < $b->getType() ? 1 : -1;
 		});
+
+		return $issues;
 	}
 
 	/**

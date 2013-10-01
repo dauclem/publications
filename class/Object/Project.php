@@ -127,14 +127,15 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * Save changes into db
 	 *
 	 * @param string $property property name
+	 * @param mixed|null $value force value. If null, use value of object property
 	 */
-	protected function save($property) {
+	protected function save($property, $value = null) {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
 		if ($property) {
 			$connection = $database->getConnection();
 			$connection->exec('UPDATE project
-								SET '.$property.' = \''.$connection->escapeString($this->$property).'\'
+								SET '.$property.' = \''.$connection->escapeString($value ? $value : $this->$property).'\'
 								WHERE id = '.$this->id);
 			$this->initializeId($this->id);
 		}
@@ -185,7 +186,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function setBugTrackerId($bug_tracker_id) {
 		$this->bug_tracker_id = $bug_tracker_id;
-		$this->save('bug_tracker_id');
+		$this->save('tracker_id', $bug_tracker_id);
 	}
 
 	/**

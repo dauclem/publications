@@ -15,6 +15,7 @@ $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS config_recipient ON config_
 // Project
 @$connection->exec('ALTER TABLE project ADD description TEXT');
 @$connection->exec('ALTER TABLE project ADD tracker_id TEXT');
+@$connection->exec('ALTER TABLE project MODIFY tracker_id bug_tracker_id TEXT');
 
 // Publication
 @$connection->exec('ALTER TABLE publication ADD is_temp INTEGER');

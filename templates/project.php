@@ -158,6 +158,9 @@ if ($current_project->hasProd()) {
 
 			return false;
 		});
+
+		// Always keep this cookie, so new expire
+		$.cookie('column_hide', $.cookie('column_hide'), { expires: 365 });
 	});
 </script>
 

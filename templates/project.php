@@ -136,7 +136,7 @@ if ($current_project->hasProd()) {
 			}
 			if (!found) {
 				column_hide_indexes.push(index);
-				$.cookie('column_hide', column_hide_indexes, { expires: 365 });
+				$.cookie('column_hide', column_hide_indexes, { expires: 365, path: '/' });
 			}
 
 			return false;
@@ -154,13 +154,13 @@ if ($current_project->hasProd()) {
 					column_hide_indexes_new.push(column_hide_indexes[i]);
 				}
 			}
-			$.cookie('column_hide', column_hide_indexes_new, { expires: 365 });
+			$.cookie('column_hide', column_hide_indexes_new, { expires: 365, path: '/' });
 
 			return false;
 		});
 
 		// Always keep this cookie, so new expire
-		$.cookie('column_hide', $.cookie('column_hide'), { expires: 365 });
+		$.cookie('column_hide', $.cookie('column_hide'), { expires: 365, path: '/' });
 	});
 </script>
 

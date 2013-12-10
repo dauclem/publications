@@ -72,6 +72,20 @@ interface Project extends Object {
 	public function hasProd();
 
 	/**
+	 * Return project custom mail template
+	 *
+	 * @return string
+	 */
+	public function getMailContent();
+
+	/**
+	 * Return mail template to use for this project
+	 *
+	 * @return string
+	 */
+	public function getDisplayMailContent();
+
+	/**
 	 * Set project name
 	 *
 	 * @param string $name
@@ -119,6 +133,13 @@ interface Project extends Object {
 	 * @param bool $has_prod
 	 */
 	public function setHasProd($has_prod);
+
+	/**
+	 * Set project custom mail template
+	 *
+	 * @param string $mail_content
+	 */
+	public function setMailContent($mail_content);
 
 	/**
 	 * Add project defined as external for this project

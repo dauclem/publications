@@ -15,6 +15,7 @@ if ($_POST) {
 	$vcs_path       = isset($_POST['vcs_path']) ? trim($_POST['vcs_path']) : '';
 	$bug_tracker_id = isset($_POST['bug_tracker_id']) ? trim($_POST['bug_tracker_id']) : '';
 	$externals      = isset($_POST['externals']) ? (array)$_POST['externals'] : array();
+	$mail_content   = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
 	$recipients     = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
 	$errors = array();
@@ -70,6 +71,8 @@ if ($_POST) {
 				}
 			}
 
+			$current_project->setMailContent($mail_content);
+
 			foreach ($current_project->getRecipients() as $recipient) {
 				$current_project->removeRecipient($recipient);
 			}
@@ -86,6 +89,7 @@ if ($_POST) {
 	$vcs_base       = $current_project->getVcsBase();
 	$vcs_path       = $current_project->getVcsPath();
 	$bug_tracker_id = $current_project->getBugTrackerId();
+	$mail_content   = $current_project->getDisplayMailContent();
 }
 
 require $dic->getParam('path_templates').'/project_config.php';

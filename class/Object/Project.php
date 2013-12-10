@@ -21,17 +21,19 @@ class Project extends Object implements \Interfaces\Object\Project {
 	protected $visible;
 	/** @var bool */
 	protected $has_prod;
+	/** @var string */
+	protected $mail_content;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'database',
-																 'project',
-																 'config',
-																 'form_utils',
-															));
+															   'database',
+															   'project',
+															   'config',
+															   'form_utils',
+														  ));
 	}
 
 	/**
@@ -41,11 +43,11 @@ class Project extends Object implements \Interfaces\Object\Project {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
 		$data     = $database->getConnection()->querySingle('SELECT id, name, description, vcs_base, vcs_path,
-																tracker_id, visible, has_prod
+																tracker_id, visible, has_prod, mail_content
 															FROM project
 															WHERE id = '.(int)$object_id, true);
 		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path,
-			$this->bug_tracker_id, $this->visible, $this->has_prod) = array_values($data);
+			$this->bug_tracker_id, $this->visible, $this->has_prod, $this->mail_content) = array_values($data);
 		$this->id       = (int)$this->id;
 		$this->visible  = (bool)$this->visible;
 		$this->has_prod = (bool)$this->has_prod;
@@ -124,10 +126,30 @@ class Project extends Object implements \Interfaces\Object\Project {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailContent() {
+		return $this->mail_content;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getDisplayMailContent() {
+		if ($this->mail_content) {
+			return $this->mail_content;
+		}
+
+		/** @var \Interfaces\Shared\Config $config */
+		$config = $this->dependence_objects['config'];
+		return $config->getMailContent();
+	}
+
+	/**
 	 * Save changes into db
 	 *
-	 * @param string $property property name
-	 * @param mixed|null $value force value. If null, use value of object property
+	 * @param string     $property property name
+	 * @param mixed|null $value    force value. If null, use value of object property
 	 */
 	protected function save($property, $value = null) {
 		/** @var \Interfaces\Shared\Database $database */
@@ -203,6 +225,16 @@ class Project extends Object implements \Interfaces\Object\Project {
 	public function setHasProd($has_prod) {
 		$this->has_prod = $has_prod;
 		$this->save('has_prod');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailContent($mail_content) {
+		/** @var \Interfaces\Shared\Config $config */
+		$config              = $this->dependence_objects['config'];
+		$this->mail_content  = $mail_content != $config->getMailContent() ? $mail_content : '';
+		$this->save('mail_content');
 	}
 
 	/**

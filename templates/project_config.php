@@ -155,10 +155,29 @@ require __DIR__.'/common/top_nav.php';
 	</fieldset>
 
 	<fieldset>
-		<legend>Destinataire des publications</legend>
+		<legend>Publications</legend>
+
+		<div class="form-group<?php echo isset($errors['mail_content']) ? ' has-error' : ''; ?>">
+			<label for="mail_content" class="col-lg-2 control-label">Mail de publication</label>
+
+			<div class="col-lg-10">
+				<textarea class="form-control" id="mail_content" name="mail_content" rows="6"
+					><?php echo isset($mail_content) ? htmlentities($mail_content) : ''; ?></textarea>
+				<span class="help-block">
+					Utilisée pour filter les tâches à envoyer par mail pour publication.<br />
+					{PROJECT} sera remplacé par le nom du projet.<br />
+					{ISSUES} sera remplacé par la liste des tâches.
+					<?php if (isset($errors['mail_content'])) { ?>
+						<?php echo '<br />'.$errors['mail_content']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
 
 		<div class="form-group<?php echo isset($errors['recipients']) ? ' has-error' : ''; ?>">
-			<div class="col-lg-10 col-lg-offset-2">
+			<label class="col-lg-2 control-label">Destinataires</label>
+
+			<div class="col-lg-10">
 				<?php
 					$this_recipients = !empty($recipients) ? $recipients : ($current_project ? $current_project->getRecipients() : array());
 					foreach ($this_recipients as $recipient) {

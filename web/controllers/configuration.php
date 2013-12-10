@@ -17,9 +17,10 @@ if ($_POST) {
 	$bug_tracker_user     = isset($_POST['bug_tracker_user']) ? trim($_POST['bug_tracker_user']) : '';
 	$bug_tracker_password = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config_shared->getBugTrackerPassword();
 	$bug_tracker_query    = isset($_POST['bug_tracker_query']) ? trim($_POST['bug_tracker_query']) : '';
+	$mail_content         = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
 	$recipients           = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
-	$errors         = array();
+	$errors = array();
 	$dic->setObjectDefinition('vcs', '\\Shared\\VCS\\'.ucfirst($VCS_type), true);
 	try {
 		$VCS_type_class = $dic->getObject('vcs');
@@ -91,6 +92,7 @@ if ($_POST) {
 			$config_shared->setBugTrackerPassword($bug_tracker_password);
 		}
 		$config_shared->setBugTrackerQuery($bug_tracker_query);
+		$config_shared->setMailContent($mail_content);
 
 		foreach ($config_shared->getRecipients() as $recipient) {
 			$config_shared->removeRecipient($recipient);
@@ -117,6 +119,7 @@ if ($_POST) {
 	$bug_tracker_url   = $config_shared->getBugTrackerUrl();
 	$bug_tracker_user  = $config_shared->getBugTrackerUser();
 	$bug_tracker_query = $config_shared->getBugTrackerQuery();
+	$mail_content      = $config_shared->getMailContent();
 }
 
 require $dic->getParam('path_templates').'/configuration.php';

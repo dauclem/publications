@@ -115,7 +115,8 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		/** @var \Interfaces\Shared\Publication $publication_shared */
 		$publication_shared = $this->dependence_objects['publication'];
 		if ($this->isTemp() == $is_temp
-			|| ($is_temp && $publication_shared->getPublicationTemp($this->getProject()))) {
+			|| ($is_temp && $publication_shared->getPublicationTemp($this->getProject()))
+		) {
 			return null;
 		}
 
@@ -260,19 +261,24 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$subject    = 'Publication de '.$project->getName();
 
 		$nl           = urlencode("\n");
-		$body         = 'Bonjour'.$nl.$nl.'Une publication va avoir lieu contenant les changements suivants :'.$nl.$nl;
-		$current_type = '';
+		$current_type = $issues_str = '';
 		foreach ($issues as $issue) {
 			if ($current_type != $issue->getType()) {
 				if ($current_type) {
-					$body .= $nl;
+					$issues_str .= $nl;
 				}
 				$current_type = $issue->getType();
-				$body .= $current_type.' :'.$nl;
+				$issues_str .= $current_type.' :'.$nl;
 			}
-			$body .= $issue->getId().' : '.$issue->getTitle().$nl;
+			$issues_str .= $issue->getId().' : '.$issue->getTitle().$nl;
 		}
-		$body .= $nl.'Bonne journée';
+
+		$replace = array(
+			"\n"        => $nl,
+			'{PROJECT}' => $project->getName(),
+			'{ISSUES}'  => $issues_str,
+		);
+		$body    = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent());
 
 		return array(
 			'recipients' => $recipients,

@@ -65,6 +65,13 @@ class Jira extends Issue implements \Interfaces\Shared\Issue\Jira {
 			}
 		}
 
+		usort($list, function(\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
+			if ($a->getType() == $b->getType()) {
+				return 0;
+			}
+			return $a->getType() < $b->getType() ? 1 : -1;
+		});
+
 		return $list;
 	}
 }

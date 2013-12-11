@@ -260,17 +260,16 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$cc         = implode(';', $config_shared->getRecipients());
 		$subject    = 'Publication de '.$project->getName();
 
-		$nl           = urlencode("\n");
 		$current_type = $issues_str = '';
 		foreach ($issues as $issue) {
 			if ($current_type != $issue->getType()) {
 				if ($current_type) {
-					$issues_str .= $nl;
+					$issues_str .= "\n";
 				}
 				$current_type = $issue->getType();
-				$issues_str .= $current_type.' :'.$nl;
+				$issues_str .= $current_type.' :'."\n";
 			}
-			$issues_str .= $issue->getId().' : '.$issue->getTitle().$nl;
+			$issues_str .= $issue->getId().' : '.$issue->getTitle()."\n";
 		}
 
 		$replace = array(

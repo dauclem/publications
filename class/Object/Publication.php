@@ -274,11 +274,10 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		}
 
 		$replace = array(
-			"\n"        => $nl,
 			'{PROJECT}' => $project->getName(),
 			'{ISSUES}'  => $issues_str,
 		);
-		$body    = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent());
+		$body    = urlencode(str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent()));
 
 		return array(
 			'recipients' => $recipients,

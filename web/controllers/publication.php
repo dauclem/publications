@@ -37,9 +37,7 @@ if ($action == 'remove') {
 			}
 
 			$comments = isset($_POST['comments']) ? trim($_POST['comments']) : '';
-			if ($comments) {
-				$publication->setComments($comments);
-			}
+			$publication->setComments($comments);
 		}
 	} else {
 		$is_temp    = isset($_POST['is_temp']) && $_POST['is_temp'] == 'on';

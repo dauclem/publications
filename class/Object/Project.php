@@ -208,7 +208,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function setBugTrackerId($bug_tracker_id) {
 		$this->bug_tracker_id = $bug_tracker_id;
-		$this->save('tracker_id', $bug_tracker_id);
+		$this->save('bug_tracker_id', $bug_tracker_id);
 	}
 
 	/**

@@ -157,7 +157,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 		if ($property) {
 			$connection = $database->getConnection();
 			$connection->exec('UPDATE project
-								SET '.$property.' = \''.$connection->escapeString($value ? $value : $this->$property).'\'
+								SET '.$property.' = \''.$connection->escapeString($value !== null ? $value : $this->$property).'\'
 								WHERE id = '.$this->id);
 			$this->initializeId($this->id);
 		}
@@ -208,7 +208,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function setBugTrackerId($bug_tracker_id) {
 		$this->bug_tracker_id = $bug_tracker_id;
-		$this->save('bug_tracker_id', $bug_tracker_id);
+		$this->save('tracker_id', $bug_tracker_id);
 	}
 
 	/**

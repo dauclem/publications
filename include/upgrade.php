@@ -30,3 +30,5 @@ Cordialement" WHERE mail_content IS NULL');
 $connection->exec('DROP INDEX IF EXISTS project_date');
 $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_temp_date ON publication (project_id, is_temp, date)');
 $connection->exec('UPDATE publication SET is_temp = 0 WHERE is_temp NOT IN (0, 1)');
+
+$connection->exec('UPDATE project SET name = REPLACE(name, "/", "-")');

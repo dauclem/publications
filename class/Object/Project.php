@@ -167,7 +167,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * {@inheritDoc}
 	 */
 	public function setName($name) {
-		$name = trim($name);
+		$name = str_replace('/', '-', trim($name));
 		/** @var \Interfaces\Shared\Project $project_shared */
 		$project_shared = $this->dependence_objects['project'];
 		if (!$name || $project_shared->getFromName($name)) {

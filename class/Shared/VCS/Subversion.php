@@ -41,12 +41,15 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		$result = apc_fetch($key);
 		if ($result === false) {
 			$result = array();
-			foreach (svn_log($project->getVcsRepository(), $revision_begin, $revision_end) as $log) {
-				$result[] = array(
-					'date' => strtotime($log['date']),
-					'rev'  => $log['rev'],
-					'msg'  => $log['msg'],
-				);
+			$logs = @svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
+			if ($logs) {
+				foreach ($logs as $log) {
+					$result[] = array(
+						'date' => strtotime($log['date']),
+						'rev'  => $log['rev'],
+						'msg'  => $log['msg'],
+					);
+				}
 			}
 
 			apc_store($key, $result, 0);
@@ -56,7 +59,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			};
 
 			$result_delta = array();
-			$logs         = svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
+			$logs         = @svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
 			if ($logs) {
 				foreach ($logs as $log) {
 					$result_delta[] = array(

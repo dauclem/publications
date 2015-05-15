@@ -33,7 +33,9 @@ class Project extends Shared implements \Interfaces\Shared\Project {
 							vcs_path TEXT,
 							visible INTEGER(1),
 							has_prod INTEGER(1),
-							tracker_id TEXT)');
+							tracker_id TEXT,
+							mail_content TEXT,
+							mail_subject TEXT)');
 		$connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_name ON project (name)');
 		$connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS project_vcs_path ON project (vcs_base, vcs_path)');
 

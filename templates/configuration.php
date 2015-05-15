@@ -164,6 +164,21 @@ require __DIR__.'/common/top_nav.php';
 	<fieldset>
 		<legend>Publications</legend>
 
+		<div class="form-group<?php echo isset($errors['mail_subject']) ? ' has-error' : ''; ?>">
+			<label for="mail_subject" class="col-lg-2 control-label">Sujet du mail de publication</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="mail_subject" name="mail_subject"
+					value="<?php echo isset($mail_subject) ? htmlentities($mail_subject) : ''; ?>" />
+				<span class="help-block">
+					{PROJECT} sera remplacé par le nom du projet.
+					<?php if (isset($errors['mail_subject'])) { ?>
+						<?php echo '<br />'.$errors['mail_subject']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
 		<div class="form-group<?php echo isset($errors['mail_content']) ? ' has-error' : ''; ?>">
 			<label for="mail_content" class="col-lg-2 control-label">Mail de publication</label>
 
@@ -176,6 +191,21 @@ require __DIR__.'/common/top_nav.php';
 					{ISSUES} sera remplacé par la liste des tâches.
 					<?php if (isset($errors['mail_content'])) { ?>
 						<?php echo '<br />'.$errors['mail_content']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
+		<div class="form-group<?php echo isset($errors['mail_sender']) ? ' has-error' : ''; ?>">
+			<label for="mail_sender" class="col-lg-2 control-label">Expéditeur de l'email automatique de publication</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="mail_sender" name="mail_sender"
+					   value="<?php echo isset($mail_sender) ? htmlentities($mail_sender) : ''; ?>" />
+				<span class="help-block">
+					Utilisé comme adresse exépiteur pour l'envoi automatique de mail de publication.
+					<?php if (isset($errors['mail_sender'])) { ?>
+						<?php echo '<br />'.$errors['mail_sender']; ?>
 					<?php } ?>
 				</span>
 			</div>

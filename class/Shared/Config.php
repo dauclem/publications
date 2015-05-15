@@ -31,6 +31,10 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	protected $bug_tracker_query;
 	/** @var string */
 	protected $mail_content;
+	/** @var string */
+	protected $mail_subject;
+	/** @var string */
+	protected $mail_sender;
 
 	/**
 	 * {@inheritDoc}
@@ -62,7 +66,9 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 							bug_tracker_user TEXT,
 							bug_tracker_password TEXT,
 							bug_tracker_query TEXT,
-							mail_content TEXT)');
+							mail_content TEXT,
+							mail_subject TEXT,
+							mail_sender TEXT)');
 		$connection->exec('INSERT INTO config(vcs_type) VALUES ("subversion")');
 
 		$connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
@@ -98,12 +104,12 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 			$data = $connection->querySingle('SELECT vcs_type, vcs_url, vcs_user, vcs_password, vcs_web_url, changelog_path,
 													bug_tracker_type, bug_tracker_url, bug_tracker_user,
 													bug_tracker_password, bug_tracker_query,
-													mail_content
+													mail_content, mail_subject, mail_sender
 												FROM config', true);
 			list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
 				$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user,
 				$this->bug_tracker_password, $this->bug_tracker_query,
-				$this->mail_content) = array_values($data);
+				$this->mail_content, $this->mail_subject, $this->mail_sender) = array_values($data);
 		}
 	}
 
@@ -196,6 +202,20 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	 */
 	public function getMailContent() {
 		return $this->mail_content;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailSubject() {
+		return $this->mail_subject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailSender() {
+		return $this->mail_sender;
 	}
 
 	/**
@@ -307,6 +327,22 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	public function setMailContent($mail_content) {
 		$this->mail_content = $mail_content;
 		$this->save('mail_content');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailSubject($mail_subject) {
+		$this->mail_subject = $mail_subject;
+		$this->save('mail_subject');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailSender($mail_sender) {
+		$this->mail_sender = $mail_sender;
+		$this->save('mail_sender');
 	}
 
 	/**

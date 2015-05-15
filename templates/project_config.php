@@ -157,6 +157,21 @@ require __DIR__.'/common/top_nav.php';
 	<fieldset>
 		<legend>Publications</legend>
 
+		<div class="form-group<?php echo isset($errors['mail_subject']) ? ' has-error' : ''; ?>">
+			<label for="mail_subject" class="col-lg-2 control-label">Sujet du mail de publication</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="mail_subject" name="mail_subject"
+					   value="<?php echo isset($mail_subject) ? htmlentities($mail_subject) : ''; ?>" />
+				<span class="help-block">
+					{PROJECT} sera remplacé par le nom du projet.
+					<?php if (isset($errors['mail_subject'])) { ?>
+						<?php echo '<br />'.$errors['mail_subject']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
 		<div class="form-group<?php echo isset($errors['mail_content']) ? ' has-error' : ''; ?>">
 			<label for="mail_content" class="col-lg-2 control-label">Mail de publication</label>
 

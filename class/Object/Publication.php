@@ -258,7 +258,6 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 
 		$recipients = implode(';', $project->getRecipients());
 		$cc         = implode(';', $config_shared->getRecipients());
-		$subject    = 'Publication de '.$project->getName();
 
 		$current_type = $issues_str = '';
 		foreach ($issues as $issue) {
@@ -276,7 +275,8 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			'{PROJECT}' => $project->getName(),
 			'{ISSUES}'  => $issues_str,
 		);
-		$body    = urlencode(str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent()));
+		$body    = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent());
+		$subject = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailSubject());
 
 		return array(
 			'recipients' => $recipients,

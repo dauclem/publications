@@ -23,6 +23,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	protected $has_prod;
 	/** @var string */
 	protected $mail_content;
+	/** @var string */
+	protected $mail_subject;
 
 	/**
 	 * {@inheritDoc}
@@ -43,11 +45,13 @@ class Project extends Object implements \Interfaces\Object\Project {
 		/** @var \Interfaces\Shared\Database $database */
 		$database = $this->dependence_objects['database'];
 		$data     = $database->getConnection()->querySingle('SELECT id, name, description, vcs_base, vcs_path,
-																tracker_id, visible, has_prod, mail_content
+																tracker_id, visible, has_prod,
+																mail_content, mail_subject
 															FROM project
 															WHERE id = '.(int)$object_id, true);
 		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path,
-			$this->bug_tracker_id, $this->visible, $this->has_prod, $this->mail_content) = array_values($data);
+			$this->bug_tracker_id, $this->visible, $this->has_prod,
+			$this->mail_content, $this->mail_subject) = array_values($data);
 		$this->id       = (int)$this->id;
 		$this->visible  = (bool)$this->visible;
 		$this->has_prod = (bool)$this->has_prod;
@@ -135,6 +139,13 @@ class Project extends Object implements \Interfaces\Object\Project {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getMailSubject() {
+		return $this->mail_subject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getDisplayMailContent() {
 		if ($this->mail_content) {
 			return $this->mail_content;
@@ -143,6 +154,19 @@ class Project extends Object implements \Interfaces\Object\Project {
 		/** @var \Interfaces\Shared\Config $config */
 		$config = $this->dependence_objects['config'];
 		return $config->getMailContent();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getDisplayMailSubject() {
+		if ($this->mail_content) {
+			return $this->mail_content;
+		}
+
+		/** @var \Interfaces\Shared\Config $config */
+		$config = $this->dependence_objects['config'];
+		return $config->getMailSubject();
 	}
 
 	/**
@@ -235,6 +259,16 @@ class Project extends Object implements \Interfaces\Object\Project {
 		$config              = $this->dependence_objects['config'];
 		$this->mail_content  = $mail_content != $config->getMailContent() ? $mail_content : '';
 		$this->save('mail_content');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailSubject($mail_subject) {
+		/** @var \Interfaces\Shared\Config $config */
+		$config              = $this->dependence_objects['config'];
+		$this->mail_content  = $mail_subject != $config->getMailSubject() ? $mail_subject : '';
+		$this->save('mail_subject');
 	}
 
 	/**

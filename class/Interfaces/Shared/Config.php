@@ -98,11 +98,18 @@ interface Config extends Shared {
 	public function getBugTrackerQuery();
 
 	/**
-	 * Get Mail template content
+	 * Get Mail content template
 	 *
 	 * @return string
 	 */
 	public function getMailContent();
+
+	/**
+	 * Get Mail subject template
+	 *
+	 * @return string
+	 */
+	public function getMailSubject();
 
 	/**
 	 * Set VCS ident to set correct class name
@@ -182,11 +189,18 @@ interface Config extends Shared {
 	public function setBugTrackerQuery($bug_tracker_query);
 
 	/**
-	 * Set mail template
+	 * Set mail content template
 	 *
 	 * @param string $mail_content
 	 */
 	public function setMailContent($mail_content);
+
+	/**
+	 * Set mail subject template
+	 *
+	 * @param string $mail_subject
+	 */
+	public function setMailSubject($mail_subject);
 
 	/**
 	 * Add a recipient for this all projects

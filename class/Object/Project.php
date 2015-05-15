@@ -267,7 +267,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 	public function setMailSubject($mail_subject) {
 		/** @var \Interfaces\Shared\Config $config */
 		$config              = $this->dependence_objects['config'];
-		$this->mail_content  = $mail_subject != $config->getMailSubject() ? $mail_subject : '';
+		$this->mail_subject  = $mail_subject != $config->getMailSubject() ? $mail_subject : '';
 		$this->save('mail_subject');
 	}
 

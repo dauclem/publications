@@ -23,7 +23,7 @@ if (!$publication_temp) {
 $vcs = $dic->getObject('vcs');
 
 $publication  = $publication_temp->getPrevious();
-$all_rows     = $vcs->getAllRows($current_project, $revision_begins, $publication);
+$all_rows     = $vcs->getAllRows($current_project, array(), $publication);
 $publications = array($publication->getNext()->createRow($all_rows));
 $all_rows     = array_merge($all_rows, $publications);
 usort($all_rows, function (\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) {
@@ -49,8 +49,10 @@ $issues       = $issue_shared->filterIssues($issues, $current_project);
 
 $email_infos = $this_publication->get_email_infos($issues);
 $dest        = $email_infos['recipients'].($email_infos['recipients'] && $email_infos['cc'] ? ',' : '').$email_infos['cc'];
+$sender      = $email_infos['sender'];
 
 // temporary to debug
 $dest = $email_infos['cc'];
 
-mail($dest, $email_infos['subject'], $email_infos['body']);
+$additional_parameters = $sender ? "From: $sender\nReply-to: $sender\nReturn-Path: $sender" : '';
+mail($dest, $email_infos['subject'], $email_infos['body'], $additional_parameters);

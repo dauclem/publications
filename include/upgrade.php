@@ -10,6 +10,7 @@ $connection = $database->getConnection();
 @$connection->exec('ALTER TABLE config ADD bug_tracker_query TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_content TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_subject TEXT');
+@$connection->exec('ALTER TABLE config ADD mail_sender TEXT');
 $connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
 							email TEXT)');
 $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS config_recipient ON config_recipients (email)');

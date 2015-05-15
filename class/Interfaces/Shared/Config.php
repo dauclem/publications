@@ -112,6 +112,13 @@ interface Config extends Shared {
 	public function getMailSubject();
 
 	/**
+	 * Get mail sender address to automatic emails
+	 *
+	 * @return string
+	 */
+	public function getMailSender();
+
+	/**
 	 * Set VCS ident to set correct class name
 	 *
 	 * @param string $vcs_type
@@ -201,6 +208,13 @@ interface Config extends Shared {
 	 * @param string $mail_subject
 	 */
 	public function setMailSubject($mail_subject);
+
+	/**
+	 * Set mail sender address to automatic emails
+	 *
+	 * @param string $mail_sender
+	 */
+	public function setMailSender($mail_sender);
 
 	/**
 	 * Add a recipient for this all projects

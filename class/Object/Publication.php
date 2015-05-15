@@ -21,11 +21,11 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-															   'database',
-															   'publication',
-															   'project_object',
-															   'config',
-														  ));
+			'database',
+			'publication',
+			'project_object',
+			'config',
+		));
 	}
 
 	/**
@@ -283,6 +283,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			'cc'         => $cc,
 			'subject'    => $subject,
 			'body'       => $body,
+			'sender'     => $config_shared->getMailSender(),
 		);
 	}
 }

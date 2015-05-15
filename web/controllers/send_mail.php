@@ -51,8 +51,5 @@ $email_infos = $this_publication->get_email_infos($issues);
 $dest        = $email_infos['recipients'].($email_infos['recipients'] && $email_infos['cc'] ? ',' : '').$email_infos['cc'];
 $sender      = $email_infos['sender'];
 
-// temporary to debug
-$dest = $email_infos['cc'];
-
 $additional_parameters = $sender ? "From: $sender\nReply-to: $sender\nReturn-Path: $sender" : '';
 mail($dest, $email_infos['subject'], $email_infos['body'], $additional_parameters);

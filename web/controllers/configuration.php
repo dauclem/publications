@@ -19,6 +19,7 @@ if ($_POST) {
 	$bug_tracker_query    = isset($_POST['bug_tracker_query']) ? trim($_POST['bug_tracker_query']) : '';
 	$mail_subject         = isset($_POST['mail_subject']) ? trim($_POST['mail_subject']) : '';
 	$mail_content         = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
+	$mail_sender          = isset($_POST['mail_sender']) ? trim($_POST['mail_sender']) : '';
 	$recipients           = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
 
 	$errors = array();
@@ -95,6 +96,7 @@ if ($_POST) {
 		$config_shared->setBugTrackerQuery($bug_tracker_query);
 		$config_shared->setMailSubject($mail_subject);
 		$config_shared->setMailContent($mail_content);
+		$config_shared->setMailSender($mail_sender);
 
 		foreach ($config_shared->getRecipients() as $recipient) {
 			$config_shared->removeRecipient($recipient);
@@ -123,6 +125,7 @@ if ($_POST) {
 	$bug_tracker_query = $config_shared->getBugTrackerQuery();
 	$mail_subject      = $config_shared->getMailSubject();
 	$mail_content      = $config_shared->getMailContent();
+	$mail_sender       = $config_shared->getMailSender();
 }
 
 require $dic->getParam('path_templates').'/configuration.php';

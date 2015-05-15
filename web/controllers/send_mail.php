@@ -23,10 +23,9 @@ if (!$publication_temp) {
 $vcs = $dic->getObject('vcs');
 
 $publication  = $publication_temp->getPrevious();
+$all_rows     = $vcs->getAllRows($current_project, $revision_begins, $publication);
 $publications = array($publication->getNext()->createRow($all_rows));
-
-$all_rows = $vcs->getAllRows($current_project, $revision_begins, $publication);
-$all_rows = array_merge($all_rows, $publications);
+$all_rows     = array_merge($all_rows, $publications);
 usort($all_rows, function (\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) {
 	if ($a->getDate() == $b->getDate()) {
 		return 0;

@@ -160,8 +160,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * {@inheritDoc}
 	 */
 	public function getDisplayMailSubject() {
-		if ($this->mail_content) {
-			return $this->mail_content;
+		if ($this->mail_subject) {
+			return $this->mail_subject;
 		}
 
 		/** @var \Interfaces\Shared\Config $config */

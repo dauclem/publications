@@ -19,15 +19,6 @@ if (!$publication_temp) {
 	exit('Error to get or create "publication_temp"');
 }
 
-/** @var \Interfaces\Object\Row $row */
-foreach ($all_rows as $k => $row) {
-	$related_object   = $row->getRelatedObject();
-	$this_publication = $related_object instanceof \Interfaces\Object\Publication ? $related_object : null;
-	if ($this_publication && $this_publication->isTemp()) {
-		break;
-	}
-}
-
 /** @var \Interfaces\Shared\VCS $vcs */
 $vcs = $dic->getObject('vcs');
 
@@ -42,6 +33,15 @@ usort($all_rows, function (\Interfaces\Object\Row $a, \Interfaces\Object\Row $b)
 	}
 	return $a->getDate() < $b->getDate() ? 1 : -1;
 });
+
+/** @var \Interfaces\Object\Row $row */
+foreach ($all_rows as $k => $row) {
+	$related_object   = $row->getRelatedObject();
+	$this_publication = $related_object instanceof \Interfaces\Object\Publication ? $related_object : null;
+	if ($this_publication && $this_publication->isTemp()) {
+		break;
+	}
+}
 
 /** @var \Interfaces\Shared\Issue $issue_shared */
 $issue_shared = $dic->getObject('issue');

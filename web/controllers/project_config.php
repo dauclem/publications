@@ -91,7 +91,7 @@ if ($_POST) {
 	$vcs_base       = $current_project->getVcsBase();
 	$vcs_path       = $current_project->getVcsPath();
 	$bug_tracker_id = $current_project->getBugTrackerId();
-	$mail_subject   = $current_project->getDisplayMailsubject();
+	$mail_subject   = $current_project->getDisplayMailSubject();
 	$mail_content   = $current_project->getDisplayMailContent();
 }
 

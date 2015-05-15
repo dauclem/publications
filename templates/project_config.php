@@ -161,8 +161,8 @@ require __DIR__.'/common/top_nav.php';
 			<label for="mail_subject" class="col-lg-2 control-label">Sujet du mail de publication</label>
 
 			<div class="col-lg-10">
-				<textarea class="form-control" id="mail_subject" name="mail_subject" rows="6"
-					><?php echo isset($mail_subject) ? htmlentities($mail_subject) : ''; ?></textarea>
+				<input type="text" class="form-control" id="mail_subject" name="mail_subject"
+					   value="<?php echo isset($mail_subject) ? htmlentities($mail_subject) : ''; ?>" />
 				<span class="help-block">
 					{PROJECT} sera remplacé par le nom du projet.
 					<?php if (isset($errors['mail_subject'])) { ?>

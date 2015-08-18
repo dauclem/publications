@@ -91,7 +91,8 @@ interface Publication extends Object {
 	 * Get information to send email (recipients, cc, subject, body)
 	 *
 	 * @param \Interfaces\Object\Issue[] $issues
+	 * @param bool                       $post_publi
 	 * @return string[]
 	 */
-	public function get_email_infos($issues);
+	public function get_email_infos($issues, $post_publi = false);
 }

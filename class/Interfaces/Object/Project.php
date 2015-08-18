@@ -86,6 +86,20 @@ interface Project extends Object {
 	public function getMailSubject();
 
 	/**
+	 * Return project custom mail content template in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getMailPostPubliContent();
+
+	/**
+	 * Return project custom mail subject template in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getMailPostPubliSubject();
+
+	/**
 	 * Return mail content template to use for this project
 	 *
 	 * @return string
@@ -98,6 +112,20 @@ interface Project extends Object {
 	 * @return string
 	 */
 	public function getDisplayMailSubject();
+
+	/**
+	 * Return mail content template to use for this project in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getDisplayMailPostPubliContent();
+
+	/**
+	 * Return mail subject template to use for this project in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getDisplayMailPostPubliSubject();
 
 	/**
 	 * Set project name
@@ -161,6 +189,20 @@ interface Project extends Object {
 	 * @param string $mail_subject
 	 */
 	public function setMailSubject($mail_subject);
+
+	/**
+	 * Set project custom mail content template in case of post publication
+	 *
+	 * @param string $mail_post_publi_content
+	 */
+	public function setMailPostPubliContent($mail_post_publi_content);
+
+	/**
+	 * Set project custom mail subject template
+	 *
+	 * @param string $mail_post_publi_subject in case of post publication
+	 */
+	public function setMailPostPubliSubject($mail_post_publi_subject);
 
 	/**
 	 * Add project defined as external for this project

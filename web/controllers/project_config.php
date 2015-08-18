@@ -7,17 +7,19 @@ $project_shared  = $dic->getObject('project');
 $current_project = $project_shared->getCurrentProject();
 
 if ($_POST) {
-	$name           = isset($_POST['name']) ? trim($_POST['name']) : '';
-	$description    = isset($_POST['description']) ? trim($_POST['description']) : '';
-	$visible        = !empty($_POST['visible']);
-	$has_prod       = !empty($_POST['has_prod']);
-	$vcs_base       = isset($_POST['vcs_base']) ? trim($_POST['vcs_base']) : '';
-	$vcs_path       = isset($_POST['vcs_path']) ? trim($_POST['vcs_path']) : '';
-	$bug_tracker_id = isset($_POST['bug_tracker_id']) ? trim($_POST['bug_tracker_id']) : '';
-	$externals      = isset($_POST['externals']) ? (array)$_POST['externals'] : array();
-	$mail_subject   = isset($_POST['mail_subject']) ? trim($_POST['mail_subject']) : '';
-	$mail_content   = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
-	$recipients     = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
+	$name                    = isset($_POST['name']) ? trim($_POST['name']) : '';
+	$description             = isset($_POST['description']) ? trim($_POST['description']) : '';
+	$visible                 = !empty($_POST['visible']);
+	$has_prod                = !empty($_POST['has_prod']);
+	$vcs_base                = isset($_POST['vcs_base']) ? trim($_POST['vcs_base']) : '';
+	$vcs_path                = isset($_POST['vcs_path']) ? trim($_POST['vcs_path']) : '';
+	$bug_tracker_id          = isset($_POST['bug_tracker_id']) ? trim($_POST['bug_tracker_id']) : '';
+	$externals               = isset($_POST['externals']) ? (array)$_POST['externals'] : array();
+	$mail_subject            = isset($_POST['mail_subject']) ? trim($_POST['mail_subject']) : '';
+	$mail_content            = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
+	$recipients              = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
+	$mail_post_publi_subject = isset($_POST['mail_post_publi_subject']) ? trim($_POST['mail_post_publi_subject']) : '';
+	$mail_post_publi_content = isset($_POST['mail_post_publi_content']) ? trim($_POST['mail_post_publi_content']) : '';
 
 	$errors = array();
 	if (!$name) {
@@ -74,6 +76,8 @@ if ($_POST) {
 
 			$current_project->setMailSubject($mail_subject);
 			$current_project->setMailContent($mail_content);
+			$current_project->setMailPostPubliSubject($mail_post_publi_subject);
+			$current_project->setMailPostPubliContent($mail_post_publi_content);
 
 			foreach ($current_project->getRecipients() as $recipient) {
 				$current_project->removeRecipient($recipient);
@@ -84,15 +88,17 @@ if ($_POST) {
 		}
 	}
 } elseif ($current_project) {
-	$name           = $current_project->getName();
-	$description    = $current_project->getDescription();
-	$visible        = $current_project->isVisible();
-	$has_prod       = $current_project->hasProd();
-	$vcs_base       = $current_project->getVcsBase();
-	$vcs_path       = $current_project->getVcsPath();
-	$bug_tracker_id = $current_project->getBugTrackerId();
-	$mail_subject   = $current_project->getDisplayMailSubject();
-	$mail_content   = $current_project->getDisplayMailContent();
+	$name                    = $current_project->getName();
+	$description             = $current_project->getDescription();
+	$visible                 = $current_project->isVisible();
+	$has_prod                = $current_project->hasProd();
+	$vcs_base                = $current_project->getVcsBase();
+	$vcs_path                = $current_project->getVcsPath();
+	$bug_tracker_id          = $current_project->getBugTrackerId();
+	$mail_subject            = $current_project->getDisplayMailSubject();
+	$mail_content            = $current_project->getDisplayMailContent();
+	$mail_post_publi_subject = $current_project->getDisplayMailPostPubliSubject();
+	$mail_post_publi_content = $current_project->getDisplayMailPostPubliContent();
 }
 
 require $dic->getParam('path_templates').'/project_config.php';

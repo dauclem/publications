@@ -25,17 +25,21 @@ class Project extends Object implements \Interfaces\Object\Project {
 	protected $mail_content;
 	/** @var string */
 	protected $mail_subject;
+	/** @var string */
+	protected $mail_post_publi_content;
+	/** @var string */
+	protected $mail_post_publi_subject;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-															   'database',
-															   'project',
-															   'config',
-															   'form_utils',
-														  ));
+			'database',
+			'project',
+			'config',
+			'form_utils',
+		));
 	}
 
 	/**
@@ -46,12 +50,14 @@ class Project extends Object implements \Interfaces\Object\Project {
 		$database = $this->dependence_objects['database'];
 		$data     = $database->getConnection()->querySingle('SELECT id, name, description, vcs_base, vcs_path,
 																tracker_id, visible, has_prod,
-																mail_content, mail_subject
+																mail_content, mail_subject,
+																mail_post_publi_content, mail_post_publi_subject
 															FROM project
 															WHERE id = '.(int)$object_id, true);
 		@list($this->id, $this->name, $this->description, $this->vcs_base, $this->vcs_path,
 			$this->bug_tracker_id, $this->visible, $this->has_prod,
-			$this->mail_content, $this->mail_subject) = array_values($data);
+			$this->mail_content, $this->mail_subject,
+			$this->mail_post_publi_content, $this->mail_post_publi_subject) = array_values($data);
 		$this->id       = (int)$this->id;
 		$this->visible  = (bool)$this->visible;
 		$this->has_prod = (bool)$this->has_prod;
@@ -146,6 +152,20 @@ class Project extends Object implements \Interfaces\Object\Project {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getMailPostPubliContent() {
+		return $this->mail_post_publi_content;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailPostPubliSubject() {
+		return $this->mail_post_publi_subject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getDisplayMailContent() {
 		if ($this->mail_content) {
 			return $this->mail_content;
@@ -167,6 +187,32 @@ class Project extends Object implements \Interfaces\Object\Project {
 		/** @var \Interfaces\Shared\Config $config */
 		$config = $this->dependence_objects['config'];
 		return $config->getMailSubject();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getDisplayMailPostPubliContent() {
+		if ($this->mail_post_publi_content) {
+			return $this->mail_post_publi_content;
+		}
+
+		/** @var \Interfaces\Shared\Config $config */
+		$config = $this->dependence_objects['config'];
+		return $config->getMailPostPubliContent();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getDisplayMailPostPubliSubject() {
+		if ($this->mail_post_publi_subject) {
+			return $this->mail_post_publi_subject;
+		}
+
+		/** @var \Interfaces\Shared\Config $config */
+		$config = $this->dependence_objects['config'];
+		return $config->getMailPostPubliSubject();
 	}
 
 	/**
@@ -256,8 +302,8 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function setMailContent($mail_content) {
 		/** @var \Interfaces\Shared\Config $config */
-		$config              = $this->dependence_objects['config'];
-		$this->mail_content  = $mail_content != $config->getMailContent() ? $mail_content : '';
+		$config             = $this->dependence_objects['config'];
+		$this->mail_content = $mail_content != $config->getMailContent() ? $mail_content : '';
 		$this->save('mail_content');
 	}
 
@@ -266,9 +312,29 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 */
 	public function setMailSubject($mail_subject) {
 		/** @var \Interfaces\Shared\Config $config */
-		$config              = $this->dependence_objects['config'];
-		$this->mail_subject  = $mail_subject != $config->getMailSubject() ? $mail_subject : '';
+		$config             = $this->dependence_objects['config'];
+		$this->mail_subject = $mail_subject != $config->getMailSubject() ? $mail_subject : '';
 		$this->save('mail_subject');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailPostPubliContent($mail_post_publi_content) {
+		/** @var \Interfaces\Shared\Config $config */
+		$config                        = $this->dependence_objects['config'];
+		$this->mail_post_publi_content = $mail_post_publi_content != $config->getMailContent() ? $mail_post_publi_content : '';
+		$this->save('mail_post_publi_content');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailPostPubliSubject($mail_post_publi_subject) {
+		/** @var \Interfaces\Shared\Config $config */
+		$config                        = $this->dependence_objects['config'];
+		$this->mail_post_publi_subject = $mail_post_publi_subject != $config->getMailSubject() ? $mail_post_publi_subject : '';
+		$this->save('mail_post_publi_subject');
 	}
 
 	/**

@@ -11,6 +11,8 @@ $connection = $database->getConnection();
 @$connection->exec('ALTER TABLE config ADD mail_content TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_subject TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_sender TEXT');
+@$connection->exec('ALTER TABLE config ADD mail_post_publi_content TEXT');
+@$connection->exec('ALTER TABLE config ADD mail_post_publi_subject TEXT');
 $connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
 							email TEXT)');
 $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS config_recipient ON config_recipients (email)');
@@ -28,6 +30,8 @@ $connection->exec('UPDATE config SET mail_subject = "Publication de {PROJECT}" W
 @$connection->exec('ALTER TABLE project ADD tracker_id TEXT');
 @$connection->exec('ALTER TABLE project ADD mail_content TEXT');
 @$connection->exec('ALTER TABLE project ADD mail_subject TEXT');
+@$connection->exec('ALTER TABLE project ADD mail_post_publi_content TEXT');
+@$connection->exec('ALTER TABLE project ADD mail_post_publi_subject TEXT');
 
 // Publication
 @$connection->exec('ALTER TABLE publication ADD is_temp INTEGER');

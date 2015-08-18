@@ -196,6 +196,36 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 
+		<div class="form-group<?php echo isset($errors['mail_post_publi_subject']) ? ' has-error' : ''; ?>">
+			<label for="mail_post_publi_subject" class="col-lg-2 control-label">Sujet du mail post-publication</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="mail_post_publi_subject" name="mail_post_publi_subject"
+					value="<?php echo isset($mail_post_publi_subject) ? htmlentities($mail_post_publi_subject) : ''; ?>" />
+				<span class="help-block">
+					{PROJECT} sera remplacé par le nom du projet.
+					<?php if (isset($errors['mail_post_publi_subject'])) { ?>
+						<?php echo '<br />'.$errors['mail_post_publi_subject']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
+		<div class="form-group<?php echo isset($errors['mail_post_publi_content']) ? ' has-error' : ''; ?>">
+			<label for="mail_post_publi_content" class="col-lg-2 control-label">Mail post-publication</label>
+
+			<div class="col-lg-10">
+				<textarea class="form-control" id="mail_post_publi_content" name="mail_post_publi_content" rows="6"
+					><?php echo isset($mail_post_publi_content) ? htmlentities($mail_post_publi_content) : ''; ?></textarea>
+				<span class="help-block">
+					{PROJECT} sera remplacé par le nom du projet.
+					<?php if (isset($errors['mail_post_publi_content'])) { ?>
+						<?php echo '<br />'.$errors['mail_post_publi_content']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
 		<div class="form-group<?php echo isset($errors['mail_sender']) ? ' has-error' : ''; ?>">
 			<label for="mail_sender" class="col-lg-2 control-label">Expéditeur de l'email automatique de publication</label>
 

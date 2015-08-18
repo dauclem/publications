@@ -11,6 +11,15 @@ $publication_shared = $dic->getObject('publication');
 $publication_temp   = $publication_shared->getPublicationTemp($current_project);
 if ($publication_temp) {
 	$publication_temp->setTemp(false);
+	$this_publication = $publication_temp;
 } else {
-	$publication_shared->create($current_project, false, time(), '');
+	$this_publication = $publication_shared->create($current_project, false, time(), '');
+}
+
+if (!empty($_GET['email'])) {
+	$email_infos = $this_publication->get_email_infos(array(), true);
+	$dest        = $email_infos['recipients'].($email_infos['recipients'] && $email_infos['cc'] ? ',' : '').$email_infos['cc'];
+	$sender      = $email_infos['sender'];
+	$additional_parameters = $sender ? "From: $sender\nReply-to: $sender\nReturn-Path: $sender" : '';
+	mail($dest, $email_infos['subject'], $email_infos['body'], $additional_parameters);
 }

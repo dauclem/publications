@@ -251,7 +251,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_email_infos($issues) {
+	public function get_email_infos($issues, $post_publi = false) {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		$project       = $this->getProject();
@@ -275,8 +275,15 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			'{PROJECT}' => $project->getName(),
 			'{ISSUES}'  => $issues_str,
 		);
-		$body    = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailContent());
-		$subject = str_replace(array_keys($replace), array_values($replace), $project->getDisplayMailSubject());
+		if ($post_publi) {
+			$subject = $project->getDisplayMailPostPubliSubject();
+			$body    = $project->getDisplayMailPostPubliContent();
+		} else {
+			$subject = $project->getDisplayMailSubject();
+			$body    = $project->getDisplayMailContent();
+		}
+		$subject = str_replace(array_keys($replace), array_values($replace), $subject);
+		$body    = str_replace(array_keys($replace), array_values($replace), $body);
 
 		return array(
 			'recipients' => $recipients,

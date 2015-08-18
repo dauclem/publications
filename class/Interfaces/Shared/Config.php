@@ -119,6 +119,20 @@ interface Config extends Shared {
 	public function getMailSender();
 
 	/**
+	 * Get Mail content template in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getMailPostPubliContent();
+
+	/**
+	 * Get Mail subject template in case of post publication
+	 *
+	 * @return string
+	 */
+	public function getMailPostPubliSubject();
+
+	/**
 	 * Set VCS ident to set correct class name
 	 *
 	 * @param string $vcs_type
@@ -215,6 +229,20 @@ interface Config extends Shared {
 	 * @param string $mail_sender
 	 */
 	public function setMailSender($mail_sender);
+
+	/**
+	 * Set mail content template in case of post publication
+	 *
+	 * @param string $mail_post_publi_content
+	 */
+	public function setMailPostPubliContent($mail_post_publi_content);
+
+	/**
+	 * Set mail subject template in case of post publication
+	 *
+	 * @param string $mail_post_publi_subject
+	 */
+	public function setMailPostPubliSubject($mail_post_publi_subject);
 
 	/**
 	 * Add a recipient for this all projects

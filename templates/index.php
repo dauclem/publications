@@ -7,7 +7,8 @@ require __DIR__.'/common/top_nav.php';
 
 <fieldset>
 	<legend>Configuration</legend>
-	<a href="/configuration/">Modifier la configuration générale</a>
+	<a href="/configuration/" class="pull-left">Modifier la configuration générale</a>
+	<a href="/flush_cache/" class="btn btn-warning pull-right"><span class="glyphicon glyphicon-trash"></span>Vider le cache</a>
 </fieldset>
 <br />
 

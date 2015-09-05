@@ -22,8 +22,8 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 
-		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_USERNAME, $config_shared->getVcsUser());
-		svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_PASSWORD, $config_shared->getVcsPassword());
+		\svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_USERNAME, $config_shared->getVcsUser());
+		\svn_auth_set_parameter(SVN_AUTH_PARAM_DEFAULT_PASSWORD, $config_shared->getVcsPassword());
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		$result = apc_fetch($key);
 		if ($result === false) {
 			$result = array();
-			$logs = @svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
+			$logs = @\svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
 			if ($logs) {
 				foreach ($logs as $log) {
 					$result[] = array(
@@ -59,7 +59,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			};
 
 			$result_delta = array();
-			$logs         = @svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
+			$logs         = @\svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
 			if ($logs) {
 				foreach ($logs as $log) {
 					$result_delta[] = array(
@@ -90,7 +90,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			$config_shared  = $this->dependence_objects['config'];
 			$changelog_preg = preg_quote($config_shared->getChangelogPath(), '#');
 
-			$diff = @svn_diff($repository, $revision_end, $repository, $revision_begin);
+			$diff = @\svn_diff($repository, $revision_end, $repository, $revision_begin);
 			$diff = stream_get_contents($diff[0]);
 
 			$result = array(

@@ -39,6 +39,7 @@ class Project extends Object implements \Interfaces\Object\Project {
 			'project',
 			'config',
 			'form_utils',
+			'vcs',
 		));
 	}
 
@@ -116,9 +117,9 @@ class Project extends Object implements \Interfaces\Object\Project {
 	 * {@inheritDoc}
 	 */
 	public function getVcsRepository() {
-		/** @var \Interfaces\Shared\Config $config_shared */
-		$config_shared = $this->dependence_objects['config'];
-		return $config_shared->getVcsUrl().'/'.$this->vcs_base.$this->vcs_path;
+		/** @var \Interfaces\Shared\VCS $vcs_shared */
+		$vcs_shared = $this->dependence_objects['vcs'];
+		return $vcs_shared->getRepository($this);
 	}
 
 	/**

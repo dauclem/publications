@@ -76,9 +76,7 @@ foreach ($all_rows as $k => $row) {
 		}
 		echo implode(', ', $revisions_display).'<br />';
 
-		// TODO get real previous revision (instead of -1)
-		$this_last_revision          = (int)preg_replace('#(^.*|-|,|\\s)('.$vcs->getPregRevision().')$#U', '\\2', $revisions) - 1;
-		$revision_begins[$project_id] = isset($revision_begins[$project_id]) ? min($revision_begins[$project_id], $this_last_revision) : $this_last_revision;
+		$revision_begins[$project_id] = preg_replace('#(^.*|-|,|\\s)('.$vcs->getPregRevision().')$#U', '\\2', $revisions);
 	}
 	echo '</div>';
 

@@ -33,15 +33,21 @@ if ($_POST) {
 	}
 
 	// Get only domain name and remove ended /
-	$VCS_url = preg_replace('#^(https?://[^/]+)/.*$#', '\\1', $VCS_url);
-	if (!$form_utils->checkUrl($VCS_url)) {
-		$errors['VCS_url'] = 'L\'url est incorrecte';
-	}
-	if (!$VCS_user) {
-		$errors['VCS_user'] = 'Vous devez indiquer un nom d\'utilisateur';
-	}
-	if (!$config_shared->getVcsPassword() && !$VCS_password) {
-		$errors['VCS_password'] = 'Vous devez indiquer un mot de passe';
+	$VCS_url = trim($VCS_url, '/');
+	if ($VCS_type === 'subversion') {
+		if (!$form_utils->checkUrl($VCS_url)) {
+			$errors['VCS_url'] = 'L\'url est incorrecte';
+		}
+		if (!$VCS_user) {
+			$errors['VCS_user'] = 'Vous devez indiquer un nom d\'utilisateur';
+		}
+		if (!$config_shared->getVcsPassword() && !$VCS_password) {
+			$errors['VCS_password'] = 'Vous devez indiquer un mot de passe';
+		}
+	} else {
+		if (!$VCS_url) {
+			$errors['VCS_url'] = 'Vous devez indiquer une url';
+		}
 	}
 	// Get only domain name and remove ended /
 	$VCS_web_url = preg_replace('#^(https?://[^/]+)/.*$#', '\\1', $VCS_web_url);

@@ -31,8 +31,8 @@ require __DIR__.'/common/top_nav.php';
 			<label for="VCS_url" class="col-lg-2 control-label">Url de base du repository</label>
 
 			<div class="col-lg-10">
-				<input type="url" class="form-control"
-					   id="VCS_url" name="VCS_url" placeholder="http://"
+				<input type="text" class="form-control"
+					   id="VCS_url" name="VCS_url"
 					   value="<?php echo isset($VCS_url) ? $VCS_url : ''; ?>">
 				<?php if (isset($errors['VCS_url'])) { ?>
 					<span class="help-block"><?php echo $errors['VCS_url']; ?></span>

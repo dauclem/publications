@@ -37,6 +37,10 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 * {@inheritDoc}
 	 */
 	protected function getLogs(Project $project, $revision_begin, $revision_end) {
+		if ($revision_begin !== -1) {
+			$revision_begin -= 1;
+		}
+
 		$key    = md5($project->getId().'|'.$revision_begin.'|'.$revision_end);
 		$result = apc_fetch($key);
 		if ($result === false) {
@@ -82,6 +86,10 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 * {@inheritDoc}
 	 */
 	protected function getDiffRevisionsAndChangelog(\Interfaces\Object\Project $project, $revision_end, $revision_begin) {
+		if ($revision_begin !== -1) {
+			$revision_begin -= 1;
+		}
+
 		$key    = md5($project->getId().'|'.$revision_end.'|'.$revision_begin);
 		$result = apc_fetch($key);
 		if ($result === false) {
@@ -145,5 +153,16 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			   .'/listing.php?repname='.urlencode($project->getVcsBase())
 			   .'&path='.urlencode($project->getVcsPath())
 			   .'&rev='.$revision;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getRepository(Project $project) {
+		/** @var Config $config_shared */
+		$config_shared = $this->dependence_objects['config'];
+		return $config_shared->getVcsUrl()
+			   .'/'.urlencode($project->getVcsBase())
+			   .'/'.urlencode($project->getVcsPath());
 	}
 }

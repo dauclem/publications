@@ -44,4 +44,12 @@ interface VCS extends Shared {
 	 * @return string
 	 */
 	public function getRevisionUrl(\Interfaces\Object\Project $project, $revision);
+
+	/**
+	 * Get url to repository
+	 *
+	 * @param \Interfaces\Object\Project    $project
+	 * @return string
+	 */
+	public function getRepository(\Interfaces\Object\Project $project);
 }

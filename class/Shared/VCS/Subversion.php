@@ -162,7 +162,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		return $config_shared->getVcsUrl()
-			   .'/'.urlencode($project->getVcsBase())
-			   .'/'.urlencode($project->getVcsPath());
+			   .'/'.$project->getVcsBase()
+			   .$project->getVcsPath();
 	}
 }

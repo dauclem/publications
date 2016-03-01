@@ -193,7 +193,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		return $config_shared->getVcsWebUrl()
-			   .'/'.urlencode($project->getVcsBase())
+			   .'/'.$project->getVcsBase()
 			   .preg_replace('#\.git$#', '', $project->getVcsPath())
 			   .'/commit/'.$revision;
 	}
@@ -205,7 +205,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		return $config_shared->getVcsUrl()
-			   .':'.urlencode($project->getVcsBase())
+			   .':'.$project->getVcsBase()
 			   .$project->getVcsPath();
 	}
 }

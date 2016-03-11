@@ -30,10 +30,13 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			return;
 		}
 
-		$target_dir = '/tmp/'.basename($repository_url);
+		$target_dir = __DIR__.'/../../../git-clone/'.basename($repository_url);
 		if (file_exists($target_dir)) {
 			exec('cd '.$target_dir.'; git pull origin master 2>&1', $output, $return_var);
 		} else {
+			if (!file_exists(dirname($target_dir))) {
+				mkdir(dirname($target_dir), 0777, true);
+			}
 			exec('cd '.dirname($target_dir).'; git clone '.$repository_url.' '.basename($target_dir).' 2>&1', $output, $return_var);
 		}
 		if ($return_var) {
@@ -55,7 +58,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared   = $this->dependence_objects['config'];
 		$changelog_preg  = preg_quote($config_shared->getChangelogPath(), '#');
-		$target_dir      = '/tmp/'.basename($repository_url);
+		$target_dir      = __DIR__.'/../../../git-clone/'.basename($repository_url);
 		$list            = $commit = array();
 		$changelog_found = false;
 

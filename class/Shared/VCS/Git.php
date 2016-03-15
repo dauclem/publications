@@ -22,9 +22,10 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 * Update or clone repository code
 	 *
 	 * @param string $repository_url
+	 * @param bool $with_pull
 	 * @throws Exception
 	 */
-	protected function checkout_repository($repository_url) {
+	protected function checkout_repository($repository_url, $with_pull) {
 		static $checkout_done = array();
 		if (isset($checkout_done[$repository_url])) {
 			return;
@@ -32,7 +33,11 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 
 		$target_dir = __DIR__.'/../../../git-clone/'.basename($repository_url);
 		if (file_exists($target_dir)) {
-			exec('cd '.$target_dir.'; git pull origin master 2>&1', $output, $return_var);
+			if ($with_pull) {
+				exec('cd '.$target_dir.'; git pull origin master 2>&1', $output, $return_var);
+			} else {
+				$return_var = 0;
+			}
 		} else {
 			if (!file_exists(dirname($target_dir))) {
 				mkdir(dirname($target_dir), 0777, true);
@@ -53,7 +58,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 * @return string[]
 	 */
 	protected function get_logs($repository_url, $revision_begin, $revision_end, $with_changelog_diff = false) {
-		$this->checkout_repository($repository_url);
+		$this->checkout_repository($repository_url, $revision_begin === -1);
 
 		/** @var Config $config_shared */
 		$config_shared   = $this->dependence_objects['config'];

@@ -25,13 +25,13 @@ class Jira extends Issue implements \Interfaces\Object\Issue\Jira {
 		}
 
 		$cache_key = __CLASS__.'|'.$object_id;
-		$task_data = apc_fetch($cache_key);
+		$task_data = apcu_fetch($cache_key);
 		if ($task_data === false) {
 			/** @var \Interfaces\Shared\Issue\Jira $issue_shared */
 			$issue_shared = $this->dependence_objects['issue'];
 			exec($issue_shared->getApiExecBegin().'issue/'.$object_id, $output);
 			$task_data = json_decode(end($output));
-			apc_store($cache_key, $task_data, 0);
+			apcu_store($cache_key, $task_data, 0);
 		}
 
 		if (isset($task_data, $task_data->fields)) {

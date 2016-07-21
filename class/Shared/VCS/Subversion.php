@@ -42,7 +42,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		}
 
 		$key    = md5($project->getId().'|'.$revision_begin.'|'.$revision_end);
-		$result = apc_fetch($key);
+		$result = apcu_fetch($key);
 		if ($result === false) {
 			$result = array();
 			$logs = @svn_log($project->getVcsRepository(), $revision_begin, $revision_end);
@@ -56,7 +56,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				}
 			}
 
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		} elseif ($revision_begin == -1) {
 			if (isset($result[0])) {
 				$revision_end = $result[0]['rev'];
@@ -76,7 +76,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			array_pop($result_delta);
 
 			$result = array_merge($result_delta, $result);
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		}
 
 		return $result;
@@ -91,7 +91,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		}
 
 		$key    = md5($project->getId().'|'.$revision_end.'|'.$revision_begin);
-		$result = apc_fetch($key);
+		$result = apcu_fetch($key);
 		if ($result === false) {
 			$repository = $project->getVcsRepository();
 			/** @var Config $config_shared */
@@ -137,7 +137,7 @@ class Subversion extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				}
 			}
 
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		}
 
 		return $result;

@@ -126,7 +126,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 */
 	protected function getLogs(Project $project, $revision_begin, $revision_end) {
 		$key    = md5($project->getId().'|'.$revision_begin.'|'.$revision_end);
-		$result = apc_fetch($key);
+		$result = apcu_fetch($key);
 																												$result= false;
 		if ($result === false) {
 			$result = array();
@@ -141,7 +141,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				}
 			}
 
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		} elseif ($revision_begin == -1) {
 			if (isset($result[0])) {
 				$revision_end = $result[0]['rev'];
@@ -161,7 +161,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 			array_pop($result_delta);
 
 			$result = array_merge($result_delta, $result);
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		}
 
 		return $result;
@@ -172,7 +172,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 	 */
 	protected function getDiffRevisionsAndChangelog(\Interfaces\Object\Project $project, $revision_end, $revision_begin) {
 		$key    = md5($project->getId().'|'.$revision_end.'|'.$revision_begin);
-		$result = apc_fetch($key);
+		$result = apcu_fetch($key);
 																												$result= false;
 		if ($result === false) {
 			$result = array(
@@ -188,7 +188,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 				}
 			}
 
-			apc_store($key, $result, 0);
+			apcu_store($key, $result, 0);
 		}
 
 		return $result;

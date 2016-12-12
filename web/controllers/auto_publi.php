@@ -17,9 +17,20 @@ if ($publication_temp) {
 }
 
 if (!empty($_GET['email'])) {
+	$this_publication->prepare_mail(array(), true)->send();
 	$email_infos = $this_publication->get_email_infos(array(), true);
-	$dest        = $email_infos['recipients'].($email_infos['recipients'] && $email_infos['cc'] ? ',' : '').$email_infos['cc'];
-	$sender      = $email_infos['sender'];
-	$additional_parameters = $sender ? "From: $sender\nReply-to: $sender\nReturn-Path: $sender" : '';
-	mail($dest, $email_infos['subject'], $email_infos['body'], $additional_parameters);
+	$mail = new PHPMailer;
+	$mail->Subject = $email_infos['subject'];
+	$mail->Body = $email_infos['body'];
+	$mail->setFrom($email_infos['sender'], 'MesDiscussions');
+	$mail->addReplyTo($email_infos['sender'], 'MesDiscussions');
+
+	foreach ($email_infos['recipients'] as $recipient) {
+		$mail->addAddress($recipient);
+	}
+	foreach ($email_infos['cc'] as $recipient) {
+		$mail->addCC($recipient);
+	}
+
+	$mail->send();
 }

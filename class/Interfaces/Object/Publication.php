@@ -92,7 +92,7 @@ interface Publication extends Object {
 	 *
 	 * @param \Interfaces\Object\Issue[] $issues
 	 * @param bool                       $post_publi
-	 * @return string[]
+	 * @return \PHPMailer
 	 */
-	public function get_email_infos($issues, $post_publi = false);
+	public function prepare_mail($issues, $post_publi = false);
 }

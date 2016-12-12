@@ -47,9 +47,4 @@ $issue_shared = $dic->getObject('issue');
 $issues       = $row->getIssues();
 $issues       = $issue_shared->filterIssues($issues, $current_project);
 
-$email_infos = $this_publication->get_email_infos($issues);
-$dest        = $email_infos['recipients'].($email_infos['recipients'] && $email_infos['cc'] ? ',' : '').$email_infos['cc'];
-$sender      = $email_infos['sender'];
-
-$additional_parameters = $sender ? "From: $sender\nReply-to: $sender\nReturn-Path: $sender" : '';
-mail($dest, $email_infos['subject'], $email_infos['body'], $additional_parameters);
+$this_publication->prepare_mail($issues)->send();

@@ -112,8 +112,8 @@ foreach ($all_rows as $k => $row) {
 		echo '<div class="well">';
 
 		$email_infos = $this_publication->get_email_infos($issues);
-		echo '<a target="_blank" href="mailto:'.$email_infos['recipients']
-			 							.'?cc='.urlencode($email_infos['cc'])
+		echo '<a target="_blank" href="mailto:'.implode(';', $email_infos['recipients'])
+			 							.'?cc='.urlencode(implode(';', $email_infos['cc']))
 			 							.'&subject='.htmlentities(urlencode($email_infos['subject']))
 			 							.'&body='.htmlentities(urlencode($email_infos['body'])).'">
 			<i class="glyphicon glyphicon-envelope"></i>

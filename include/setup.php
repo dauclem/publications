@@ -9,6 +9,7 @@ session_start();
 
 $base_dir = dirname(__DIR__);
 
+require __DIR__.'/../vendor/autoload.php';
 require __DIR__.'/../class/DIC.php';
 $dic = new DIC(array(
 					'path'           => $base_dir,

@@ -2,6 +2,7 @@
 
 namespace Object;
 
+use PHPMailer;
 use Object;
 
 class Publication extends Object implements \Interfaces\Object\Publication {
@@ -251,13 +252,22 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function get_email_infos($issues, $post_publi = false) {
+	public function prepare_mail($issues, $post_publi = false) {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		$project       = $this->getProject();
+		$mail          = new PHPMailer;
 
-		$recipients = implode(';', $project->getRecipients());
-		$cc         = implode(';', $config_shared->getRecipients());
+		$sender = $config_shared->getMailSender();
+		$mail->setFrom($sender);
+		$mail->addReplyTo($sender);
+
+		foreach ($project->getRecipients() as $recipient) {
+			$mail->addAddress($recipient);
+		}
+		foreach ($config_shared->getRecipients() as $recipient) {
+			$mail->addCC($recipient);
+		}
 
 		$current_type = $issues_str = '';
 		foreach ($issues as $issue) {
@@ -282,15 +292,9 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			$subject = $project->getDisplayMailSubject();
 			$body    = $project->getDisplayMailContent();
 		}
-		$subject = str_replace(array_keys($replace), array_values($replace), $subject);
-		$body    = str_replace(array_keys($replace), array_values($replace), $body);
+		$mail->Subject = str_replace(array_keys($replace), array_values($replace), $subject);
+		$mail->Body    = str_replace(array_keys($replace), array_values($replace), $body);
 
-		return array(
-			'recipients' => $recipients,
-			'cc'         => $cc,
-			'subject'    => $subject,
-			'body'       => $body,
-			'sender'     => $config_shared->getMailSender(),
-		);
+		return $mail;
 	}
 }

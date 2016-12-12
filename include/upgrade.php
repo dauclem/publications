@@ -1,5 +1,12 @@
 <?php
 
+$root = dirname(__DIR__);
+exec('export COMPOSER_HOME='.$root.'.composer; export COMPOSER_DISCARD_CHANGES=true;'
+	 .'php '.$root.'composer.phar install'
+	 .' --optimize-autoloader'
+	 .' --working-dir '.$root
+	 .' --no-interaction');
+
 require __DIR__.'/setup.php';
 
 /** @var \Interfaces\Shared\Database $database */

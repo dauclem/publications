@@ -257,6 +257,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 		$config_shared = $this->dependence_objects['config'];
 		$project       = $this->getProject();
 		$mail          = new PHPMailer;
+		$mail->CharSet = 'UTF-8';
 
 		$sender = $config_shared->getMailSender();
 		$mail->setFrom($sender);
@@ -293,7 +294,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 			$body    = $project->getDisplayMailContent();
 		}
 		$mail->Subject = str_replace(array_keys($replace), array_values($replace), $subject);
-		$mail->Body    = str_replace(array_keys($replace), array_values($replace), $body);
+		$mail->Body    = $mail->AltBody = str_replace(array_keys($replace), array_values($replace), $body);
 
 		return $mail;
 	}

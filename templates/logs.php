@@ -111,11 +111,11 @@ foreach ($all_rows as $k => $row) {
 	if ($this_publication) {
 		echo '<div class="well">';
 
-		$email_infos = $this_publication->get_email_infos($issues);
-		echo '<a target="_blank" href="mailto:'.implode(';', $email_infos['recipients'])
-			 							.'?cc='.urlencode(implode(';', $email_infos['cc']))
-			 							.'&subject='.htmlentities(urlencode($email_infos['subject']))
-			 							.'&body='.htmlentities(urlencode($email_infos['body'])).'">
+		$mail = $this_publication->prepare_mail($issues);
+		echo '<a target="_blank" href="mailto:'.implode(';', $mail->getToAddresses())
+			 							.'?cc='.urlencode(implode(';', $mail->getCcAddresses()))
+			 							.'&subject='.htmlentities(urlencode($mail->Subject))
+			 							.'&body='.htmlentities(urlencode($mail->AltBody)).'">
 			<i class="glyphicon glyphicon-envelope"></i>
 		</a>';
 

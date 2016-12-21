@@ -36,7 +36,7 @@ if ($publication) {
 }
 
 $all_rows = array_merge($all_rows, $publications);
-usort($all_rows, function(\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) {
+usort($all_rows, function (\Interfaces\Object\Row $a, \Interfaces\Object\Row $b) {
 	if ($a->getDate() == $b->getDate()) {
 		return 0;
 	}
@@ -54,7 +54,7 @@ foreach ($all_rows as $k => $row) {
 	echo '<div'.($class_alert_type ? ' class="alert alert-'.$class_alert_type.'"' : '').'>';
 
 	echo '<div>';
-		echo $this_publication && $this_publication->isTemp() ? 'En préparation' : date('d/m/Y H:i', $row->getDate());
+	echo $this_publication && $this_publication->isTemp() ? 'En préparation' : date('d/m/Y H:i', $row->getDate());
 	echo '</div>';
 
 	echo '<div>';
@@ -69,7 +69,7 @@ foreach ($all_rows as $k => $row) {
 			if (strpos($revision_display, '-')) {
 				$revision_display      = explode('-', $revision_display);
 				$revisions_display[$k] = '<a target="_blank" href="'.$vcs->getRevisionUrl($this_project, $revision_display[0]).'">'.htmlentities($revision_display[0]).'</a>'
-										.'-<a target="_blank" href="'.$vcs->getRevisionUrl($this_project, $revision_display[1]).'">'.htmlentities($revision_display[1]).'</a>';
+										 .'-<a target="_blank" href="'.$vcs->getRevisionUrl($this_project, $revision_display[1]).'">'.htmlentities($revision_display[1]).'</a>';
 			} else {
 				$revisions_display[$k] = '<a target="_blank" href="'.$vcs->getRevisionUrl($this_project, $revision_display).'">'.htmlentities($revision_display).'</a>';
 			}
@@ -83,8 +83,8 @@ foreach ($all_rows as $k => $row) {
 	echo '<div>';
 	$issues = $row->getIssues();
 	if ($this_publication) {
-		$issues_bak  = $issues;
-		$issues      = $issue_shared->filterIssues($issues, $current_project);
+		$issues_bak = $issues;
+		$issues     = $issue_shared->filterIssues($issues, $current_project);
 		/** @var \Interfaces\Object\Issue[] $issues_diff */
 		$issues_diff = array_diff($issues_bak, $issues);
 	}
@@ -97,8 +97,8 @@ foreach ($all_rows as $k => $row) {
 			Voir les autres tâches
 		</button>
 		<div id="issues'.$this_publication->getId().'" class="collapse">';
-			$issues_list = $issues_diff;
-			require __DIR__.'/include/logs_issues.php';
+		$issues_list = $issues_diff;
+		require __DIR__.'/include/logs_issues.php';
 		echo '</div>';
 	}
 	echo '</div>';
@@ -111,11 +111,19 @@ foreach ($all_rows as $k => $row) {
 	if ($this_publication) {
 		echo '<div class="well">';
 
-		$mail = $this_publication->prepare_mail($issues);
-		echo '<a target="_blank" href="mailto:'.implode(';', $mail->getToAddresses())
-			 							.'?cc='.urlencode(implode(';', $mail->getCcAddresses()))
-			 							.'&subject='.htmlentities(urlencode($mail->Subject))
-			 							.'&body='.htmlentities(urlencode($mail->AltBody)).'">
+		$mail   = $this_publication->prepare_mail($issues);
+		$mailto = array();
+		foreach ($mail->getToAddresses() as $address) {
+			$mailto[] = $address[0];
+		}
+		$cc = array();
+		foreach ($mail->getCcAddresses() as $address) {
+			$cc[] = $address[0];
+		}
+		echo '<a target="_blank" href="mailto:'.implode(';', $mailto)
+			 .'?cc='.urlencode(implode(';', $cc))
+			 .'&subject='.htmlentities(urlencode($mail->Subject))
+			 .'&body='.htmlentities(urlencode($mail->AltBody)).'">
 			<i class="glyphicon glyphicon-envelope"></i>
 		</a>';
 
@@ -140,7 +148,7 @@ foreach ($all_rows as $k => $row) {
 		$this_project = $dic->getObject('project_object', $project_id);
 		echo '<strong>_____'.htmlentities($this_project->getName()).'_____</strong><br />';
 		$result_comment = htmlentities(implode("\n", array_map('trim', array_unique($comments))));
-		$result_comment = preg_replace_callback($issue_shared->getIssueIdPattern(), function($matches) {
+		$result_comment = preg_replace_callback($issue_shared->getIssueIdPattern(), function ($matches) {
 			global $dic;
 			/** @var \Interfaces\Object\Issue $issue */
 			$issue = $dic->getObject('issue_object', $matches[1]);
@@ -158,8 +166,8 @@ foreach ($all_rows as $k => $row) {
 
 if ($publication) {
 	$params = json_encode(array(
-							   'begins'              => $revision_begins,
-							   'last_publication_id' => $publication->getId(),
+							  'begins'              => $revision_begins,
+							  'last_publication_id' => $publication->getId(),
 						  ));
 	echo '<div class="alert alert-info" id="see_more">
 		<div onclick=\'return see_more('.$params.')\' class="text-center pointer">

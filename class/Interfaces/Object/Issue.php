@@ -30,6 +30,13 @@ interface Issue extends Object {
 	public function getType();
 
 	/**
+	 * Get value of field used for restrict notification
+	 *
+	 * @return string
+	 */
+	public function getRestrictNotifValue();
+
+		/**
 	 * Get Issue web url
 	 *
 	 * @return string

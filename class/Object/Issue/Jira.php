@@ -10,9 +10,9 @@ class Jira extends Issue implements \Interfaces\Object\Issue\Jira {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'issue',
-																 'config',
-															));
+			'issue',
+			'config',
+		));
 	}
 
 	/**
@@ -38,6 +38,11 @@ class Jira extends Issue implements \Interfaces\Object\Issue\Jira {
 			$this->id    = isset($task_data->key) ? $task_data->key : '';
 			$this->title = isset($task_data->fields->summary) ? $task_data->fields->summary : '';
 			$this->type  = isset($task_data->fields->issuetype->name) ? $task_data->fields->issuetype->name : '';
+
+			/** @var \Interfaces\Shared\Config $config_shared */
+			$config_shared             = $this->dependence_objects['config'];
+			$retrict_notif_field_name  = $config_shared->getBugTrackerFieldRestrictNotif();
+			$this->retrict_notif_value = isset($task_data->fields->$retrict_notif_field_name) ? $task_data->fields->$retrict_notif_field_name : '';
 		}
 	}
 

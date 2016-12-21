@@ -6,23 +6,26 @@ if ($_POST) {
 	/** @var \Interfaces\Shared\FormUtils $form_utils */
 	$form_utils = $dic->getObject('form_utils');
 
-	$VCS_type                = isset($_POST['VCS_type']) ? trim($_POST['VCS_type']) : '';
-	$VCS_url                 = isset($_POST['VCS_url']) ? trim($_POST['VCS_url']) : '';
-	$VCS_user                = isset($_POST['VCS_user']) ? trim($_POST['VCS_user']) : '';
-	$VCS_password            = isset($_POST['VCS_password']) ? trim($_POST['VCS_password']) : $config_shared->getVcsPassword();
-	$VCS_web_url             = isset($_POST['VCS_web_url']) ? trim($_POST['VCS_web_url']) : '';
-	$changelog_path          = isset($_POST['changelog_path']) ? trim($_POST['changelog_path']) : '';
-	$bug_tracker_type        = isset($_POST['bug_tracker_type']) ? trim($_POST['bug_tracker_type']) : '';
-	$bug_tracker_url         = isset($_POST['bug_tracker_url']) ? trim($_POST['bug_tracker_url']) : '';
-	$bug_tracker_user        = isset($_POST['bug_tracker_user']) ? trim($_POST['bug_tracker_user']) : '';
-	$bug_tracker_password    = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config_shared->getBugTrackerPassword();
-	$bug_tracker_query       = isset($_POST['bug_tracker_query']) ? trim($_POST['bug_tracker_query']) : '';
-	$mail_subject            = isset($_POST['mail_subject']) ? trim($_POST['mail_subject']) : '';
-	$mail_content            = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
-	$mail_sender             = isset($_POST['mail_sender']) ? trim($_POST['mail_sender']) : '';
-	$recipients              = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
-	$mail_post_publi_subject = isset($_POST['mail_post_publi_subject']) ? trim($_POST['mail_post_publi_subject']) : '';
-	$mail_post_publi_content = isset($_POST['mail_post_publi_content']) ? trim($_POST['mail_post_publi_content']) : '';
+	$VCS_type                         = isset($_POST['VCS_type']) ? trim($_POST['VCS_type']) : '';
+	$VCS_url                          = isset($_POST['VCS_url']) ? trim($_POST['VCS_url']) : '';
+	$VCS_user                         = isset($_POST['VCS_user']) ? trim($_POST['VCS_user']) : '';
+	$VCS_password                     = isset($_POST['VCS_password']) ? trim($_POST['VCS_password']) : $config_shared->getVcsPassword();
+	$VCS_web_url                      = isset($_POST['VCS_web_url']) ? trim($_POST['VCS_web_url']) : '';
+	$changelog_path                   = isset($_POST['changelog_path']) ? trim($_POST['changelog_path']) : '';
+	$bug_tracker_type                 = isset($_POST['bug_tracker_type']) ? trim($_POST['bug_tracker_type']) : '';
+	$bug_tracker_url                  = isset($_POST['bug_tracker_url']) ? trim($_POST['bug_tracker_url']) : '';
+	$bug_tracker_user                 = isset($_POST['bug_tracker_user']) ? trim($_POST['bug_tracker_user']) : '';
+	$bug_tracker_password             = isset($_POST['bug_tracker_password']) ? trim($_POST['bug_tracker_password']) : $config_shared->getBugTrackerPassword();
+	$bug_tracker_query                = isset($_POST['bug_tracker_query']) ? trim($_POST['bug_tracker_query']) : '';
+	$mail_subject                     = isset($_POST['mail_subject']) ? trim($_POST['mail_subject']) : '';
+	$mail_content                     = isset($_POST['mail_content']) ? trim($_POST['mail_content']) : '';
+	$mail_sender                      = isset($_POST['mail_sender']) ? trim($_POST['mail_sender']) : '';
+	$recipients                       = isset($_POST['recipients']) ? (array)$_POST['recipients'] : array();
+	$mail_post_publi_subject          = isset($_POST['mail_post_publi_subject']) ? trim($_POST['mail_post_publi_subject']) : '';
+	$mail_post_publi_content          = isset($_POST['mail_post_publi_content']) ? trim($_POST['mail_post_publi_content']) : '';
+	$bug_tracker_field_restrict_notif = isset($_POST['bug_tracker_field_restrict_notif']) ? trim($_POST['bug_tracker_field_restrict_notif']) : '';
+	$mail_restrict_subject            = isset($_POST['mail_restrict_subject']) ? trim($_POST['mail_restrict_subject']) : '';
+	$mail_restrict_content            = isset($_POST['mail_restrict_content']) ? trim($_POST['mail_restrict_content']) : '';
 
 	$errors = array();
 	$dic->setObjectDefinition('vcs', '\\Shared\\VCS\\'.ucfirst($VCS_type), true);
@@ -108,6 +111,10 @@ if ($_POST) {
 		$config_shared->setMailPostPubliSubject($mail_post_publi_subject);
 		$config_shared->setMailPostPubliContent($mail_post_publi_content);
 
+		$config_shared->setBugTrackerFieldRestrictNotif($bug_tracker_field_restrict_notif);
+		$config_shared->setMailRestrictSubject($mail_restrict_subject);
+		$config_shared->setMailRestrictContent($mail_restrict_content);
+
 		foreach ($config_shared->getRecipients() as $recipient) {
 			$config_shared->removeRecipient($recipient);
 		}
@@ -124,20 +131,23 @@ if ($_POST) {
 		$publication_shared->install();
 	}
 } else {
-	$VCS_type                = $config_shared->getVcsType();
-	$VCS_url                 = $config_shared->getVcsUrl();
-	$VCS_user                = $config_shared->getVcsUser();
-	$VCS_web_url             = $config_shared->getVcsWebUrl();
-	$changelog_path          = $config_shared->getChangelogPath();
-	$bug_tracker_type        = $config_shared->getBugTrackerType();
-	$bug_tracker_url         = $config_shared->getBugTrackerUrl();
-	$bug_tracker_user        = $config_shared->getBugTrackerUser();
-	$bug_tracker_query       = $config_shared->getBugTrackerQuery();
-	$mail_subject            = $config_shared->getMailSubject();
-	$mail_content            = $config_shared->getMailContent();
-	$mail_sender             = $config_shared->getMailSender();
-	$mail_post_publi_subject = $config_shared->getMailPostPubliSubject();
-	$mail_post_publi_content = $config_shared->getMailPostPubliContent();
+	$VCS_type                         = $config_shared->getVcsType();
+	$VCS_url                          = $config_shared->getVcsUrl();
+	$VCS_user                         = $config_shared->getVcsUser();
+	$VCS_web_url                      = $config_shared->getVcsWebUrl();
+	$changelog_path                   = $config_shared->getChangelogPath();
+	$bug_tracker_type                 = $config_shared->getBugTrackerType();
+	$bug_tracker_url                  = $config_shared->getBugTrackerUrl();
+	$bug_tracker_user                 = $config_shared->getBugTrackerUser();
+	$bug_tracker_query                = $config_shared->getBugTrackerQuery();
+	$mail_subject                     = $config_shared->getMailSubject();
+	$mail_content                     = $config_shared->getMailContent();
+	$mail_sender                      = $config_shared->getMailSender();
+	$mail_post_publi_subject          = $config_shared->getMailPostPubliSubject();
+	$mail_post_publi_content          = $config_shared->getMailPostPubliContent();
+	$bug_tracker_field_restrict_notif = $config_shared->getBugTrackerFieldRestrictNotif();
+	$mail_restrict_subject            = $config_shared->getMailRestrictSubject();
+	$mail_restrict_content            = $config_shared->getMailRestrictContent();
 }
 
 require $dic->getParam('path_templates').'/configuration.php';

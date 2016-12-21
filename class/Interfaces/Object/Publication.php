@@ -91,8 +91,11 @@ interface Publication extends Object {
 	 * Get information to send email (recipients, cc, subject, body)
 	 *
 	 * @param \Interfaces\Object\Issue[] $issues
-	 * @param bool                       $post_publi
+	 * @param string                     $mail_type Which mail to prepare. Values :
+	 *                                              - list (default value if no valid otherwise)
+	 *                                              - post_publi
+	 *                                              - restrict
 	 * @return \PHPMailer
 	 */
-	public function prepare_mail($issues, $post_publi = false);
+	public function prepare_mail($issues, $mail_type = 'list');
 }

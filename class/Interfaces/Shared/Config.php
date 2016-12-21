@@ -133,6 +133,27 @@ interface Config extends Shared {
 	public function getMailPostPubliSubject();
 
 	/**
+	 * Get Bug Tracker additional field to send notification is not empty
+	 *
+	 * @return string
+	 */
+	public function getBugTrackerFieldRestrictNotif();
+
+	/**
+	 * Get Mail subject template in case of notification on restrict bug tracker field
+	 *
+	 * @return string
+	 */
+	public function getMailRestrictSubject();
+
+	/**
+	 * Get Mail content template in case of notification on restrict bug tracker field
+	 *
+	 * @return string
+	 */
+	public function getMailRestrictContent();
+
+	/**
 	 * Set VCS ident to set correct class name
 	 *
 	 * @param string $vcs_type
@@ -243,6 +264,27 @@ interface Config extends Shared {
 	 * @param string $mail_post_publi_subject
 	 */
 	public function setMailPostPubliSubject($mail_post_publi_subject);
+
+	/**
+	 * Set Bug Tracker additional field to send notification is not empty
+	 *
+	 * @param string $bug_tracker_field_restrict_notif
+	 */
+	public function setBugTrackerFieldRestrictNotif($bug_tracker_field_restrict_notif);
+
+	/**
+	 * Set Mail subject template in case of notification on restrict bug tracker field
+	 *
+	 * @param string $mail_restrict_subject
+	 */
+	public function setMailRestrictSubject($mail_restrict_subject);
+
+	/**
+	 * Set Mail content template in case of notification on restrict bug tracker field
+	 *
+	 * @param string $mail_restrict_content
+	 */
+	public function setMailRestrictContent($mail_restrict_content);
 
 	/**
 	 * Add a recipient for this all projects

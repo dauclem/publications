@@ -39,6 +39,12 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	protected $mail_post_publi_content;
 	/** @var string */
 	protected $mail_post_publi_subject;
+	/** @var string */
+	protected $bug_tracker_field_restrict_notif;
+	/** @var string */
+	protected $mail_restrict_subject;
+	/** @var string */
+	protected $mail_restrict_content;
 
 	/**
 	 * {@inheritDoc}
@@ -74,7 +80,10 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 							mail_subject TEXT,
 							mail_sender TEXT,
 							mail_post_publi_content TEXT,
-							mail_post_publi_subject TEXT)');
+							mail_post_publi_subject TEXT,
+							bug_tracker_field_restrict_notif TEXT,
+							mail_restrict_subject TEXT,
+							mail_restrict_content TEXT)');
 		$connection->exec('INSERT INTO config(vcs_type) VALUES ("subversion")');
 
 		$connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
@@ -111,14 +120,21 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 													bug_tracker_type, bug_tracker_url, bug_tracker_user,
 													bug_tracker_password, bug_tracker_query,
 													mail_content, mail_subject, mail_sender,
-													mail_post_publi_content, mail_post_publi_subject
+													mail_post_publi_content, mail_post_publi_subject,
+													bug_tracker_field_restrict_notif, mail_restrict_subject, mail_restrict_content
 												FROM config', true);
 			list($this->vcs_type, $this->vcs_url, $this->vcs_user, $this->vcs_password, $this->vcs_web_url, $this->changelog_path,
 				$this->bug_tracker_type, $this->bug_tracker_url, $this->bug_tracker_user,
 				$this->bug_tracker_password, $this->bug_tracker_query,
 				$this->mail_content, $this->mail_subject, $this->mail_sender,
-				$this->mail_post_publi_content, $this->mail_post_publi_subject) = array_values($data);
+				$this->mail_post_publi_content, $this->mail_post_publi_subject,
+				$this->bug_tracker_field_restrict_notif, $this->mail_restrict_subject, $this->mail_restrict_content
+				) = array_values($data);
 		}
+
+		$this->dic->setObjectDefinition('issue', '\\Shared\\Issue\\'.ucfirst($this->bug_tracker_type), true);
+		$this->dic->setObjectDefinition('issue_object', '\\Object\\Issue\\'.ucfirst($this->bug_tracker_type), false);
+		$this->dic->setObjectDefinition('vcs', '\\Shared\\VCS\\'.ucfirst($this->vcs_type), true);
 	}
 
 	/**
@@ -238,6 +254,27 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	 */
 	public function getMailPostPubliSubject() {
 		return $this->mail_post_publi_subject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getBugTrackerFieldRestrictNotif() {
+		return $this->bug_tracker_field_restrict_notif;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailRestrictSubject() {
+		return $this->mail_restrict_subject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMailRestrictContent() {
+		return $this->mail_restrict_content;
 	}
 
 	/**
@@ -381,6 +418,30 @@ class Config extends Shared implements \Interfaces\Shared\Config {
 	public function setMailPostPubliSubject($mail_post_publi_subject) {
 		$this->mail_post_publi_subject = $mail_post_publi_subject;
 		$this->save('mail_post_publi_subject');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setBugTrackerFieldRestrictNotif($bug_tracker_field_restrict_notif) {
+		$this->bug_tracker_field_restrict_notif = $bug_tracker_field_restrict_notif;
+		$this->save('bug_tracker_field_restrict_notif');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailRestrictSubject($mail_restrict_subject) {
+		$this->mail_restrict_subject = $mail_restrict_subject;
+		$this->save('mail_restrict_subject');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMailRestrictContent($mail_restrict_content) {
+		$this->mail_restrict_content = $mail_restrict_content;
+		$this->save('mail_restrict_content');
 	}
 
 	/**

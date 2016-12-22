@@ -252,47 +252,67 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function prepare_mail($issues, $post_publi = false) {
+	public function prepare_mail($issues, $mail_type = 'list') {
 		/** @var \Interfaces\Shared\Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		$project       = $this->getProject();
 		$mail          = new PHPMailer;
 		$mail->CharSet = 'UTF-8';
+		$replace       = array('{PROJECT}' => $project->getName());
 
 		$sender = $config_shared->getMailSender();
 		$mail->setFrom($sender);
 		$mail->addReplyTo($sender);
 
-		foreach ($project->getRecipients() as $recipient) {
-			$mail->addAddress($recipient);
-		}
-		foreach ($config_shared->getRecipients() as $recipient) {
-			$mail->addCC($recipient);
-		}
-
-		$current_type = $issues_str = '';
-		foreach ($issues as $issue) {
-			if ($current_type != $issue->getType()) {
-				if ($current_type) {
-					$issues_str .= "\n";
+		if ($mail_type === 'restrict') {
+			$values = array();
+			foreach ($issues as $issue) {
+				$v = $issue->getRestrictNotifValue();
+				if ($v) {
+					$values[] = $issue->getId().' : '.$issue->getTitle()."\n".$v."\n";
 				}
-				$current_type = $issue->getType();
-				$issues_str .= $current_type.' :'."\n";
 			}
-			$issues_str .= $issue->getId().' : '.$issue->getTitle()."\n";
+			if (!$values) {
+				return null;
+			}
+
+			$replace['{VALUES}'] = implode("\n", $values);
+			$subject = $config_shared->getMailRestrictSubject();
+			$body    = $config_shared->getMailRestrictContent();
+
+			foreach ($config_shared->getRecipients() as $recipient) {
+				$mail->addAddress($recipient);
+			}
+		} else {
+			$current_type = $issues_str = '';
+			foreach ($issues as $issue) {
+				if ($current_type != $issue->getType()) {
+					if ($current_type) {
+						$issues_str .= "\n";
+					}
+					$current_type = $issue->getType();
+					$issues_str .= $current_type.' :'."\n";
+				}
+				$issues_str .= $issue->getId().' : '.$issue->getTitle()."\n";
+			}
+			$replace['{ISSUES}'] = $issues_str;
+
+			foreach ($project->getRecipients() as $recipient) {
+				$mail->addAddress($recipient);
+			}
+			foreach ($config_shared->getRecipients() as $recipient) {
+				$mail->addCC($recipient);
+			}
+
+			if ($mail_type === 'post_publi') {
+				$subject = $project->getDisplayMailPostPubliSubject();
+				$body    = $project->getDisplayMailPostPubliContent();
+			} else {
+				$subject = $project->getDisplayMailSubject();
+				$body    = $project->getDisplayMailContent();
+			}
 		}
 
-		$replace = array(
-			'{PROJECT}' => $project->getName(),
-			'{ISSUES}'  => $issues_str,
-		);
-		if ($post_publi) {
-			$subject = $project->getDisplayMailPostPubliSubject();
-			$body    = $project->getDisplayMailPostPubliContent();
-		} else {
-			$subject = $project->getDisplayMailSubject();
-			$body    = $project->getDisplayMailContent();
-		}
 		$mail->Subject = str_replace(array_keys($replace), array_values($replace), $subject);
 		$mail->Body    = $mail->AltBody = str_replace(array_keys($replace), array_values($replace), $body);
 

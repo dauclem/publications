@@ -16,8 +16,7 @@ $dic = new DIC(array(
 					'path_templates' => $base_dir.'/templates',
 			   ));
 
-/** @var \Interfaces\Shared\Config $config_shared */
-$config_shared = $dic->getObject('config');
-$dic->setObjectDefinition('issue', '\\Shared\\Issue\\'.ucfirst($config_shared->getBugTrackerType()), true);
-$dic->setObjectDefinition('issue_object', '\\Object\\Issue\\'.ucfirst($config_shared->getBugTrackerType()), false);
-$dic->setObjectDefinition('vcs', '\\Shared\\VCS\\'.ucfirst($config_shared->getVcsType()), true);
+if (!defined('UPGRADE')) {
+	/** @var \Interfaces\Shared\Config $config_shared */
+	$config_shared = $dic->getObject('config');
+}

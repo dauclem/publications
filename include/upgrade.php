@@ -7,6 +7,7 @@ passthru('export COMPOSER_HOME='.$root.'.composer; export COMPOSER_DISCARD_CHANG
 		 .' --working-dir '.$root
 		 .' --no-interaction');
 
+define('UPGRADE', true);
 require __DIR__.'/setup.php';
 
 /** @var \Interfaces\Shared\Database $database */
@@ -20,6 +21,9 @@ $connection = $database->getConnection();
 @$connection->exec('ALTER TABLE config ADD mail_sender TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_post_publi_content TEXT');
 @$connection->exec('ALTER TABLE config ADD mail_post_publi_subject TEXT');
+@$connection->exec('ALTER TABLE config ADD bug_tracker_field_restrict_notif TEXT');
+@$connection->exec('ALTER TABLE config ADD mail_restrict_subject TEXT');
+@$connection->exec('ALTER TABLE config ADD mail_restrict_content TEXT');
 $connection->exec('CREATE TABLE IF NOT EXISTS config_recipients(
 							email TEXT)');
 $connection->exec('CREATE UNIQUE INDEX IF NOT EXISTS config_recipient ON config_recipients (email)');

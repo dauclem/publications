@@ -11,8 +11,8 @@ class Jira extends Issue implements \Interfaces\Shared\Issue\Jira {
 	 */
 	public function getDependenciesList() {
 		return array_merge(parent::getDependenciesList(), array(
-																 'config',
-															));
+			'config',
+		));
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Jira extends Issue implements \Interfaces\Shared\Issue\Jira {
 			}
 		}
 
-		usort($list, function(\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
+		usort($list, function (\Interfaces\Object\Issue $a, \Interfaces\Object\Issue $b) {
 			if ($a->getType() == $b->getType()) {
 				return 0;
 			}

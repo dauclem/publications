@@ -161,6 +161,7 @@ require __DIR__.'/common/top_nav.php';
 			</div>
 		</div>
 	</fieldset>
+
 	<fieldset>
 		<legend>Publications</legend>
 
@@ -258,6 +259,56 @@ require __DIR__.'/common/top_nav.php';
 					Liste des personnes en copie de tous les mails de publication.
 					<?php if (isset($errors['recipients'])) { ?>
 						<?php echo '<br />'.$errors['recipients']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Notification supplémentaire restreinte</legend>
+
+		<div class="form-group<?php echo isset($errors['bug_tracker_field_restrict_notif']) ? ' has-error' : ''; ?>">
+			<label for="mail_subject" class="col-lg-2 control-label">Champ du bug tracker pour notification supplémentaire</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="bug_tracker_field_restrict_notif" name="bug_tracker_field_restrict_notif"
+					   value="<?php echo isset($bug_tracker_field_restrict_notif) ? htmlentities($bug_tracker_field_restrict_notif) : ''; ?>" />
+				<span class="help-block">
+					Après une publication, récupère la valeur de ce champ
+						et envoie une notification uniquement aux destinataires de la configuration générale
+						avec le contenu de ces champs pour les tâches concernées.
+					<?php if (isset($errors['bug_tracker_field_restrict_notif'])) { ?>
+						<?php echo '<br />'.$errors['bug_tracker_field_restrict_notif']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
+		<div class="form-group<?php echo isset($errors['mail_restrict_subject']) ? ' has-error' : ''; ?>">
+			<label for="mail_subject" class="col-lg-2 control-label">Sujet du mail pour la notification supplémentaire</label>
+
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="mail_restrict_subject" name="mail_restrict_subject"
+					   value="<?php echo isset($mail_restrict_subject) ? htmlentities($mail_restrict_subject) : ''; ?>" />
+				<span class="help-block">
+					<?php if (isset($errors['mail_restrict_subject'])) { ?>
+						<?php echo '<br />'.$errors['mail_restrict_subject']; ?>
+					<?php } ?>
+				</span>
+			</div>
+		</div>
+
+		<div class="form-group<?php echo isset($errors['mail_restrict_content']) ? ' has-error' : ''; ?>">
+			<label for="mail_subject" class="col-lg-2 control-label">Contenu du mail pour la notification supplémentaire</label>
+
+			<div class="col-lg-10">
+				<textarea class="form-control" id="mail_restrict_content" name="mail_restrict_content" rows="6"
+				><?php echo isset($mail_restrict_content) ? htmlentities($mail_restrict_content) : ''; ?></textarea>
+				<span class="help-block">
+					{VALUES} sera remplacé par les valeurs du champ utilisé comme filtre.
+					<?php if (isset($errors['mail_restrict_content'])) { ?>
+						<?php echo '<br />'.$errors['mail_restrict_content']; ?>
 					<?php } ?>
 				</span>
 			</div>

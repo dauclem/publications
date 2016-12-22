@@ -17,5 +17,16 @@ if ($publication_temp) {
 }
 
 if (!empty($_GET['email'])) {
-	$this_publication->prepare_mail(array(), true)->send();
+	$this_publication->prepare_mail(array(), 'post_publi')->send();
+
+	/** @var \Interfaces\Shared\VCS $vcs */
+	$vcs         = $dic->getObject('vcs');
+	$publication = $this_publication->getPrevious();
+	$all_rows    = $vcs->getAllRows($current_project, array(), $publication);
+	$row         = $publication->getNext()->createRow($all_rows);
+	$issues      = $row->getIssues();
+	$mail        = $this_publication->prepare_mail($issues, 'restrict');
+	if ($mail) {
+		$mail->send();
+	}
 }

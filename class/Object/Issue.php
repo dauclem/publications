@@ -11,6 +11,7 @@ abstract class Issue extends Object implements \Interfaces\Object\Issue {
 	protected $id;
 	protected $title;
 	protected $type;
+	protected $retrict_notif_value;
 
 	/**
 	 * {@inheritDoc}
@@ -38,6 +39,13 @@ abstract class Issue extends Object implements \Interfaces\Object\Issue {
 	 */
 	public function getType() {
 		return $this->type;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getRestrictNotifValue() {
+		return $this->retrict_notif_value;
 	}
 
 	/**

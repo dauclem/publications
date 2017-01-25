@@ -315,6 +315,7 @@ class Publication extends Object implements \Interfaces\Object\Publication {
 
 		$mail->Subject = str_replace(array_keys($replace), array_values($replace), $subject);
 		$mail->Body    = $mail->AltBody = str_replace(array_keys($replace), array_values($replace), $body);
+		$mail->Body    = nl2br($mail->Body);
 
 		return $mail;
 	}

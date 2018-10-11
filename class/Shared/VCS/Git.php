@@ -213,7 +213,7 @@ class Git extends VCS implements \Interfaces\Shared\VCS\Subversion {
 		/** @var Config $config_shared */
 		$config_shared = $this->dependence_objects['config'];
 		return $config_shared->getVcsUrl()
-			   .$project->getVcsBase()
+			   .'/'.$project->getVcsBase()
 			   .$project->getVcsPath();
 	}
 }
